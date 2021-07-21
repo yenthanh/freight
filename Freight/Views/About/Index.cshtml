@@ -1,0 +1,409 @@
+﻿
+@{
+    ViewBag.Title = "AboutIndex";
+}
+<section class="container">
+    <h3>Freight Rates Portal</h3>
+    <div>
+        <div class="row">
+            <div class="col-xs-6 col-md-4" style="margin-top:15px;">
+                <select class="custom-select" id="sourceSelect">
+                    <option selected>Source</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Bolivia">Bolivia</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Chile">Chile</option>
+
+                </select>
+            </div>
+            <div class="col-xs-6 col-md-4" style="margin-top:15px;">
+                <select class="custom-select" id="destinationSelect">
+                    <option selected>Destination</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Bolivia">Bolivia</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Chile">Chile</option>
+
+                </select>
+            </div>
+            <div class="col-xs-6 col-md-4" style="margin-top:15px;">
+                <select class="custom-select" id="carrierSelect">
+                    <option selected value="0">Carrier</option>
+                    <option value="1">Fedex</option>
+                    <option value="2">DHL</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="row">
+            @*<div class="col-xs-6 col-md-4" style="margin-top:15px;">
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected value="0">Delivery Type</option>
+                        <option value="1">Import</option>
+                        <option value="2">Export</option>
+                        <option value="3">3rd Party</option>
+                    </select>
+                </div>*@
+            <div class="col-xs-6 col-md-4" style="margin-top:46px;">
+                <select class="custom-select" id="servicesSelect">
+                    <option selected>Services Type</option>
+                </select>
+            </div>
+            <div class="col-xs-6 col-md-4" style="margin-top:46px;">
+                <select class="custom-select" id="packagingSelect">
+                    <option selected value="0">Packaging Type</option>
+
+                </select>
+            </div>
+            <div class="col-xs-6 col-md-4" style="margin-top:15px;">
+                @*<select class="custom-select" id="weightSelect">
+                        <option selected>Weight</option>
+                    </select>*@
+                <label for="exampleInputEmail1">Weight</label>
+                <div class="input-group mb-3">
+                    <input type="text" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight">
+                    <div class="input-group-append">
+                        <span class="input-group-text">Kg</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <!--<div class="col-xs-6 col-md-3" style="margin-top:15px;">-->
+            @*<select class="custom-select" id="weightSelect">
+                    <option selected>Weight</option>
+                </select>*@
+            <!--<div class="input-group mb-3">
+                    <input type="text" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight">
+                    <div class="input-group-append">
+                        <span class="input-group-text">Kg</span>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="lengthGroup">
+                @*<select class="custom-select" id="weightSelect">
+                        <option selected>Weight</option>
+                    </select>*@
+                <label for="exampleInputEmail1">Length</label>
+                <div class="input-group mb-3">
+
+                    <input type="text" id="weightSelect" placeholder="Length" class="form-control" aria-label="Weight">
+                    <div class="input-group-append">
+                        <span class="input-group-text">CM</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="widthGroup">
+                @*<select class="custom-select" id="weightSelect">
+                        <option selected>Weight</option>
+                    </select>*@
+                <label for="exampleInputEmail1">Width</label>
+                <div class="input-group mb-3">
+                    <input type="text" id="weightSelect" placeholder="Width" class="form-control" aria-label="Weight">
+                    <div class="input-group-append">
+                        <span class="input-group-text">CM</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="heightGroup">
+                @*<select class="custom-select" id="weightSelect">
+                        <option selected>Weight</option>
+                    </select>*@
+                <label for="exampleInputEmail1">Height</label>
+                <div class="input-group mb-3">
+
+                    <input type="text" id="weightSelect" placeholder="Height" class="form-control" aria-label="Weight">
+                    <div class="input-group-append">
+                        <span class="input-group-text">CM</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @*<div class="row">
+                <div class="col-xs-6 col-md-3">
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected>Weight</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected>Lenght</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected>Width</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected>Height</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>*@
+        <div>
+            <button type="button" class="btn btn-primary" id="searchButton" style="margin-top:15px;" >Search</button>
+        </div>
+    </div>
+    <div>
+        <h3>
+            Corporate Rate
+        </h3>
+        <table class="table" id="example">
+            <thead>
+                <tr>
+                    <th scope="col">Carrier</th>
+                    <th scope="col">Service Type</th>
+                    <th scope="col">Packaging Type</th>
+                    <th scope="col">Weight Range(kg)</th>
+                    <th scope="col">Surcharge</th>
+                    <th scope="col">Working days(day)</th>
+                    <th scope="col">Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <a href='/shipping-cost1.xlsx' target='_blank'>Export</a></section>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function () {
+        var arr = [];
+
+        var serviceOptionDefault = " <option selected value='0'>Services Type</option>";
+        var pakagingOptionDefault = "<option selected value='0'>Packaging Type</option>";
+        var weightOptionDefault = "<option selected value='0'>Weight</option>";
+        // Event choose carrier
+        $("#carrierSelect").change(function () {
+            $("#packagingSelect").html(pakagingOptionDefault);
+            $("#weightSelect").html(weightOptionDefault);
+            var servicesForFedex = serviceOptionDefault + "<option value='1'>Priority (IP)</option>"
+                + "<option value='2'>Economy (IE)</option>"
+                + "<option value='3'>Priority Freight</option>"
+                + "<option value='4'>Economy Freight</option>";
+            var servicesForDHL = serviceOptionDefault + "<option value='5'>Express</option>";
+            var value = $(this).val();
+            if (value == '1')
+                $("#servicesSelect").html(servicesForFedex);
+            if (value == '2')
+                $("#servicesSelect").html(servicesForDHL);
+
+        });
+        // Event when choose services type
+        $("#servicesSelect").change(function () {
+            $("#weightSelect").html(weightOptionDefault);
+            var packagingTypeForService1Or2 = pakagingOptionDefault + "<option value='1'>Envelope (Doc)</option>"
+                + "<option value='2'>Pak</option>"
+                + "<option value='3'>Package</option>";
+            var packagingTypeForService3Or4 = pakagingOptionDefault + "<option value='4'>NIL.</option>";
+            var packagingTypeForService5 = pakagingOptionDefault + "<option value='5'>Envelope (Doc)</option>"
+                + "<option value='6'>Package</option>";
+            var serviceValue = $(this).val();
+            var packagingTypeElement = $("#packagingSelect");
+            if (serviceValue == '1' || serviceValue == '2')
+                packagingTypeElement.html(packagingTypeForService1Or2);
+            if (serviceValue == '3' || serviceValue == '4')
+                packagingTypeElement.html(packagingTypeForService3Or4);
+            if (serviceValue == '5')
+                packagingTypeElement.html(packagingTypeForService5);
+        })
+        // Event when choose packaging type
+        $("#packagingSelect").change(function () {
+            var option1 = weightOptionDefault + "<option value='1'>0-2.5kg</option>";
+            var option2 = weightOptionDefault + "<option value='2'>0.5-2.5kg</option>";
+            var option3 = weightOptionDefault + "<option value='3'>0.5-99.999kg</option>";
+            var option4 = weightOptionDefault + "<option value='4'>Above 68kg -99.999kg</option>";
+
+            var packagingValue = $(this).val();
+            var weightElement = $("#weightSelect");
+            if (packagingValue == '1' || packagingValue == '5')
+            {
+                $('#heightGroup').attr('hidden', true);
+                $('#widthGroup').attr('hidden', true);
+                $('#lengthGroup').attr('hidden', true);
+                weightElement.html(option1);
+            }
+                
+            if (packagingValue == '2') {
+                $('#heightGroup').attr('hidden', false);
+                $('#widthGroup').attr('hidden', false);
+                $('#lengthGroup').attr('hidden', false);
+                weightElement.html(option2);
+            }
+           
+            if (packagingValue == '3' || packagingValue == '6') {
+                $('#heightGroup').attr('hidden', false);
+                $('#widthGroup').attr('hidden', false);
+                $('#lengthGroup').attr('hidden', false);
+                weightElement.html(option3);
+            }
+ 
+            if (packagingValue == '4') {
+                $('#heightGroup').attr('hidden', false);
+                $('#widthGroup').attr('hidden', false);
+                $('#lengthGroup').attr('hidden', false);
+                weightElement.html(option4);
+            }
+                
+
+        })
+        $("#searchButton").click(function () {
+            var source = $("#sourceSelect").val();
+            var desination = $("#destinationSelect").val();
+            console.log("Source:", source)
+            console.log("desination:", desination)
+            console.log("search button")
+            var serviceValue = $("#servicesSelect").val()
+            var packagingSelect = $("#packagingSelect").val()
+            var weightSelect = $("#weightSelect").val()
+            var priorityEnvelope = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge":"10%","Workingdays": "2-4", "Cost": 1000 }
+            var priorityPak = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "11.2%", "Workingdays": "2-4", "Cost": 2000 }
+            var priorityPackage = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 3000 }
+            var economyEnvelope = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 4000 }
+            var economyPak = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 5000 }
+            var economyPackage = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%","Workingdays": "3-6", "Cost": 6000 }
+            var priorityFreightNIL = { "Carrier": "Fedex", "Service": "Priority Freight", "Packaging": "NIL", "Weight": "68-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 7000 }
+            var economyFreightEnvelope = { "Carrier": "Fedex", "Service": "Economy Freight", "Packaging": "NIL", "Weight": "68.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 8000 }
+
+            var expressEnvelope = { "Carrier": "DHL", "Service": "Express", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 1000 }
+            var expressPackage = { "Carrier": "DHL", "Service": "Express", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 3000 }
+
+
+            var data = [];
+            console.log("Service:", serviceValue);
+            console.log("packaging:", packagingSelect);
+            var carrier = $("#carrierSelect").val()
+            console.log(carrier)
+            if (carrier == '0') {
+                data.push(priorityEnvelope,
+                    priorityPak,
+                    priorityPackage,
+                    economyEnvelope,
+                    economyPak,
+                    economyPackage,
+                    priorityFreightNIL,
+                    economyFreightEnvelope,
+                    expressEnvelope,
+                    expressPackage
+                )
+            }
+            if (carrier == '1') {
+                if (serviceValue == '0') {
+                    data.push(priorityEnvelope,
+                        priorityPak,
+                        priorityPackage,
+                        economyEnvelope,
+                        economyPak,
+                        economyPackage,
+                        priorityFreightNIL,
+                        economyFreightEnvelope
+                        )
+                }
+                if (serviceValue == '1') {
+                    if (packagingSelect == '0') {
+                        data.push(priorityPak, priorityEnvelope, priorityPackage)
+                    }
+                    if (packagingSelect == '1') {
+                        data.push(priorityEnvelope)
+                    }
+                    if (packagingSelect == '2') {
+                        data.push(priorityPak)
+                    }
+                    if (packagingSelect == '3') {
+                        data.push(priorityPackage)
+                    }
+                }
+                if (serviceValue == '2') {
+                    if (packagingSelect == '0') {
+                        data.push(economyEnvelope, economyPak, economyPackage)
+                    }
+                    if (packagingSelect == '1') {
+                        data.push(economyEnvelope)
+                    }
+                    if (packagingSelect == '2') {
+                        data.push(economyPak)
+                    }
+                    if (packagingSelect == '3') {
+                        data.push(economyPackage)
+                    }
+                }
+                if (serviceValue == '3') {
+                    data.push(priorityFreightNIL)
+                }
+                if (serviceValue == '4') {
+                    data.push(economyFreightEnvelope)
+                }
+            }
+            if (carrier == "2") {
+                if (serviceValue == "0") {
+                    data.push(expressEnvelope, expressPackage)
+                }
+                if (serviceValue == '5') {
+                    if (packagingSelect == '0') {
+                        data.push(expressEnvelope, expressPackage)
+                    }
+                    if (packagingSelect == '5') {
+                        data.push(expressEnvelope)
+                    }
+                    if (packagingSelect == '6') {
+                        data.push(expressPackage)
+                    }
+                }
+            }
+            var contentToRemove = document.querySelectorAll("#tr-id");
+            $(contentToRemove).remove();
+            if (source == "Source" || desination == "Destination") {
+                alert('Source or destination are empty');
+            }
+            else {
+                //var month = [2, 3, 6, 5, 4];
+                for (i = 0; i < data.length; i++) {
+                    var cost = data[i].Cost * parseFloat(weightSelect);
+                    var string = Number(cost).toLocaleString();
+                    console.log(string)
+                    $('<tr id="tr-id">')
+                        .append($('<td>').append(data[i].Carrier))
+                        .append($('<td>').append(data[i].Service))
+                        .append($('<td>').append(data[i].Packaging))
+                        .append($('<td>').append(data[i].Weight))
+                        .append($('<td>').append(data[i].Surcharge))
+                        .append($('<td>').append(data[i].Workingdays))
+                        .append($('<td>').append(string, " SGD" ))
+                        //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
+                        .appendTo('table tbody');
+                }
+            }
+
+        })
+    })
+</script>
+
+
+
