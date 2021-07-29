@@ -11,20 +11,20 @@
         <form>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email </label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" style="margin-left:35px;max-width:380px">
+                <input type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" style="margin-left:35px;max-width:380px">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
                 @*<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">*@
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" style="margin-left: 35px; max-width: 380px">
+                <input type="password" name="pwd" class="form-control" id="exampleInputPassword1" placeholder="Password" style="margin-left: 35px; max-width: 380px">
             </div>
             <div class="form-group form-check">
                 @*<input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Check me out</label>*@
             </div>
-            @*<button id="submitButton" type="submit" class="btn btn-primary" style="width: 17%; margin-top: 15px;">*@
-            @Html.ActionLink("Submit", "Index", "Calculator", null, new { @class = "submit" })
-            @*</button>*@
+            <button id="submitButton" type="button" class="btn btn-primary" style="width: 17%; margin-top: 15px;">
+            @*@Html.ActionLink("Submit", "Login", "Account", null, new { @class = "submit" })*@
+            </button>
         </form>
         @*<form>
                 <div class="form-group">
@@ -49,6 +49,29 @@
 </div>
 <script>
     $("#submitButton").click(function () {
+        var login = {
+            username: $("#exampleInputEmail1").val(),
+            pwd: $("#exampleInputPassword1").val()
+        }
+        console.log("---> data", login);
+        var CTLSX = JSON.stringify(login)
+        $.ajax({
+            url: "/Account/Login",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            data: CTLSX,
+            success: function (data) {
+                response($.map(data, function (item) {
+                    return {
+                        label: item.ten_vt + " (" + (item.ma_vt) + ")", value: item.ma_vt.trim() + ": " + item.ten_vt
+                    };
+                }));
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
         window.location.href = "/About";
     })
 </script>
