@@ -1,0 +1,545 @@
+{
+	"info": {
+		"_postman_id": "ef28b4ec-9338-4976-99a6-05f9c58c6ce4",
+		"name": "Freight Rate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Carrier",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token_key",
+						"value": "{{token_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base}}utility/GetListCarriers",
+					"host": [
+						"{{base}}utility"
+					],
+					"path": [
+						"GetListCarriers"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "List Carrier",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "token_key",
+								"value": "{{token_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base}}utility/GetListCarriers",
+							"host": [
+								"{{base}}utility"
+							],
+							"path": [
+								"GetListCarriers"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-AspNetMvc-Version",
+							"value": "5.2"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcREFUQVxDT0RFXEdpdEh1YlxGcmVpZ2h0IFJhdGUgUG9ydGFsIEJhY2stRW5kXGZyZWlnaHRcRnJlaWdodFx1dGlsaXR5XEdldExpc3RDYXJyaWVycw==?="
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 29 Jul 2021 11:22:26 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "111"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"code\": 0,\n        \"message\": \"SUCCESS\"\n    },\n    \"data\": [\n        {\n            \"value\": \"DHL\",\n            \"text\": \"DHL\"\n        },\n        {\n            \"value\": \"FedEx\",\n            \"text\": \"FedEx\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "List Package Type",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token_key",
+						"value": "{{token_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base}}api/utility/list_package_type",
+					"host": [
+						"{{base}}api"
+					],
+					"path": [
+						"utility",
+						"list_package_type"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "List Package Type",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "token_key",
+								"value": "{{token_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base}}utility/GetListPackageType",
+							"host": [
+								"{{base}}utility"
+							],
+							"path": [
+								"GetListPackageType"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-AspNetMvc-Version",
+							"value": "5.2"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcREFUQVxDT0RFXEdpdEh1YlxGcmVpZ2h0IFJhdGUgUG9ydGFsIEJhY2stRW5kXGZyZWlnaHRcRnJlaWdodFx1dGlsaXR5XEdldExpc3RQYWNrYWdlVHlwZQ==?="
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 29 Jul 2021 11:21:21 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "189"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"code\": 0,\n        \"message\": \"SUCCESS\"\n    },\n    \"data\": [\n        {\n            \"value\": \"ENVELOPE\",\n            \"text\": \"Envelope (Doc)\"\n        },\n        {\n            \"value\": \"NIL\",\n            \"text\": \"NIL\"\n        },\n        {\n            \"value\": \"PACKAGE\",\n            \"text\": \"Package\"\n        },\n        {\n            \"value\": \"PAK\",\n            \"text\": \"Pak\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "List Country",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token_key",
+						"value": "{{token_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base}}utility/GetListCountry",
+					"host": [
+						"{{base}}utility"
+					],
+					"path": [
+						"GetListCountry"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "List Country",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "token_key",
+								"value": "{{token_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base}}utility/GetListCountry",
+							"host": [
+								"{{base}}utility"
+							],
+							"path": [
+								"GetListCountry"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-AspNetMvc-Version",
+							"value": "5.2"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcREFUQVxDT0RFXEdpdEh1YlxGcmVpZ2h0IFJhdGUgUG9ydGFsIEJhY2stRW5kXGZyZWlnaHRcRnJlaWdodFx1dGlsaXR5XEdldExpc3RDb3VudHJ5?="
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 29 Jul 2021 11:21:55 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "9199"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"code\": 0,\n        \"message\": \"SUCCESS\"\n    },\n    \"data\": [\n        {\n            \"value\": \"AD\",\n            \"text\": \"ANDORRA\"\n        },\n        {\n            \"value\": \"AE\",\n            \"text\": \"UNITED ARAB EMIRATES\"\n        },\n        {\n            \"value\": \"AF\",\n            \"text\": \"AFGHANISTAN\"\n        },\n        {\n            \"value\": \"AG\",\n            \"text\": \"ANTIGUA\"\n        },\n        {\n            \"value\": \"AI\",\n            \"text\": \"ANGUILLA\"\n        },\n        {\n            \"value\": \"AL\",\n            \"text\": \"ALBANIA\"\n        },\n        {\n            \"value\": \"AM\",\n            \"text\": \"ARMENIA\"\n        },\n        {\n            \"value\": \"AN\",\n            \"text\": \"NETHERLANDS ANTILLES\"\n        },\n        {\n            \"value\": \"AO\",\n            \"text\": \"ANGOLA\"\n        },\n        {\n            \"value\": \"AQ\",\n            \"text\": \"ANTARCTICA\"\n        },\n        {\n            \"value\": \"AR\",\n            \"text\": \"ARGENTINA\"\n        },\n        {\n            \"value\": \"AS\",\n            \"text\": \"AMERICAN SAMOA\"\n        },\n        {\n            \"value\": \"AT\",\n            \"text\": \"AUSTRIA\"\n        },\n        {\n            \"value\": \"AU\",\n            \"text\": \"AUSTRALIA\"\n        },\n        {\n            \"value\": \"AW\",\n            \"text\": \"ARUBA\"\n        },\n        {\n            \"value\": \"AX\",\n            \"text\": \"ALAND ISLANDS\"\n        },\n        {\n            \"value\": \"AZ\",\n            \"text\": \"AZERBAIJAN\"\n        },\n        {\n            \"value\": \"BA\",\n            \"text\": \"BOSNIA AND HERZEGOVINA\"\n        },\n        {\n            \"value\": \"BB\",\n            \"text\": \"BARBADOS\"\n        },\n        {\n            \"value\": \"BD\",\n            \"text\": \"BANGLADESH\"\n        },\n        {\n            \"value\": \"BE\",\n            \"text\": \"BELGIUM\"\n        },\n        {\n            \"value\": \"BF\",\n            \"text\": \"BURKINA FASO\"\n        },\n        {\n            \"value\": \"BG\",\n            \"text\": \"BULGARIA\"\n        },\n        {\n            \"value\": \"BH\",\n            \"text\": \"BAHRAIN\"\n        },\n        {\n            \"value\": \"BI\",\n            \"text\": \"BURUNDI\"\n        },\n        {\n            \"value\": \"BJ\",\n            \"text\": \"BENIN\"\n        },\n        {\n            \"value\": \"BL\",\n            \"text\": \"SAINT BARTHELEMY\"\n        },\n        {\n            \"value\": \"BM\",\n            \"text\": \"BERMUDA\"\n        },\n        {\n            \"value\": \"BN\",\n            \"text\": \"BRUNEI DARUSSALAM\"\n        },\n        {\n            \"value\": \"BO\",\n            \"text\": \"BOLIVIA\"\n        },\n        {\n            \"value\": \"BQ\",\n            \"text\": \"BONAIRE, SINT EUSTATIUS AND SABA\"\n        },\n        {\n            \"value\": \"BR\",\n            \"text\": \"BRAZIL\"\n        },\n        {\n            \"value\": \"BS\",\n            \"text\": \"BAHAMAS\"\n        },\n        {\n            \"value\": \"BT\",\n            \"text\": \"BHUTAN\"\n        },\n        {\n            \"value\": \"BV\",\n            \"text\": \"BOUVET ISLAND\"\n        },\n        {\n            \"value\": \"BW\",\n            \"text\": \"BOTSWANA\"\n        },\n        {\n            \"value\": \"BY\",\n            \"text\": \"BELARUS\"\n        },\n        {\n            \"value\": \"BZ\",\n            \"text\": \"BELIZE\"\n        },\n        {\n            \"value\": \"CA\",\n            \"text\": \"CANADA\"\n        },\n        {\n            \"value\": \"CC\",\n            \"text\": \"COCOS (KEELING) ISLAND\"\n        },\n        {\n            \"value\": \"CD\",\n            \"text\": \"CONGO-KINSHASA\"\n        },\n        {\n            \"value\": \"CF\",\n            \"text\": \"CENTRAL AFRICAN REPUBLIC\"\n        },\n        {\n            \"value\": \"CG\",\n            \"text\": \"CONGO\"\n        },\n        {\n            \"value\": \"CH\",\n            \"text\": \"SWITZERLAND\"\n        },\n        {\n            \"value\": \"CI\",\n            \"text\": \"COTE D'IVOIRE\"\n        },\n        {\n            \"value\": \"CK\",\n            \"text\": \"COOK ISLANDS\"\n        },\n        {\n            \"value\": \"CL\",\n            \"text\": \"CHILE\"\n        },\n        {\n            \"value\": \"CM\",\n            \"text\": \"CAMEROON\"\n        },\n        {\n            \"value\": \"CN\",\n            \"text\": \"CHINA\"\n        },\n        {\n            \"value\": \"CO\",\n            \"text\": \"COLOMBIA\"\n        },\n        {\n            \"value\": \"CR\",\n            \"text\": \"COSTA RICA\"\n        },\n        {\n            \"value\": \"CU\",\n            \"text\": \"CUBA\"\n        },\n        {\n            \"value\": \"CV\",\n            \"text\": \"CAPE VERDE\"\n        },\n        {\n            \"value\": \"CW\",\n            \"text\": \"CURAÇAO\"\n        },\n        {\n            \"value\": \"CX\",\n            \"text\": \"CHRISTMAS ISLAND\"\n        },\n        {\n            \"value\": \"CY\",\n            \"text\": \"CYPRUS\"\n        },\n        {\n            \"value\": \"CZ\",\n            \"text\": \"CZECH REPUBLIC\"\n        },\n        {\n            \"value\": \"DE\",\n            \"text\": \"GERMANY\"\n        },\n        {\n            \"value\": \"DJ\",\n            \"text\": \"DJIBOUTI\"\n        },\n        {\n            \"value\": \"DK\",\n            \"text\": \"DENMARK\"\n        },\n        {\n            \"value\": \"DM\",\n            \"text\": \"DOMINICA\"\n        },\n        {\n            \"value\": \"DO\",\n            \"text\": \"DOMINICAN REPUBLIC\"\n        },\n        {\n            \"value\": \"DZ\",\n            \"text\": \"ALGERIA\"\n        },\n        {\n            \"value\": \"EC\",\n            \"text\": \"ECUADOR\"\n        },\n        {\n            \"value\": \"EE\",\n            \"text\": \"ESTONIA\"\n        },\n        {\n            \"value\": \"EG\",\n            \"text\": \"EGYPT\"\n        },\n        {\n            \"value\": \"EH\",\n            \"text\": \"WESTERN SAHARA\"\n        },\n        {\n            \"value\": \"ER\",\n            \"text\": \"ERITREA\"\n        },\n        {\n            \"value\": \"ES\",\n            \"text\": \"SPAIN\"\n        },\n        {\n            \"value\": \"ET\",\n            \"text\": \"ETHIOPIA\"\n        },\n        {\n            \"value\": \"FI\",\n            \"text\": \"FINLAND\"\n        },\n        {\n            \"value\": \"FJ\",\n            \"text\": \"FIJI\"\n        },\n        {\n            \"value\": \"FK\",\n            \"text\": \"FALKLAND ISLANDS\"\n        },\n        {\n            \"value\": \"FM\",\n            \"text\": \"MICRONESIA, FEDERATED STATES OF\"\n        },\n        {\n            \"value\": \"FO\",\n            \"text\": \"FAROE ISLANDS\"\n        },\n        {\n            \"value\": \"FR\",\n            \"text\": \"FRANCE\"\n        },\n        {\n            \"value\": \"FX\",\n            \"text\": \"FRANCE, METROPOLITAN\"\n        },\n        {\n            \"value\": \"GA\",\n            \"text\": \"GABON\"\n        },\n        {\n            \"value\": \"GB\",\n            \"text\": \"UNITED KINGDOM\"\n        },\n        {\n            \"value\": \"GD\",\n            \"text\": \"GRENADA\"\n        },\n        {\n            \"value\": \"GE\",\n            \"text\": \"GEORGIA\"\n        },\n        {\n            \"value\": \"GF\",\n            \"text\": \"FRENCH GUIANA\"\n        },\n        {\n            \"value\": \"GG\",\n            \"text\": \"GUERNESEY\"\n        },\n        {\n            \"value\": \"GH\",\n            \"text\": \"GHANA\"\n        },\n        {\n            \"value\": \"GI\",\n            \"text\": \"GIBRALTAR\"\n        },\n        {\n            \"value\": \"GL\",\n            \"text\": \"GREENLAND\"\n        },\n        {\n            \"value\": \"GM\",\n            \"text\": \"GAMBIA\"\n        },\n        {\n            \"value\": \"GN\",\n            \"text\": \"GUINEA\"\n        },\n        {\n            \"value\": \"GP\",\n            \"text\": \"GUADELOUPE\"\n        },\n        {\n            \"value\": \"GQ\",\n            \"text\": \"GUINEA-EQUATORIAL\"\n        },\n        {\n            \"value\": \"GR\",\n            \"text\": \"GREECE\"\n        },\n        {\n            \"value\": \"GS\",\n            \"text\": \"SOUTH GEORGIA AND SOUTH S.S.\"\n        },\n        {\n            \"value\": \"GT\",\n            \"text\": \"GUATEMALA\"\n        },\n        {\n            \"value\": \"GU\",\n            \"text\": \"GUAM\"\n        },\n        {\n            \"value\": \"GW\",\n            \"text\": \"GUINEA-BISSAU\"\n        },\n        {\n            \"value\": \"GY\",\n            \"text\": \"GUYANA\"\n        },\n        {\n            \"value\": \"HK\",\n            \"text\": \"HONG KONG\"\n        },\n        {\n            \"value\": \"HM\",\n            \"text\": \"HEARD AND MC DONALD ISLANDS\"\n        },\n        {\n            \"value\": \"HN\",\n            \"text\": \"HONDURAS\"\n        },\n        {\n            \"value\": \"HR\",\n            \"text\": \"CROATIA\"\n        },\n        {\n            \"value\": \"HT\",\n            \"text\": \"HAITI\"\n        },\n        {\n            \"value\": \"HU\",\n            \"text\": \"HUNGARY\"\n        },\n        {\n            \"value\": \"IC\",\n            \"text\": \"CANARY ISLANDS\"\n        },\n        {\n            \"value\": \"ID\",\n            \"text\": \"INDONESIA\"\n        },\n        {\n            \"value\": \"IE\",\n            \"text\": \"IRELAND\"\n        },\n        {\n            \"value\": \"IL\",\n            \"text\": \"ISRAEL\"\n        },\n        {\n            \"value\": \"IM\",\n            \"text\": \"ISLE OF MAN\"\n        },\n        {\n            \"value\": \"IN\",\n            \"text\": \"INDIA\"\n        },\n        {\n            \"value\": \"IO\",\n            \"text\": \"BRITISH INDIAN OCEAN TERRITORY\"\n        },\n        {\n            \"value\": \"IQ\",\n            \"text\": \"IRAQ\"\n        },\n        {\n            \"value\": \"IR\",\n            \"text\": \"IRAN (ISLAMIC REPUBLIC OF)\"\n        },\n        {\n            \"value\": \"IS\",\n            \"text\": \"ICELAND\"\n        },\n        {\n            \"value\": \"IT\",\n            \"text\": \"ITALY\"\n        },\n        {\n            \"value\": \"JE\",\n            \"text\": \"JERSEY\"\n        },\n        {\n            \"value\": \"JM\",\n            \"text\": \"JAMAICA\"\n        },\n        {\n            \"value\": \"JO\",\n            \"text\": \"JORDAN\"\n        },\n        {\n            \"value\": \"JP\",\n            \"text\": \"JAPAN\"\n        },\n        {\n            \"value\": \"KE\",\n            \"text\": \"KENYA\"\n        },\n        {\n            \"value\": \"KG\",\n            \"text\": \"KYRGYZSTAN\"\n        },\n        {\n            \"value\": \"KH\",\n            \"text\": \"CAMBODIA\"\n        },\n        {\n            \"value\": \"KI\",\n            \"text\": \"KIRIBATI\"\n        },\n        {\n            \"value\": \"KM\",\n            \"text\": \"COMOROS\"\n        },\n        {\n            \"value\": \"KN\",\n            \"text\": \"ST. KITTS\"\n        },\n        {\n            \"value\": \"KP\",\n            \"text\": \"KOREA, D.P.R.O.\"\n        },\n        {\n            \"value\": \"KR\",\n            \"text\": \"SOUTH KOREA\"\n        },\n        {\n            \"value\": \"KV\",\n            \"text\": \"KOSOVO\"\n        },\n        {\n            \"value\": \"KW\",\n            \"text\": \"KUWAIT\"\n        },\n        {\n            \"value\": \"KY\",\n            \"text\": \"CAYMAN ISLANDS\"\n        },\n        {\n            \"value\": \"KZ\",\n            \"text\": \"KAZAKHSTAN\"\n        },\n        {\n            \"value\": \"LA\",\n            \"text\": \"LAO PEOPLE'S DEMOCRATIC REPUBLIC\"\n        },\n        {\n            \"value\": \"LB\",\n            \"text\": \"LEBANON\"\n        },\n        {\n            \"value\": \"LC\",\n            \"text\": \"ST. LUCIA\"\n        },\n        {\n            \"value\": \"LI\",\n            \"text\": \"LIECHTENSTEIN\"\n        },\n        {\n            \"value\": \"LK\",\n            \"text\": \"SRI LANKA\"\n        },\n        {\n            \"value\": \"LR\",\n            \"text\": \"LIBERIA\"\n        },\n        {\n            \"value\": \"LS\",\n            \"text\": \"LESOTHO\"\n        },\n        {\n            \"value\": \"LT\",\n            \"text\": \"LITHUANIA\"\n        },\n        {\n            \"value\": \"LU\",\n            \"text\": \"LUXEMBOURG\"\n        },\n        {\n            \"value\": \"LV\",\n            \"text\": \"LATVIA\"\n        },\n        {\n            \"value\": \"LY\",\n            \"text\": \"LIBYAN ARAB JAMAHIRIYA\"\n        },\n        {\n            \"value\": \"MA\",\n            \"text\": \"MOROCCO\"\n        },\n        {\n            \"value\": \"MC\",\n            \"text\": \"MONACO\"\n        },\n        {\n            \"value\": \"MD\",\n            \"text\": \"MOLDOVA, REPUBLIC OF\"\n        },\n        {\n            \"value\": \"ME\",\n            \"text\": \"MONTENEGRO, REPUBLIC OF\"\n        },\n        {\n            \"value\": \"MF\",\n            \"text\": \"SAINT MARTIN\"\n        },\n        {\n            \"value\": \"MG\",\n            \"text\": \"MADAGASCAR\"\n        },\n        {\n            \"value\": \"MH\",\n            \"text\": \"MARSHALL ISLANDS\"\n        },\n        {\n            \"value\": \"MK\",\n            \"text\": \"MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF\"\n        },\n        {\n            \"value\": \"ML\",\n            \"text\": \"MALI\"\n        },\n        {\n            \"value\": \"MM\",\n            \"text\": \"MYANMAR (BURMA) \"\n        },\n        {\n            \"value\": \"MN\",\n            \"text\": \"MONGOLIA\"\n        },\n        {\n            \"value\": \"MO\",\n            \"text\": \"MACAO\"\n        },\n        {\n            \"value\": \"MP\",\n            \"text\": \"NORTHERN MARIANA ISLANDS\"\n        },\n        {\n            \"value\": \"MQ\",\n            \"text\": \"MARTINIQUE\"\n        },\n        {\n            \"value\": \"MR\",\n            \"text\": \"MAURITANIA\"\n        },\n        {\n            \"value\": \"MS\",\n            \"text\": \"MONTSERRAT\"\n        },\n        {\n            \"value\": \"MT\",\n            \"text\": \"MALTA\"\n        },\n        {\n            \"value\": \"MU\",\n            \"text\": \"MAURITIUS\"\n        },\n        {\n            \"value\": \"MV\",\n            \"text\": \"MALDIVES\"\n        },\n        {\n            \"value\": \"MW\",\n            \"text\": \"MALAWI\"\n        },\n        {\n            \"value\": \"MX\",\n            \"text\": \"MEXICO\"\n        },\n        {\n            \"value\": \"MY\",\n            \"text\": \"MALAYSIA\"\n        },\n        {\n            \"value\": \"MZ\",\n            \"text\": \"MOZAMBIQUE\"\n        },\n        {\n            \"value\": \"NA\",\n            \"text\": \"NAMIBIA\"\n        },\n        {\n            \"value\": \"NC\",\n            \"text\": \"NEW CALEDONIA\"\n        },\n        {\n            \"value\": \"NE\",\n            \"text\": \"NIGER\"\n        },\n        {\n            \"value\": \"NF\",\n            \"text\": \"NORFOLK ISLAND\"\n        },\n        {\n            \"value\": \"NG\",\n            \"text\": \"NIGERIA\"\n        },\n        {\n            \"value\": \"NI\",\n            \"text\": \"NICARAGUA\"\n        },\n        {\n            \"value\": \"NL\",\n            \"text\": \"NETHERLANDS\"\n        },\n        {\n            \"value\": \"NO\",\n            \"text\": \"NORWAY\"\n        },\n        {\n            \"value\": \"NP\",\n            \"text\": \"NEPAL\"\n        },\n        {\n            \"value\": \"NR\",\n            \"text\": \"NAURU, REPUBLIC OF\"\n        },\n        {\n            \"value\": \"NU\",\n            \"text\": \"NIUE\"\n        },\n        {\n            \"value\": \"NZ\",\n            \"text\": \"NEW ZEALAND\"\n        },\n        {\n            \"value\": \"OM\",\n            \"text\": \"OMAN\"\n        },\n        {\n            \"value\": \"OO\",\n            \"text\": \"OO\"\n        },\n        {\n            \"value\": \"PA\",\n            \"text\": \"PANAMA\"\n        },\n        {\n            \"value\": \"PE\",\n            \"text\": \"PERU\"\n        },\n        {\n            \"value\": \"PF\",\n            \"text\": \"TAHITI\"\n        },\n        {\n            \"value\": \"PG\",\n            \"text\": \"PAPUA NEW GUINEA\"\n        },\n        {\n            \"value\": \"PH\",\n            \"text\": \"PHILIPPINES\"\n        },\n        {\n            \"value\": \"PK\",\n            \"text\": \"PAKISTAN\"\n        },\n        {\n            \"value\": \"PL\",\n            \"text\": \"POLAND\"\n        },\n        {\n            \"value\": \"PM\",\n            \"text\": \"SAINT PIERRE AND MIQUELON\"\n        },\n        {\n            \"value\": \"PN\",\n            \"text\": \"PITCAIRN\"\n        },\n        {\n            \"value\": \"PR\",\n            \"text\": \"PUERTO RICO\"\n        },\n        {\n            \"value\": \"PS\",\n            \"text\": \"PALESTINE\"\n        },\n        {\n            \"value\": \"PT\",\n            \"text\": \"PORTUGAL\"\n        },\n        {\n            \"value\": \"PW\",\n            \"text\": \"PALAU\"\n        },\n        {\n            \"value\": \"PY\",\n            \"text\": \"PARAGUAY\"\n        },\n        {\n            \"value\": \"QA\",\n            \"text\": \"QATAR\"\n        },\n        {\n            \"value\": \"RE\",\n            \"text\": \"REUNION\"\n        },\n        {\n            \"value\": \"RO\",\n            \"text\": \"ROMANIA\"\n        },\n        {\n            \"value\": \"RS\",\n            \"text\": \"SERBIA\"\n        },\n        {\n            \"value\": \"RU\",\n            \"text\": \"RUSSIAN FEDERATION\"\n        },\n        {\n            \"value\": \"RW\",\n            \"text\": \"RWANDA\"\n        },\n        {\n            \"value\": \"SA\",\n            \"text\": \"SAUDI ARABIA\"\n        },\n        {\n            \"value\": \"SB\",\n            \"text\": \"SOLOMON ISLANDS\"\n        },\n        {\n            \"value\": \"SC\",\n            \"text\": \"SEYCHELLES\"\n        },\n        {\n            \"value\": \"SD\",\n            \"text\": \"SUDAN\"\n        },\n        {\n            \"value\": \"SE\",\n            \"text\": \"SWEDEN\"\n        },\n        {\n            \"value\": \"SG\",\n            \"text\": \"SINGAPORE\"\n        },\n        {\n            \"value\": \"SH\",\n            \"text\": \"ST. HELENA\"\n        },\n        {\n            \"value\": \"SI\",\n            \"text\": \"SLOVENIA\"\n        },\n        {\n            \"value\": \"SJ\",\n            \"text\": \"SVALBARD AND JAN MAYEN\"\n        },\n        {\n            \"value\": \"SK\",\n            \"text\": \"SLOVAKIA\"\n        },\n        {\n            \"value\": \"SL\",\n            \"text\": \"SIERRA LEONE\"\n        },\n        {\n            \"value\": \"SM\",\n            \"text\": \"SAN MARINO\"\n        },\n        {\n            \"value\": \"SN\",\n            \"text\": \"SENEGAL\"\n        },\n        {\n            \"value\": \"SO\",\n            \"text\": \"SOMALIA\"\n        },\n        {\n            \"value\": \"SR\",\n            \"text\": \"SURINAME\"\n        },\n        {\n            \"value\": \"SS\",\n            \"text\": \"SOUTH SUDAN\"\n        },\n        {\n            \"value\": \"ST\",\n            \"text\": \"SAO TOME AND PRINCIPE\"\n        },\n        {\n            \"value\": \"SV\",\n            \"text\": \"EL SALVADOR\"\n        },\n        {\n            \"value\": \"SX\",\n            \"text\": \"SINT MAARTEN (DUTCH PART)\"\n        },\n        {\n            \"value\": \"SY\",\n            \"text\": \"SYRIAN ARAB REPUBLIC\"\n        },\n        {\n            \"value\": \"SZ\",\n            \"text\": \"SWAZILAND\"\n        },\n        {\n            \"value\": \"TC\",\n            \"text\": \"TURKS AND CAICOS ISLANDS\"\n        },\n        {\n            \"value\": \"TD\",\n            \"text\": \"CHAD\"\n        },\n        {\n            \"value\": \"TF\",\n            \"text\": \"FRENCH SOUTHERN TERRITORIES\"\n        },\n        {\n            \"value\": \"TG\",\n            \"text\": \"TOGO\"\n        },\n        {\n            \"value\": \"TH\",\n            \"text\": \"THAILAND\"\n        },\n        {\n            \"value\": \"TJ\",\n            \"text\": \"TAJIKISTAN\"\n        },\n        {\n            \"value\": \"TK\",\n            \"text\": \"TOKELAU\"\n        },\n        {\n            \"value\": \"TL\",\n            \"text\": \"EAST TIMOR\"\n        },\n        {\n            \"value\": \"TM\",\n            \"text\": \"TURKMENISTAN\"\n        },\n        {\n            \"value\": \"TN\",\n            \"text\": \"TUNISIA\"\n        },\n        {\n            \"value\": \"TO\",\n            \"text\": \"TONGA\"\n        },\n        {\n            \"value\": \"TP\",\n            \"text\": \"EAST TIMOR\"\n        },\n        {\n            \"value\": \"TR\",\n            \"text\": \"TURKEY\"\n        },\n        {\n            \"value\": \"TT\",\n            \"text\": \"TRINIDAD AND TOBAGO\"\n        },\n        {\n            \"value\": \"TV\",\n            \"text\": \"TUVALU\"\n        },\n        {\n            \"value\": \"TW\",\n            \"text\": \"TAIWAN, REPUBLIC OF CHINA\"\n        },\n        {\n            \"value\": \"TZ\",\n            \"text\": \"TANZANIA, UNITED REPUBLIC OF\"\n        },\n        {\n            \"value\": \"UA\",\n            \"text\": \"UKRAINE\"\n        },\n        {\n            \"value\": \"UG\",\n            \"text\": \"UGANDA\"\n        },\n        {\n            \"value\": \"UM\",\n            \"text\": \"U.S. MINOR ISLANDS\"\n        },\n        {\n            \"value\": \"US\",\n            \"text\": \"USA\"\n        },\n        {\n            \"value\": \"UY\",\n            \"text\": \"URUGUAY\"\n        },\n        {\n            \"value\": \"UZ\",\n            \"text\": \"UZBEKISTAN\"\n        },\n        {\n            \"value\": \"VA\",\n            \"text\": \"VATICAN CITY STATE (HOLY SEE)\"\n        },\n        {\n            \"value\": \"VC\",\n            \"text\": \"SAINT VINCENT AND THE GRENADINES\"\n        },\n        {\n            \"value\": \"VE\",\n            \"text\": \"VENEZUELA\"\n        },\n        {\n            \"value\": \"VG\",\n            \"text\": \"VIRGIN ISLANDS (BRITISH)\"\n        },\n        {\n            \"value\": \"VI\",\n            \"text\": \"VIRGIN ISLANDS (U.S.)\"\n        },\n        {\n            \"value\": \"VN\",\n            \"text\": \"VIETNAM\"\n        },\n        {\n            \"value\": \"VU\",\n            \"text\": \"VANUATU\"\n        },\n        {\n            \"value\": \"WF\",\n            \"text\": \"WALLIS AND FUTUNA ISLANDS\"\n        },\n        {\n            \"value\": \"WS\",\n            \"text\": \"SAMOA\"\n        },\n        {\n            \"value\": \"YE\",\n            \"text\": \"YEMEN\"\n        },\n        {\n            \"value\": \"YT\",\n            \"text\": \"MAYOTTE\"\n        },\n        {\n            \"value\": \"YU\",\n            \"text\": \"YUGOSLAVIA (SERBIA AND MONTENEGRO)\"\n        },\n        {\n            \"value\": \"ZA\",\n            \"text\": \"SOUTH AFRICA\"\n        },\n        {\n            \"value\": \"ZM\",\n            \"text\": \"ZAMBIA\"\n        },\n        {\n            \"value\": \"ZW\",\n            \"text\": \"ZIMBABWE\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"channel\":'web',\n\t'username':'admin@hotmail.com',\n\t'pwd':'MM123456'\n}"
+				},
+				"url": {
+					"raw": "{{base}}api/account/login",
+					"host": [
+						"{{base}}api"
+					],
+					"path": [
+						"account",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"channel\":'web',\n\t'username':'admin@hotmail.com',\n\t'pwd':'MM123456'\n}"
+						},
+						"url": {
+							"raw": "{{base}}account/login",
+							"host": [
+								"{{base}}account"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-AspNetMvc-Version",
+							"value": "5.2"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcREFUQVxDT0RFXEdpdEh1YlxGcmVpZ2h0IFJhdGUgUG9ydGFsIEJhY2stRW5kXGZyZWlnaHRcRnJlaWdodFxhY2NvdW50XGxvZ2lu?="
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 29 Jul 2021 08:58:11 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "187"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"code\": 0,\n        \"message\": \"SUCCESS\"\n    },\n    \"data\": {\n        \"Role\": \"PROFILE\",\n        \"UserName\": \"admin@hotmail.com\",\n        \"TokenKey\": \"/3Gf9evewUVABix0vHSl+JV1VXfquBElefQgLZwxH/CASYkluWoASo2wnWIjF9leyYcorHOtBlA=\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Log Out",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"channel\":'web',\n\t'username':'admin@hotmail.com',\n\t'pwd':'MM123456'\n}"
+				},
+				"url": {
+					"raw": "{{base}}api/account/login",
+					"host": [
+						"{{base}}api"
+					],
+					"path": [
+						"account",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Log Out",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "token_key",
+								"value": "/3Gf9evewUVABix0vHSl+JV1VXfquBElRmmlUFKMWxfvv+xQxna9hvlxQVB2eTIsEZLDUfpFOQI=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"channel\":'web',\n\t'username':'admin@hotmail.com',\n\t'pwd':'MM123456'\n}"
+						},
+						"url": {
+							"raw": "{{base}}account/logout",
+							"host": [
+								"{{base}}account"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-AspNetMvc-Version",
+							"value": "5.2"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "X-SourceFiles",
+							"value": "=?UTF-8?B?RDpcREFUQVxDT0RFXEdpdEh1YlxGcmVpZ2h0IFJhdGUgUG9ydGFsIEJhY2stRW5kXGZyZWlnaHRcRnJlaWdodFxhY2NvdW50XGxvZ291dA==?="
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 29 Jul 2021 09:01:59 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"code\": 0,\n        \"message\": \"SUCCESS\"\n    },\n    \"data\": \"Logout\"\n}"
+				}
+			]
+		}
+	]
+}
