@@ -42,6 +42,8 @@ namespace Freught1
                defaults: new { controller = "UploadRate", action = "Index", id = UrlParameter.Optional },
            namespaces: new[] { "Freught1.Controllers" }
            );
+            //API          
+           
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MM_Freight_Rate_API_Backend.Controllers
+namespace Freught1.Controllers
 {
-    public class UtilityController : BaseController
+    public class CarrierController : BaseController
     {
         
     }

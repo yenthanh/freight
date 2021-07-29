@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MM_Freight_Rate_API_Backend
+namespace Freught1
 {
     public class JsonErrorObject
     {

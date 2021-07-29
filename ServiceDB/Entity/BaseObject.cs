@@ -30,9 +30,9 @@ namespace ServiceDB.Entity
         public string family { get; set; }
         public string type { get; set; }
     }
-    //public class OwnerStatus : BaseEntity
-    //{    
-    //    public string STATUS { get; set; }
-    //    public string OWNER_ID { get; set; }
-    //}
+    public class DropDownItem 
+    {
+        public string value { get; set; }
+        public string text { get; set; }
+    }
 }

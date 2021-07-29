@@ -1,4 +1,5 @@
 ﻿using Core;
+using MM_Freight_Rate_API_Backend;
 using MM_Freight_Rate_API_Backend.Models;
 using Newtonsoft.Json;
 using ServiceDB.Service;
@@ -8,11 +9,12 @@ using System.Data;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-
+//using System.Web.Http;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using THTCore;
 
-namespace MM_Freight_Rate_API_Backend.Controllers
+namespace Freught1.Controllers
 {    
     public class AccountController : BaseController
     {        
@@ -21,26 +23,31 @@ namespace MM_Freight_Rate_API_Backend.Controllers
         {
            sv = new UserService();
         }
-          
-        public JsonObject Logout()
+   
+        [HttpGet]
+       
+        public JsonResult Logout()
         {
+            JsonObject result = new JsonObject();
             LoggedModel logger = Hepler.GetLogged;
             
             if (logger != null)
             {
                 sv.Logout(logger.UserName);
-                return new JsonObject(0, "SUCCESS", "Logout");
+                result=new JsonObject(0, "SUCCESS", "Logout");
             }
             else
             {
-                return new JsonObject(1, "FALSE", "Cannot logout");
+                result = new JsonObject(1, "FALSE", "Cannot logout");
             }
-
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         //Username and pass will store in body html
-        //If user is logoned, db will store token and time for logon - 1 day
-       
+        //If user is logoned, db will store token and time for logon - 1 day      
+
+        [HttpPost]       
+        [CustomExceptionFilter]
         //Username and pass will store in body html
         //If user is logoned, db will store token and time for logon - 1 day
         //Error code:      
@@ -49,25 +56,28 @@ namespace MM_Freight_Rate_API_Backend.Controllers
         //4 - USER_NOT_IN_ROLE
         //5 - API_NOT_ACCESS
         //6 - API_EMAIL_OR_PASS_INVALID -> Maybe the password doesnt have encryted        
-        public JsonObject Login(LoginerModel login)
+        public JsonResult Login(LoginerModel login)
         {
+            JsonObject result = new JsonObject();
             if (login.username.ToLower().IndexOf("@mentormedia.com") <= 0)
-                return LoginByEmail(login);
+                result= LoginByEmail(login);
             else
             {
                 
                 bool isLogin = Verify365Email(login.username, login.pwd).Result;
                 if (!isLogin)
                 {
-                    return new JsonObject(6, "API_EMAIL_OR_PASS_INVALID", "");
+                    result = new JsonObject(6, "API_EMAIL_OR_PASS_INVALID", "");
+                    //return new JsonObject(6, "API_EMAIL_OR_PASS_INVALID", "");
+                    //return Json(new JsonObject(6, "API_EMAIL_OR_PASS_INVALID", ""),JsonRequestBehavior.AllowGet);
                 }
                 else
                 {                    
-                    return UpdateLogger(login, "OFFICE365");
+                    result= UpdateLogger(login, "OFFICE365");
                 }
 
-
             }
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
         //[HttpGet]
         //[Route("api/account/get_module")]
@@ -97,7 +107,9 @@ namespace MM_Freight_Rate_API_Backend.Controllers
         //    int owner = sv.CheckAccess(username, module);
         //    return new JsonObject(0, "SUCCESS", owner);
         //}
-       
+        [HttpPost]
+        [Route("account/login_2FA")]
+        [CustomExceptionFilter]
         //Username and pass will store in body html
         //If user is logoned, db will store token and time for logon - 1 day
         //Error code:      
@@ -106,23 +118,28 @@ namespace MM_Freight_Rate_API_Backend.Controllers
         //4 - USER_NOT_IN_ROLE
         //5 - API_NOT_ACCESS
         //6 - API_EMAIL_OR_PASS_INVALID -> Maybe the password doesnt have encryted
-        public JsonObject Login_2FA(LoginerModel login)
+        public JsonResult Login_2FA(LoginerModel login)
         {
+            JsonObject result = new JsonObject();
             if (string.IsNullOrEmpty(login.username))
             {
-                return new JsonObject(999, "REQUEST_INVALID", "The given parameters are not valid.");
+                result = new JsonObject(999, "REQUEST_INVALID", "The given parameters are not valid.");
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
             //bool isLogin = Verify365Email(login.username, login.pwd).Result;
             string realEmail = Get365Email(login.username);
             if (string.IsNullOrEmpty(realEmail))
             {
-                return new JsonObject(6, "API_EMAIL_OR_PASS_INVALID", "Your email invalid");
+                 result = new JsonObject(6, "API_EMAIL_OR_PASS_INVALID", "Your email invalid");
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 login.pwd = null;
                 login.username = realEmail;
-                return LoginByEmail(login,"OFFICE365");
+                result=LoginByEmail(login,"OFFICE365");
+
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
         private string Get365Email(string username)

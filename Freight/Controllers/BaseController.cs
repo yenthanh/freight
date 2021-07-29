@@ -1,8 +1,12 @@
 ﻿
+using MM_Freight_Rate_API_Backend;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
-namespace MM_Freight_Rate_API_Backend.Controllers
+namespace Freught1.Controllers
 {
    
     public class BaseController : Controller
@@ -16,6 +20,22 @@ namespace MM_Freight_Rate_API_Backend.Controllers
         public BaseController(string name)
         {
             this.Name = name;
+        }
+        public string DataTableToJSON(DataTable table)
+        {
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in table.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in table.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+            return jsSerializer.Serialize(parentRow);
         }
         public string ReturnError(Exception ex)
         {

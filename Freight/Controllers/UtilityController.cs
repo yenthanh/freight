@@ -1,52 +1,64 @@
-﻿using ServiceDB.Service;
+﻿using MM_Freight_Rate_API_Backend;
+using ServiceDB.Service;
 using System;
+using System.Web.Mvc;
 
-namespace MM_Freight_Rate_API_Backend.Controllers
+namespace Freught1.Controllers
 {
-    public class CarrierController : BaseController
+    public class UtilityController : BaseController
     {
-       
-        public JsonObject GetListCarriers()
+        public UtilityController() : base("Utility")
+        {
+           
+        }
+        [HttpGet]
+        [Route("utility/list_carrier")]       
+        [CustomExceptionFilter]
+        public JsonResult GetListCarriers()
         {
             try
             {
                 UtilityService sv = new UtilityService();                
-                var result = sv.GetListCarriers();
-                return new JsonObject(0, "SUCCESS", new { Items = result});
+                var result =  sv.GetListCarriers();
+                return Json(new JsonObject(0, "SUCCESS", result),JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return new JsonObject(ReturnError(ex));
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
             }
 
         }
-        
-        public JsonObject GetListPackageType()
+        [HttpGet]
+        [Route("utility/list_package_type")]        
+        [CustomExceptionFilter]
+        public JsonResult GetListPackageType()
         {
             try
             {
                 UtilityService sv = new UtilityService();
                 var result = sv.GetListPackageType();
-                return new JsonObject(0, "SUCCESS", new { Items = result });
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return new JsonObject(ReturnError(ex));
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
             }
 
         }
-       
-        public JsonObject GetListCountry()
+        [HttpGet]
+        [Route("utility/list_country")]
+        [CustomExceptionFilter]
+        public JsonResult GetListCountry()
         {
             try
             {
                 UtilityService sv = new UtilityService();
                 var result = sv.GetListCountry();
-                return new JsonObject(0, "SUCCESS", new { Items = result });
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return new JsonObject(ReturnError(ex));
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
             }
 
         }
