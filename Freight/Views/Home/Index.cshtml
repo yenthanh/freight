@@ -8,7 +8,7 @@
             <img src="https://ebiz5-staging.mentormedia.com/RFID-WIREFRAME/_nuxt/img/logo.9b9a022.png" id="icon" alt="User Icon" />
         </div>
         <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
-        <form>
+        <form id="app">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email </label>
                 <input type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" style="margin-left:35px;max-width:380px">
@@ -23,8 +23,11 @@
                     <label class="form-check-label" for="exampleCheck1">Check me out</label>*@
             </div>
             <button id="submitButton" type="button" class="btn btn-primary" style="width: 17%; margin-top: 15px;">
-            @*@Html.ActionLink("Submit", "Login", "Account", null, new { @class = "submit" })*@
+            LOG IN
+           @* @Html.ActionLink("Submit", "Login", "Account", null, new { @class = "submit" })*@
             </button>
+            @*<v-btn color="primary"
+                   elevation="2"></v-btn>*@
         </form>
         @*<form>
                 <div class="form-group">
@@ -47,34 +50,55 @@
 
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
 <script>
-    $("#submitButton").click(function () {
-        var login = {
-            username: $("#exampleInputEmail1").val(),
-            pwd: $("#exampleInputPassword1").val()
-        }
-        console.log("---> data", login);
-        var CTLSX = JSON.stringify(login)
-        $.ajax({
-            url: "/Account/Login",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            data: CTLSX,
-            success: function (data) {
-                response($.map(data, function (item) {
-                    return {
-                        label: item.ten_vt + " (" + (item.ma_vt) + ")", value: item.ma_vt.trim() + ": " + item.ten_vt
-                    };
-                }));
-            },
-            error: function (xhr, status, error) {
-                alert("Error");
+    $(document).ready(function () {
+        $("#submitButton").click(function () {
+            var login = {
+                channel: "web",
+                username: $("#exampleInputEmail1").val(),
+                pwd: $("#exampleInputPassword1").val()
             }
-        });
-        window.location.href = "/About";
+            console.log("---> data", login);
+            var CTLSX = JSON.stringify(login)
+            $.ajax({
+                url: "/account/login",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: CTLSX,
+                success: function (data) {
+                    window.location.href = "/Calculator/Index";
+                },
+                error: function (xhr, status, error) {
+                    alert("Error");
+                }
+            });
+           
+        })
+        
     })
 </script>
+<script>
+    new Vue({
+        el: '#app',
+        data: () => ({
+        }),
+        methods: {
+        }
+    })
+    Vue.use(Vuetify, {
+        theme: {
+            primary: '#C0D8D8',
+            secondary: '#D8F0F0',
+            accent: '#303030',
+            error: '#F72A38',
+            warning: '#F5E582',
+            info: '#F0F0F0',
+            success: '#789078'
+        }
+    })</script>
 @*<h2>@ViewBag.Title.</h2>
     <h3>@ViewBag.Message</h3>
 
