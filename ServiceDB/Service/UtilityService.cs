@@ -66,7 +66,7 @@ namespace ServiceDB.Service
             sqlParameters.Add(new SqlParameter() { ParameterName = "@SERVICE_ID", Value = serviceType, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@PACKAGE_ID", Value = packageType, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@WEIGHT", Value = weight, DbType = System.Data.DbType.Double });            
-            DataTable table = dbObject.ExecDataTableByStoreProcedure("SP_WEB_GET_IMPORT_SHEET_NAME", sqlParameters.ToArray());
+            DataTable table = dbObject.ExecDataTableByStoreProcedure("SP_WEB_GET_SHEET_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<MS_EXCEL_RATE>(table).ToList();
         }
 

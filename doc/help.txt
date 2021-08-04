@@ -1,0 +1,23 @@
+Idea to get data:
+1. In db, the MS_CONFIGURATION table will store the excel's name of each carrier
+2. In db, the MS_EXCEL_CARRIER_ZONE_MATRIX table will store the sheet name which store the zone and matrix of each carrier
+3. In db, the MS_EXCEL_RATE table will store the sheet name in the execel file that containce range of weight
+We have some epecial case:
+a. About zone
+DHL : It has difference zone for import, export,3rd party zone. 
+FexEx: Has only one zone and a matrix
+b. About the range
+DHL: All sheet has min/max value of weight
+FexEx: with envelope type, dont have range min-max
+
+
+Standard Excel
+FedEx Ratecard 01 Jan 21 upload.xlsx / 
+Maxtrix Zone: need to be follow the format
+3rd Pty Zone:First column header change to: Country/Territory; change U.S.A to USA
+
+The country name is not correct
+
+
+
+

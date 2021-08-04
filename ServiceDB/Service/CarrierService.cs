@@ -15,10 +15,10 @@ namespace ServiceDB.Service
 {
     public class CarrierService : BaseService
     {
-        public List<Carrier> GetAllCarrier()
+        public List<MS_CARRIER> GetAllCarrier()
         {            
             DataTable table = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_CARRIER_GET_LIST]", null);           
-            return CollectionHelper.ConvertTo<Carrier>(table).ToList();
+            return CollectionHelper.ConvertTo<MS_CARRIER>(table).ToList();
         }
         
     }
