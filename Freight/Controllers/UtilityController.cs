@@ -62,5 +62,22 @@ namespace Freught1.Controllers
             }
 
         }
+        [HttpGet]
+        [Route("utility/list_service")]
+        [CustomExceptionFilter]
+        public JsonResult GetListServices()
+        {
+            try
+            {
+                UtilityService sv = new UtilityService();
+                var result = sv.GetListServiceType();
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+
+        }
     }
 }

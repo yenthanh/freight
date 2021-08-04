@@ -21,5 +21,14 @@ namespace MM_Freight_Rate_API_Backend.Models
         public string Role { get; set; }
         public string Channel { get; set; }
     }  
+    public class CheckPriceObject
+    {
+        public string From { get; set; }
+        public string To { get; set; }
+        public string ServiceType { get; set; }
+        public string PackageType { get; set; }
+        public string Region { get; set; }
+        public float Weight { get; set; }
+    }
 
 }
