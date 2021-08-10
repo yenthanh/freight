@@ -22,8 +22,9 @@ namespace Freught1.Controllers
         {
             try
             {
-                string serviceType = string.IsNullOrEmpty (model.ServiceType) ? "" : model.ServiceType;
-                var result= CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
+                string serviceType = string.IsNullOrEmpty(model.ServiceType) ? "" : model.ServiceType;
+                string region = string.IsNullOrEmpty(model.Region) ? "" : model.Region;
+                var result= CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, serviceType , model.PackageType, model.Weight, region);
                 string logMsg = CarrierManager.Instance.Log;
                 //label6.Text = CarrierManager.Instance.Log;                
                 return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);

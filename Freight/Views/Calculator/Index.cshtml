@@ -403,7 +403,7 @@
             success: function (data) {
                 var s = '<option value="-1">Please Select a Country</option>';
                 for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                    s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
                 }
                 $("#sourceSelect").html(s);
                 $("#destinationSelect").html(s);
@@ -419,7 +419,7 @@
             success: function (data) {
                 var s = '<option value="-1">Please Select a Carrier</option>';
                 for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                    s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
                 }
                 $("#carrierSelect").html(s);
             }
@@ -437,6 +437,30 @@
                     s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
                 }
                 $("#packagingSelect").html(s);
+            }
+        });
+    });
+    $("#searchButton").click(function () {
+        var model = {
+            From: $("#sourceSelect").val(),
+            To: $("#destinationSelect").val(),
+            ServiceType: "",
+            PackageType: $("#packagingSelect").val(),
+            Region: "",
+            Weight: $("#weightSelect").val(),
+        }
+        var data = JSON.stringify(model);
+        $.ajax({
+            url: "/Calculator/GetPrice",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            data: data,
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
             }
         });
     });
