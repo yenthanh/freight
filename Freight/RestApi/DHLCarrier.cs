@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ExcelProcess.RestApi
 {
     public class DHLCarrier : BaseCarrier
-    {        
+    {
         #region Export
         /// <summary>
         /// Get Zone->Get sheet name -> Get Price
@@ -25,26 +25,28 @@ namespace ExcelProcess.RestApi
             string zoneName = GetZoneNumber(countryTo, deliverType, region);
             if (string.IsNullOrEmpty(zoneName))
             {
-                this.MSG = ReturnMessage.NoFoundZone(this.Code, deliverType,countryTo, (deliverType=="EXPORT"? this.EXPORT_SHEET_ZONE:this.IMPORT_SHEET_ZONE));
+                this.MSG = ReturnMessage.NoFoundZone(this.Code, deliverType, countryTo, (deliverType == "EXPORT" ? this.EXPORT_SHEET_ZONE : this.IMPORT_SHEET_ZONE));
                 return null;
             }
             //step 2: Get sheet name base on Delivetype
             UtilityService utility = new UtilityService();
             var lstSheets = utility.GetSheetName(this.Code, deliverType, serviceType, packageType, weight);
             //step n: Get price base on weight from the sheet name
-            if(lstSheets==null || lstSheets.Count==0)                
-                {
-                    this.MSG =ReturnMessage.NoFoundSheet(this.Code, deliverType,packageType, serviceType);
-                    return null;
-                }
+            if (lstSheets == null || lstSheets.Count == 0)
+            {
+                this.MSG = ReturnMessage.NoFoundSheet(this.Code, deliverType, packageType, serviceType);
+                return null;
+            }
             //surcharge
             float surcharge = this.GetSurcharge();
             foreach (var s in lstSheets)
             {
+                //maybe the carrier is difference with current one
+                if (s.CARRIER_ID != this.Code) continue;
                 DataTable tbl = this.DataSet.Tables[s.SHEET_NAME];
                 if (tbl == null || tbl.Rows.Count == 0)
                 {
-                    this.MSG = ReturnMessage.EmptySheet(this.Code, deliverType,s.SHEET_NAME);
+                    this.MSG = ReturnMessage.EmptySheet(this.Code, deliverType, s.SHEET_NAME);
                     continue;
                 }
                 PriceResultItem resultItem = new PriceResultItem()
@@ -57,14 +59,14 @@ namespace ExcelProcess.RestApi
                     ZONE = zoneName,
                     SHEET_NAME = s.SHEET_NAME,
                     SURCHARGE = surcharge
-                };  
+                };
                 string range = "";
                 //default zone name
                 resultItem.COST = GetPriceFromDataTable(tbl, zoneName, weight, out range);
                 if (string.IsNullOrEmpty(resultItem.COST))
                 {
                     this.MSG = resultItem.NOTE = ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
-                        //"Cannot get price for zone " + zoneName+"in this weight "+weight.ToString();
+                    //"Cannot get price for zone " + zoneName+"in this weight "+weight.ToString();
                 }
                 if (!string.IsNullOrEmpty(range)) resultItem.WEIGHT_RANGE = range;
 
@@ -80,23 +82,23 @@ namespace ExcelProcess.RestApi
         /// <param name="deliverType"></param>
         /// <param name="region"></param>
         /// <returns></returns>
-        private string GetZoneNumber(string countryTo, string deliverType,string region)
+        private string GetZoneNumber(string countryTo, string deliverType, string region)
         {
             DataTable tbl = null;
             switch (deliverType)
             {
-                case "IMPORT": tbl = this.DataSet.Tables[this.IMPORT_SHEET_ZONE];break;
+                case "IMPORT": tbl = this.DataSet.Tables[this.IMPORT_SHEET_ZONE]; break;
                 case "EXPORT": tbl = this.DataSet.Tables[this.EXPORT_SHEET_ZONE]; break;
                 default: tbl = this.DataSet.Tables[this.RD_SHEET_ZONE]; break;
             }
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Countries & Territories";
-            DataRow[] rows = tbl.Select("["+ this.COUNTRY_HEADER_COL + "] LIKE '"+countryTo+"%'");
+            DataRow[] rows = tbl.Select("[" + this.COUNTRY_HEADER_COL + "] LIKE '" + countryTo + "%'");
             if (rows.Length == 0) return "";
             if (rows.Length == 1) return rows[0][1].ToString();
-            foreach(DataRow r in rows)
+            foreach (DataRow r in rows)
             {
-                if(r[0].ToString().IndexOf(region)>=0) return r[1].ToString();
+                if (r[0].ToString().IndexOf(region) >= 0) return r[1].ToString();
             }
             return "";
         }
@@ -124,7 +126,7 @@ namespace ExcelProcess.RestApi
 
             //Step 2: get value in zone name by column name            
             if (row[zoneName] != null && !string.IsNullOrEmpty(row[zoneName].ToString()))
-                return row[zoneName].ToString();            
+                return row[zoneName].ToString();
             return "";
         }
         #endregion
@@ -157,7 +159,7 @@ namespace ExcelProcess.RestApi
             }
             //Step 2: Get zone character from ZoneFrom and ZoneTo
             string zoneName = GetZoneFromMatrix(zoneNameFrom, zoneNameTo);
-            if (string.IsNullOrEmpty(zoneName) || zoneName=="-")
+            if (string.IsNullOrEmpty(zoneName) || zoneName == "-")
             {
                 //this.MSG = "Cannot get zone of " + countryFrom + " and "+ countryTo+" in " + this.MATRIX_SHEET;
                 this.MSG = ReturnMessage.NoFoundZoneInMatrix(this.Code, deliverType, zoneNameFrom, zoneNameTo, this.RD_SHEET_ZONE);
@@ -177,6 +179,8 @@ namespace ExcelProcess.RestApi
             float surcharge = this.GetSurcharge();
             foreach (var s in lstSheets)
             {
+                //maybe the carrier is difference with current one
+                if (s.CARRIER_ID != this.Code) continue;
                 DataTable tbl = this.DataSet.Tables[s.SHEET_NAME];
                 if (tbl == null || tbl.Rows.Count == 0)
                 {
@@ -196,7 +200,7 @@ namespace ExcelProcess.RestApi
                     SHEET_NAME = s.SHEET_NAME,
                     SURCHARGE = surcharge
                 };
-                
+
 
                 string range = "";
                 //default zone name
@@ -204,7 +208,7 @@ namespace ExcelProcess.RestApi
                 if (string.IsNullOrEmpty(resultItem.COST))
                 {
                     //this.MSG = resultItem.NOTE = "Cannot get price for zone " + zoneName + "in this weight " + weight.ToString();
-                    this.MSG += ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME,  weight);
+                    this.MSG += ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
                     continue;
                 }
                 if (!string.IsNullOrEmpty(range)) resultItem.WEIGHT_RANGE = range;

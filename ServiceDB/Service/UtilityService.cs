@@ -22,7 +22,7 @@ namespace ServiceDB.Service
         public List<DropDownItem> GetListPackageType()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();            
-            DataTable table = dbObject.ExecDataTable("SELECT PACKAGE_ID as value, PACKAGE_NAME as text from SV_REF_PACKAGE_TYPE", sqlParameters.ToArray());            
+            DataTable table = dbObject.ExecDataTable("SELECT PACKAGE_ID as value, PACKAGE_NAME as text from SV_REF_PACKAGE_TYPE  ORDER BY PACKAGE_NAME", sqlParameters.ToArray());            
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
 
@@ -33,7 +33,7 @@ namespace ServiceDB.Service
         public List<DropDownItem> GetListCarriers()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            DataTable table = dbObject.ExecDataTable("SELECT CARRIER_ID as value, CARRIER_NAME as text from SV_MS_CARRIER", sqlParameters.ToArray());
+            DataTable table = dbObject.ExecDataTable("SELECT CARRIER_ID as value, CARRIER_NAME as text from SV_MS_CARRIER ORDER BY CARRIER_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
 
@@ -45,13 +45,13 @@ namespace ServiceDB.Service
         public List<DropDownItem> GetListCountry()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            DataTable table = dbObject.ExecDataTable("SELECT COUNTRY_CODE as value, COUNTRY_NAME as text from SV_REF_COUNTRY", sqlParameters.ToArray());
+            DataTable table = dbObject.ExecDataTable("SELECT COUNTRY_CODE as value, COUNTRY_NAME as text from SV_REF_COUNTRY  ORDER BY COUNTRY_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
         public List<DropDownItem> GetListServiceType()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            DataTable table = dbObject.ExecDataTable("SELECT SERVICE_ID as value, SERVICE_NAME as text from SV_MS_SERVICE_TYPE", sqlParameters.ToArray());
+            DataTable table = dbObject.ExecDataTable("SELECT SERVICE_ID as value, SERVICE_NAME as text from SV_MS_SERVICE_TYPE  ORDER BY SERVICE_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
         /// <summary>
