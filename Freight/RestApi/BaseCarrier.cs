@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceDB.Service;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -69,29 +70,44 @@ namespace ExcelProcess.RestApi
         public string MATRIX_SHEET { get; set; }
         public string COUNTRY_HEADER_COL { get; set; }
         public string MSG { get; set; }
-        
+
+        protected DataRow[] TryToGetZoneByAnotherName(DataTable tbl, string cOUNTRY_HEADER_COL, string countryTo)
+        {
+            UtilityService utility = new UtilityService();
+            string anotherName =utility.GetAnotherCountryName(countryTo);
+            if (string.IsNullOrEmpty(anotherName)) return null;
+            string[] listName = anotherName.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach(string name in listName)
+            {
+                DataRow[] rows = tbl.Select("[" + cOUNTRY_HEADER_COL + "] LIKE '" + name.Trim() + "%'");
+                if (rows.Length > 0) return rows;
+            }
+            return null;
+        }
         public float GetSurcharge()
         {
             try
             {
-                FileInfo f = new FileInfo(EXCEL_FILE);
-                string pathFile = f.Directory.FullName + "FR_Surcharge.xlsx";
-                DataTable table = ExcelManager.GetDataTableFromExcel(pathFile, "");
-                string month = DateTime.Now.Month.ToString();
-                foreach (DataRow r in table.Rows)
-                {
-                    if (r[0] != null && r[0].ToString() == month)
-                    {
-                        foreach (DataColumn column in table.Columns)
-                        {
-                            if (column.ColumnName == this.Code)
-                            {
-                                return float.Parse(r[column.ColumnName].ToString());
-                            }
-                        }
-                    }
-                }
-                return 0;
+                UtilityService utility = new UtilityService();
+                return utility.GetSurchage(this.Code, DateTime.Now.ToString("MMMM"), DateTime.Now.Year);
+                //FileInfo f = new FileInfo(EXCEL_FILE);
+                //string pathFile = f.Directory.FullName + "FR_Surcharge.xlsx";
+                //DataTable table = ExcelManager.GetDataTableFromExcel(pathFile, "");
+                //string month = DateTime.Now.Month.ToString();
+                //foreach (DataRow r in table.Rows)
+                //{
+                //    if (r[0] != null && r[0].ToString() == month)
+                //    {
+                //        foreach (DataColumn column in table.Columns)
+                //        {
+                //            if (column.ColumnName == this.Code)
+                //            {
+                //                return float.Parse(r[column.ColumnName].ToString());
+                //            }
+                //        }
+                //    }
+                //}
+                
             }
             catch
             {

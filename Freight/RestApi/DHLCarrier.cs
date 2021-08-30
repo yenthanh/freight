@@ -94,7 +94,11 @@ namespace ExcelProcess.RestApi
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Countries & Territories";
             DataRow[] rows = tbl.Select("[" + this.COUNTRY_HEADER_COL + "] LIKE '" + countryTo + "%'");
-            if (rows.Length == 0) return "";
+            if (rows.Length == 0)
+            {
+                rows = this.TryToGetZoneByAnotherName(tbl, this.COUNTRY_HEADER_COL, countryTo);
+                if (rows == null) return "";
+            }
             if (rows.Length == 1) return rows[0][1].ToString();
             foreach (DataRow r in rows)
             {
@@ -111,6 +115,8 @@ namespace ExcelProcess.RestApi
             {
                 foreach (DataRow r in tbl.Rows)
                 {
+                    if (string.IsNullOrEmpty(r["Min"].ToString()) || string.IsNullOrEmpty(r["Max"].ToString()))
+                        break;
                     float min = float.Parse(r["Min"].ToString());
                     float max = float.Parse(r["Max"].ToString());
                     if (weight <= max && weight >= min)

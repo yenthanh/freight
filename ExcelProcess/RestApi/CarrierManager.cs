@@ -39,7 +39,7 @@ namespace ExcelProcess.RestApi
                 c.Init();
             }
         }
-        public List<PriceResultItem> GetCalculatorPrice(string from, string to, string serviceType, string packageType, float weight,string region)
+        public List<PriceResultItem> GetCalculatorPrice(string from, string to, string serviceType, string packageType, float weight=0,string region="")
         {
             List<PriceResultItem> listResult = new List<PriceResultItem>();
             string msg = "";
