@@ -8,51 +8,28 @@
             <img src="https://ebiz5-staging.mentormedia.com/RFID-WIREFRAME/_nuxt/img/logo.9b9a022.png" id="icon" alt="User Icon" />
         </div>
         <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
-        <form>
+        <form action="/Home/Index" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email </label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" style="margin-left:35px;max-width:380px">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" style="margin-left:35px;max-width:380px">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                @*<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">*@
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" style="margin-left: 35px; max-width: 380px">
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" style="margin-left: 35px; max-width: 380px">
             </div>
             <div class="form-group form-check">
-                @*<input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>*@
+                <button class="btn btn-primary btn-lg" type="submit">Sign In</button>
+                <button class="btn btn-primary btn-lg" onclick="GoToSyncUp()" type="button">Sign Up</button>
             </div>
-            @*<button id="submitButton" type="submit" class="btn btn-primary" style="width: 17%; margin-top: 15px;">*@
-            @Html.ActionLink("Submit", "Index", "Calculator", null, new { @class = "submit" })
-            @*</button>*@
-        </form>
-        @*<form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" style="">
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <input type="submit" class="fadeIn fourth" value="Log In">
-            </form>*@
         <div id="formFooter" style="margin-top:20px">
-
         </div>
-
     </div>
 </div>
 <script>
     $("#submitButton").click(function () {
         window.location.href = "/About";
     })
+    function GoToSyncUp() {
+        location.href = '@Url.Action("SignUp","Home")';
+    }
 </script>
-@*<h2>@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
-
-    <p>Use this area to provide additional information.</p>*@

@@ -32,6 +32,12 @@
                     Surcharge Rate
                 </li>
                 </a>
+                <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    User
+                </li>
+                </a>
             </ul>
         </div>
     </div>
@@ -51,7 +57,7 @@
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
-                        <label class="col-md-12">Year</label>
+                        <label class="col-md-12 row">Year</label>
                         <select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect" style=" height: 48px;">
                             <option value="0">Please Select Year</option>
                             <option value="2017">2017</option>
@@ -67,12 +73,17 @@
                         </select>
                     </div>
                 </div>
-                <div class="row" style="margin-left:0px">
+                <div class="row mb-3" style="margin-left:0px">
                     <input type="file" name="file" id="file" />
                     <br />
                     @*<input type="submit" value="Upload Image" id="upload" />*@
                     <div style="display:block">
                         <button type="button" class="btn btn-primary btn-lg" id="upload">Submit</button>
+                    </div>
+                </div>
+                <div class="row ml-0">
+                    <div>
+                        <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate DHL and FedEx</a>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Sign Up";
+}
+<link href="~/Style/login.css" rel="stylesheet" />
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="fadeIn first" style="margin-top:30px">
+            <img src="https://ebiz5-staging.mentormedia.com/RFID-WIREFRAME/_nuxt/img/logo.9b9a022.png" id="icon" alt="User Icon" />
+        </div>
+        <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email </label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" style="margin-left:35px;max-width:380px">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" style="margin-left: 35px; max-width: 380px">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputConfirm1">Confirm Password</label>
+                <input type="password" class="form-control" id="exampleInputConfirm1" placeholder="Confirm Password" style="margin-left: 35px; max-width: 380px">
+            </div>
+            <div class="form-group form-check">
+                <button class="btn btn-primary btn-lg" id="signup" type="button">Sign Up</button>
+            </div>
+        </form>
+        <div id="formFooter" style="margin-top:20px">
+
+        </div>
+    </div>
+</div>
+<script>
+    $("#submitButton").click(function () {
+        window.location.href = "/About";
+    })
+    $("#signup").click(function () {
+        alert("Your account waiting active. Administrator will approve it then you received an email.");
+    })
+</script>

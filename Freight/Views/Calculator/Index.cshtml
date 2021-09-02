@@ -1,6 +1,6 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Caculator";
+    var role = ViewBag.role;
 }
 <style>
     .input-group-lg > .form-control:not(textarea), .input-group-lg > .custom-select {
@@ -53,15 +53,21 @@
 
                 </a>
                 <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" class="collapsed">
+                <li data-toggle="collapse" data-target="#new" id="uprate" class="collapsed">
                     <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
                     Upload rate
                 </li>
                 </a>
                 <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" class="collapsed">
+                <li data-toggle="collapse" data-target="#new" id="surrate" class="collapsed">
                     <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
                     Surcharge Rate
+                </li>
+                </a>
+                 <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    User
                 </li>
                 </a>
             </ul>
@@ -73,6 +79,7 @@
         <section>
             <h3>Freight Rates Portal</h3>
             <div>
+                <input type="text" value="@role" id="role" hidden />
                 <div class="row">
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;">
                         <label>Origin<i style="color:red" title="Required">*</i></label>
@@ -189,16 +196,21 @@
                             <th scope="col">Service Type</th>
                             <th scope="col">Packaging Type</th>
                             <th scope="col">Weight Range(kg)</th>
-                            <th scope="col">Surcharge</th>
+                            <th scope="col">Current FSC</th>
                             <th scope="col">Working days(day)</th>
-                            <th scope="col">Cost (SGD)</th>
+                            <th scope="col">Rate Before Surcharge (SGD)</th>
+                            <th scope="col">Rate After Surcharge (SGD)</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
             </div>
-           
+            <p>
+                <b>Disclaimers:</b><br />
+                ·       Customs duties, taxes, service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.<br />
+                ·       Freight rates effective for the current calendar year
+            </p>
             <button onclick="location.href='/shipping-cost1.xlsx'" class="btn btn-primary btn-lg" role="button" type="button">Export</button>
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
@@ -314,17 +326,17 @@
             var serviceValue = $("#servicesSelect").val()
             var packagingSelect = $("#packagingSelect").val()
             var weightSelect = $("#weightSelect").val()
-            var priorityEnvelope = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 1000 }
-            var priorityPak = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "11.2%", "Workingdays": "2-4", "Cost": 2000 }
-            var priorityPackage = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 3000 }
-            var economyEnvelope = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 4000 }
-            var economyPak = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 5000 }
-            var economyPackage = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 6000 }
-            var priorityFreightNIL = { "Carrier": "Fedex", "Service": "Priority Freight", "Packaging": "NIL", "Weight": "68-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 7000 }
-            var economyFreightEnvelope = { "Carrier": "Fedex", "Service": "Economy Freight", "Packaging": "NIL", "Weight": "68.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 8000 }
+            var priorityEnvelope = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000,"AfterSC":1100 }
+            var priorityPak = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "11.2%", "Workingdays": "2-4", "BeforeSC": 2000,"AfterSC": 2200 }
+            var priorityPackage = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
+            var economyEnvelope = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 4000, "AfterSC": 4400 }
+            var economyPak = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 5000, "AfterSC": 5500 }
+            var economyPackage = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 6000, "AfterSC": 6600 }
+            var priorityFreightNIL = { "Carrier": "Fedex", "Service": "Priority Freight", "Packaging": "NIL", "Weight": "68-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 7000, "AfterSC": 7700 }
+            var economyFreightEnvelope = { "Carrier": "Fedex", "Service": "Economy Freight", "Packaging": "NIL", "Weight": "68.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 8000, "AfterSC": 8800 }
 
-            var expressEnvelope = { "Carrier": "DHL", "Service": "Express", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 1000 }
-            var expressPackage = { "Carrier": "DHL", "Service": "Express", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 3000 }
+            var expressEnvelope = { "Carrier": "DHL", "Service": "Express", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000, "AfterSC": 1100}
+            var expressPackage = { "Carrier": "DHL", "Service": "Express", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
 
 
             var data = [];
@@ -420,8 +432,10 @@
                     }
                     else {
                         for (i = 0; i < data.length; i++) {
-                            var cost = data[i].Cost * parseFloat(weightSelect);
+                            var cost = data[i].BeforeSC * parseFloat(weightSelect);
                             var string = Number(cost).toLocaleString();
+                            var cost1 = Number(cost) + (Number(cost) * 0.2);
+                            var string1 = Number(cost1).toLocaleString();
                             console.log(string)
                             $('<tr id="tr-id">')
                                 .append($('<td>').append(data[i].Carrier))
@@ -431,6 +445,7 @@
                                 .append($('<td>').append(data[i].Surcharge))
                                 .append($('<td>').append(data[i].Workingdays))
                                 .append($('<td>').append(string))
+                                .append($('<td>').append(string1))
                                 //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
                                 .appendTo('table tbody');
                         }
@@ -439,8 +454,11 @@
                 //var month = [2, 3, 6, 5, 4];
                 else {
                     for (i = 0; i < data.length; i++) {
-                        var cost = data[i].Cost * parseFloat(weightSelect);
+                        debugger
+                        var cost = data[i].BeforeSC * parseFloat(weightSelect);
                         var string = Number(cost).toLocaleString();
+                        var cost1 = Number(cost) + (Number(cost) * 0.2);
+                        var string1 = Number(cost1).toLocaleString();
                         console.log(string)
                         $('<tr id="tr-id">')
                             .append($('<td>').append(data[i].Carrier))
@@ -450,11 +468,25 @@
                             .append($('<td>').append(data[i].Surcharge))
                             .append($('<td>').append(data[i].Workingdays))
                             .append($('<td>').append(string))
+                            .append($('<td>').append(string1))
                             //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
                             .appendTo('table tbody');
                     }
                 }
             }
         })
+    })
+    $(document).ready(function () {
+        var role = $("#role").val();
+        if (role == "sa") {
+            $("#uprate").css("display", "block");
+            $("#surrate").css("display", "block");
+            $("#asrole").css("display", "block");
+        }
+        else {
+            $("#uprate").css("display", "none");
+            $("#surrate").css("display", "none");
+            $("#asrole").css("display", "none");
+        }
     })
 </script>

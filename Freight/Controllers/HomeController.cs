@@ -12,6 +12,24 @@ namespace Freught1.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult Index(string email,string password)
+        {
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+            {
+                ViewBag.email = email;
+            }
+            return RedirectToAction("Index", "Calculator", new { email = email });
+        }
+        public ActionResult SignUp()
+        {
+            return View();
+        }
+        
+        public ActionResult AssignRole()
+        {
+            return View();
+        }
 
         public ActionResult About()
         {
