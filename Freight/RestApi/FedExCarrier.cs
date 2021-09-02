@@ -42,11 +42,12 @@ namespace ExcelProcess.RestApi
             float surcharge = this.GetSurcharge();
             //because use for both EXPORT and IMPORT
             DataTable tblZone = this.DataSet.Tables[deliverType == "EXPORT" ? this.EXPORT_SHEET_ZONE : this.IMPORT_SHEET_ZONE];
+            string anotherCountryName = utility.GetAnotherCountryName(countryTo);
             foreach (var s in lstSheets)
             {
                 //maybe the carrier is difference with current one
                 if (s.CARRIER_ID != this.Code) continue;
-                string zoneName = GetZoneNumberByServiceType(tblZone, countryTo, deliverType, s.SERVICE_ID, region);
+                string zoneName = GetZoneNumberByServiceType(tblZone, countryTo, anotherCountryName, deliverType, s.SERVICE_ID, region);
 
                 if (string.IsNullOrEmpty(zoneName))
                 {
@@ -93,15 +94,15 @@ namespace ExcelProcess.RestApi
         /// <param name="serviceType"></param>
         /// <param name="region"></param>
         /// <returns></returns>
-        private string GetZoneNumberByServiceType(DataTable tbl, string countryTo, string deliverType, string serviceType, string region)
+        private string GetZoneNumberByServiceType(DataTable tbl, string countryTo,string anotherName, string deliverType, string serviceType, string region)
         {
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Country/Territory";
             DataRow[] rows = tbl.Select("[" + this.COUNTRY_HEADER_COL + "] LIKE '" + countryTo + "%'");            
             //Ko tim thay country nao
-            if (rows.Length == 0)
+            if (rows.Length == 0 || rows.Length>1)
             {
-                rows = this.TryToGetZoneByAnotherName(tbl, this.COUNTRY_HEADER_COL, countryTo);
+                rows = this.TryToGetZoneByAnotherName(tbl, this.COUNTRY_HEADER_COL, anotherName);
                 if (rows == null) return "";
             }
             if (rows.Length == 1)
@@ -149,7 +150,7 @@ namespace ExcelProcess.RestApi
 
         #endregion
         #region Third party
-        private string GetZoneNumber(string countryTo, string deliverType, string region)
+        private string GetZoneNumber(string countryTo,string anotherCountryName, string deliverType, string region)
         {
             DataTable tbl = null;
             switch (deliverType)
@@ -161,9 +162,9 @@ namespace ExcelProcess.RestApi
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Country/Territory";
             DataRow[] rows = tbl.Select("[" + this.COUNTRY_HEADER_COL + "] LIKE '" + countryTo + "%'");
-            if (rows.Length == 0)
+            if (rows.Length == 0 || rows.Length>1)
             {
-                rows = this.TryToGetZoneByAnotherName(tbl, this.COUNTRY_HEADER_COL, countryTo);
+                rows = this.TryToGetZoneByAnotherName(tbl, this.COUNTRY_HEADER_COL, anotherCountryName);
                 if (rows == null) return "";
             }
             if (rows.Length == 1) return rows[0][1].ToString();
@@ -175,10 +176,14 @@ namespace ExcelProcess.RestApi
         }
         public override List<PriceResultItem> GetThirdPartyPrice(string countryFrom, string countryTo, string deliverType, string serviceType, string packageType, float weight, string region)
         {
+            UtilityService utility = new UtilityService();
             List<PriceResultItem> result = new List<PriceResultItem>();
             //Step 1: get Zone
-            string zoneNameFrom = GetZoneNumber(countryFrom, deliverType, region);
-            string zoneNameTo = GetZoneNumber(countryTo, deliverType, region);
+            string anotherCountryNameFrom = utility.GetAnotherCountryName(countryFrom);
+            string zoneNameFrom = GetZoneNumber(countryFrom, anotherCountryNameFrom, deliverType, region);
+
+            string anotherCountryNameTo = utility.GetAnotherCountryName(countryTo);
+            string zoneNameTo = GetZoneNumber(countryTo, anotherCountryNameTo, deliverType, region);
 
             if (string.IsNullOrEmpty(zoneNameFrom))
             {
@@ -201,7 +206,7 @@ namespace ExcelProcess.RestApi
                 return null;
             }
             //step 2: Get sheet name base on Delivetype
-            UtilityService utility = new UtilityService();
+            
             var lstSheets = utility.GetSheetName(this.Code, deliverType, serviceType, packageType, weight);
             //step n: Get price base on weight from the sheet name
             if (lstSheets == null || lstSheets.Count == 0)

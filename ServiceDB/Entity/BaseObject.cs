@@ -35,4 +35,8 @@ namespace ServiceDB.Entity
         public string value { get; set; }
         public string text { get; set; }
     }
+    public class DropDownItemExtend: DropDownItem
+    {
+        public string extend { get; set; }
+    }
 }

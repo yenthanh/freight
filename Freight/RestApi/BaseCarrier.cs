@@ -71,13 +71,24 @@ namespace ExcelProcess.RestApi
         public string COUNTRY_HEADER_COL { get; set; }
         public string MSG { get; set; }
 
-        protected DataRow[] TryToGetZoneByAnotherName(DataTable tbl, string cOUNTRY_HEADER_COL, string countryTo)
-        {
-            UtilityService utility = new UtilityService();
-            string anotherName =utility.GetAnotherCountryName(countryTo);
+        //protected DataRow[] TryToGetZoneByAnotherName(DataTable tbl, string cOUNTRY_HEADER_COL, string countryTo)
+        //{
+        //    UtilityService utility = new UtilityService();
+        //    string anotherName =utility.GetAnotherCountryName(countryTo);
+        //    if (string.IsNullOrEmpty(anotherName)) return null;
+        //    string[] listName = anotherName.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+        //    foreach(string name in listName)
+        //    {
+        //        DataRow[] rows = tbl.Select("[" + cOUNTRY_HEADER_COL + "] LIKE '" + name.Trim() + "%'");
+        //        if (rows.Length > 0) return rows;
+        //    }
+        //    return null;
+        //}
+        protected DataRow[] TryToGetZoneByAnotherName(DataTable tbl, string cOUNTRY_HEADER_COL, string anotherName)
+        {            
             if (string.IsNullOrEmpty(anotherName)) return null;
             string[] listName = anotherName.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach(string name in listName)
+            foreach (string name in listName)
             {
                 DataRow[] rows = tbl.Select("[" + cOUNTRY_HEADER_COL + "] LIKE '" + name.Trim() + "%'");
                 if (rows.Length > 0) return rows;

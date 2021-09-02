@@ -30,5 +30,11 @@ namespace MM_Freight_Rate_API_Backend.Models
         public string Region { get; set; }
         public float Weight { get; set; }
     }
+    public class CheckAdvePriceByWeight: CheckPriceObject
+    {
+        public float Length { get; set; }
+        public float Height { get; set; }
+        public float Width { get; set; }
+    }
 
 }

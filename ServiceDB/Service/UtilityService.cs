@@ -22,10 +22,19 @@ namespace ServiceDB.Service
         public List<DropDownItem> GetListPackageType()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            DataTable table = dbObject.ExecDataTable("SELECT PACKAGE_ID as value, PACKAGE_NAME as text from SV_REF_PACKAGE_TYPE  ORDER BY PACKAGE_NAME", sqlParameters.ToArray());
+            DataTable table = dbObject.ExecDataTable("SELECT PACKAGE_ID as value, PACKAGE_NAME as text from SV_REF_PACKAGE_TYPE ORDER BY PACKAGE_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
-
+        /// <summary>
+        /// Get all list package type
+        /// </summary>
+        /// <returns>An array of object which has text and value field</returns>
+        public List<DropDownItem> GetListPackageTypeByCarrier(string carrier)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            DataTable table = dbObject.ExecDataTable("SELECT PACKAGE_ID as value, PACKAGE_NAME as text from SV_REF_PACKAGE_TYPE WHERE PACKAGE_ID IN (SELECT PACKAGE_ID FROM SV_MS_CARRIER_PACKAGE_TYPE WHERE CARRIER_ID='"+carrier+"')  ORDER BY PACKAGE_NAME", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
+        }
         /// <summary>
         /// Get list carriers
         /// </summary>
@@ -48,11 +57,11 @@ namespace ServiceDB.Service
             DataTable table = dbObject.ExecDataTable("SELECT COUNTRY_CODE as value, COUNTRY_NAME as text from SV_REF_COUNTRY  ORDER BY COUNTRY_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
-        public List<DropDownItem> GetListServiceType()
+        public List<DropDownItemExtend> GetListServiceType()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            DataTable table = dbObject.ExecDataTable("SELECT SERVICE_ID as value, SERVICE_NAME as text from SV_MS_SERVICE_TYPE  ORDER BY SERVICE_NAME", sqlParameters.ToArray());
-            return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
+            DataTable table = dbObject.ExecDataTable("SELECT SERVICE_ID as value, SERVICE_NAME as text, CARRIER_ID as extend from SV_MS_SERVICE_TYPE  ORDER BY SERVICE_NAME", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<DropDownItemExtend>(table).ToList();
         }
         /// <summary>
         /// Get all list package type
@@ -88,6 +97,15 @@ namespace ServiceDB.Service
             if (result == null)
                 return "";
             return result.ToString();
+        }
+
+        public MS_CONFIGURATION GetByCode(string OWNER_ID, string CODE)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@OWNER_ID", Value = OWNER_ID, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@CODE", Value = CODE, DbType = System.Data.DbType.String });
+            DataTable tbl = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_CONFIGURATION_GET_OBJ]", sqlParameters.ToArray());
+            return CollectionHelper.CreateItem<MS_CONFIGURATION>(tbl);
         }
 
     }
