@@ -83,7 +83,7 @@
                 <div class="row">
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;">
                         <label>Origin<i style="color:red" title="Required">*</i></label>
-                        <select class="form-select form-control-lg mb-5" id="sourceSelect" style=" height: 48px;">
+                        <select class="form-select form-control-lg mb-5" id="sourceSelect">
                             <option selected>Origin</option>
                             <option value="Singapore">Singapore</option>
                             <option value="Argentina">Argentina</option>
@@ -100,7 +100,7 @@
 
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
                         <label>Destination<i style="color:red" title="Required">*</i></label>
-                        <select class="form-select form-control-lg mb-5" id="destinationSelect" style=" height: 48px;">
+                        <select class="form-select form-control-lg mb-5" id="destinationSelect">
                             <option selected>Destination</option>
                             <option value="Singapore">Singapore</option>
                             <option value="Argentina">Argentina</option>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
                         <label>Carrier</label>
-                        <select class="form-select form-control-lg mb-5" id="carrierSelect" style=" height: 48px;">
+                        <select class="form-select form-control-lg mb-5" id="carrierSelect">
                             <option selected value="0">Carrier</option>
                             <option value="1">Fedex</option>
                             <option value="2">DHL</option>
@@ -126,22 +126,21 @@
                 <div class="row">
                     <div class="col-xs-6 col-md-4">
                         <label id="lableService">Service type</label>
-                        <select class="form-select form-control-lg mb-5" id="servicesSelect" style=" height: 48px;">
+                        <select class="form-select form-control-lg mb-5" id="servicesSelect">
                             <option selected>Services Type</option>
                         </select>
                     </div>
 
                     <div class="col-xs-6 col-md-4">
                         <label id="lablePackaging">Packaging type</label>
-                        <select class="form-select form-control-lg mb-5" id="packagingSelect" style=" height: 48px;">
+                        <select class="form-select form-control-lg mb-5" id="packagingSelect">
                             <option selected value="0">Packaging Type</option>
-
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <label for="exampleInputEmail1">Weight</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex;">
-                            <input type="text" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight" style="height: 48px;max-width:395px">
+                            <input type="text" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight" style="max-width:395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">Kg</span>
                             </div>
@@ -153,7 +152,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="lengthGroup">
                         <label for="exampleInputEmail1">Length</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Length" class="form-control" aria-label="Weight" style="height: 48px; max-width: 395px">
+                            <input type="text" id="weightSelect" placeholder="Length" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -163,7 +162,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px" id="widthGroup">
                         <label for="exampleInputEmail1">Width</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Width" class="form-control" aria-label="Weight" style="height: 48px;max-width: 395px">
+                            <input type="text" id="weightSelect" placeholder="Width" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -172,7 +171,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="heightGroup">
                         <label for="exampleInputEmail1">Height</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Height" class="form-control" aria-label="Weight" style="height: 48px; max-width: 395px">
+                            <input type="text" id="weightSelect" placeholder="Height" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -189,6 +188,10 @@
                 <h3>
                     Corporate Rate
                 </h3>
+                <div class="col-md-6 mr-0 row">
+                    <label class="col-md-12 row">Search:</label>
+                    <input type="text" id="myInput" onkeyup="search()" style="max-width: 395px" class="form-control" placeholder="Search for carrier..">
+                </div>
                 <table class="table" id="example">
                     <thead>
                         <tr>
@@ -206,7 +209,7 @@
                     </tbody>
                 </table>
             </div>
-            <p>
+            <p style="margin-top:60px;margin-bottom:60px">
                 <b>Disclaimers:</b><br />
                 ·       Customs duties, taxes, service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.<br />
                 ·       Freight rates effective for the current calendar year
@@ -488,5 +491,26 @@
             $("#surrate").css("display", "none");
             $("#asrole").css("display", "none");
         }
-    })
+    });
+    function search() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("example");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
