@@ -124,6 +124,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CalculatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SurchargeRateController.cs" />
     <Compile Include="Controllers\UploadRateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -275,6 +276,10 @@
     <Content Include="Views\Calculator\Index.cshtml" />
     <Content Include="Views\UploadRate\Index.cshtml" />
     <Content Include="Views\_Header.cshtml" />
+    <Content Include="Views\Home\AssignRole.cshtml" />
+    <Content Include="Views\Home\SignUp.cshtml" />
+    <Content Include="Views\SurchargeRate\Index.cshtml" />
+    <Content Include="shipping-cost1.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
