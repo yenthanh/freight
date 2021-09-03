@@ -157,7 +157,7 @@ namespace ExcelProcess.RestApi
             {
                 case "IMPORT": tbl = this.DataSet.Tables[this.IMPORT_SHEET_ZONE]; break;
                 case "EXPORT": tbl = this.DataSet.Tables[this.EXPORT_SHEET_ZONE]; break;
-                default: tbl = this.DataSet.Tables[this.RD_SHEET_ZONE]; break;
+                default: tbl = this.DataSet.Tables[this.THIRD_PARTY_SHEET_ZONE]; break;
             }
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Country/Territory";
@@ -188,13 +188,13 @@ namespace ExcelProcess.RestApi
             if (string.IsNullOrEmpty(zoneNameFrom))
             {
                 //this.MSG = "Cannot get zone of " + countryFrom + " in " + this.RD_SHEET_ZONE;
-                this.MSG = ReturnMessage.NoFoundZone(this.Code, deliverType, countryFrom, this.RD_SHEET_ZONE);
+                this.MSG = ReturnMessage.NoFoundZone(this.Code, deliverType, countryFrom, this.THIRD_PARTY_SHEET_ZONE);
                 return null;
             }
             if (string.IsNullOrEmpty(zoneNameTo))
             {
                 //this.MSG = "Cannot get zone of " + countryTo + " in " + this.RD_SHEET_ZONE;
-                this.MSG = ReturnMessage.NoFoundZone(this.Code, deliverType, countryFrom, this.RD_SHEET_ZONE);
+                this.MSG = ReturnMessage.NoFoundZone(this.Code, deliverType, countryFrom, this.THIRD_PARTY_SHEET_ZONE);
                 return null;
             }
             //Step 2: Get zone character from ZoneFrom and ZoneTo
@@ -202,7 +202,7 @@ namespace ExcelProcess.RestApi
             if (string.IsNullOrEmpty(zoneName) || zoneName == "-")
             {
                 //this.MSG = "Cannot get zone of " + countryFrom + " and " + countryTo + " in " + this.MATRIX_SHEET;
-                this.MSG = ReturnMessage.NoFoundZoneInMatrix(this.Code, deliverType, zoneNameFrom, zoneNameTo, this.RD_SHEET_ZONE);
+                this.MSG = ReturnMessage.NoFoundZoneInMatrix(this.Code, deliverType, zoneNameFrom, zoneNameTo, this.THIRD_PARTY_SHEET_ZONE);
                 return null;
             }
             //step 2: Get sheet name base on Delivetype

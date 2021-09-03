@@ -65,7 +65,7 @@ namespace ExcelProcess.RestApi
         protected DataSet DataSet { get; set; }
         public string IMPORT_SHEET_ZONE { get; set; }
         public string EXPORT_SHEET_ZONE { get; set; }
-        public string RD_SHEET_ZONE { get; set; }
+        public string THIRD_PARTY_SHEET_ZONE { get; set; }
         public string EXCEL_FILE { get; set; }
         public string MATRIX_SHEET { get; set; }
         public string COUNTRY_HEADER_COL { get; set; }

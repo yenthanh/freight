@@ -26,11 +26,11 @@ namespace ExcelProcess.RestApi
                     Carrier.Add(new DHLCarrier() { Code = c.CARRIER_ID, Name = c.CARRIER_NAME,
                         EXCEL_FILE = RootPath + c.EXCEL_FILE, EXPORT_SHEET_ZONE=c.EXPORT_SHEET_ZONE,
                         IMPORT_SHEET_ZONE =c.IMPORT_SHEET_ZONE,COUNTRY_HEADER_COL=c.COUNTRY_HEADER_COL,
-                        RD_SHEET_ZONE =c.RD_SHEET_ZONE, MATRIX_SHEET = c.MATRIX_SHEET });
+                        THIRD_PARTY_SHEET_ZONE =c.THIRD_PARTY_SHEET_ZONE, MATRIX_SHEET = c.MATRIX_SHEET });
                 else
                     Carrier.Add(new FedExCarrier() { Code = c.CARRIER_ID, Name = c.CARRIER_NAME,
                         EXCEL_FILE = RootPath+ c.EXCEL_FILE, EXPORT_SHEET_ZONE = c.EXPORT_SHEET_ZONE,
-                        IMPORT_SHEET_ZONE = c.IMPORT_SHEET_ZONE, RD_SHEET_ZONE = c.RD_SHEET_ZONE,
+                        IMPORT_SHEET_ZONE = c.IMPORT_SHEET_ZONE, THIRD_PARTY_SHEET_ZONE = c.THIRD_PARTY_SHEET_ZONE,
                         MATRIX_SHEET = c.MATRIX_SHEET,COUNTRY_HEADER_COL = c.COUNTRY_HEADER_COL
                     });
             }
