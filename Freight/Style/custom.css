@@ -1,0 +1,83 @@
+﻿.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+    .separator::before,
+    .separator::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .separator::before {
+        margin-right: 0.25em;
+    }
+
+    .separator::after {
+        margin-left: 0.25em;
+    }
+
+.row {
+    margin: 0
+}
+.w-100 {
+    width: 100% !important;
+}
+
+.v-data-table--fixed-header .v-data-table__wrapper {
+    max-height: calc(100vh - 210px);
+}
+
+.vue-notification {
+    font-size: 15px !important;
+    cursor: pointer;
+    &.error
+
+{
+    background: #e54d42;
+    border-left-color: #b82e24 !important;
+}
+
+}
+
+input[type='text']::placeholder {
+    font-size: 12px;
+}
+
+input[type='number']::placeholder {
+    font-size: 12px;
+}
+
+.back-white {
+    background-color: #fff;
+}
+
+/* scrollbar width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+// fixed top right
+.fixed-top-right {
+    position: fixed !important;
+    top: 0;
+    right: 0;
+}

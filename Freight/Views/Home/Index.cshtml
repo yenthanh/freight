@@ -1,12 +1,56 @@
 ﻿@{
     ViewBag.Title = "Login";
 }
+<v-app>
+    <v-content>
+        <v-container class="fill-height" fluid>
+            <v-row align="center" justify="center">
+                <v-col cols="12" sm="8" md="4">
+                    <v-card class="elevation-12">
+                        <v-card-text>
+                            <v-row justify="center">
+                                <v-img :src="logo" contain max-width="150" max-height="150"></v-img>
+                            </v-row>
+                            <v-divider class="my-8"></v-divider>
+                            <label v-if="notMMEmail===false"
+                                   class="red--text font-weight-bold">For Mentor Media Employee, Please click "LOGIN" directly</label>
+                            <form submit.prevent="submit">
+                                <v-text-field v-if="notMMEmail===true"
+                                              prepend-icon="mdi-account"
+                                              outlined
+                                              v-model="username"
+                                              :error-messages="usernameErrors"
+                                              label="Email"
+                                              placeholder=" "
+                                              input="validateUsername"
+                                              blur="validateUsername"></v-text-field>
+                                <v-text-field v-if="notMMEmail===true"
+                                              id="password"
+                                              label="Password"
+                                              placeholder=" "
+                                              name="password"
+                                              v-model="password"
+                                              prepend-icon="mdi-lock"
+                                              type="password"
+                                              input="validatePasword"
+                                              blur="validatePasword"
+                                              :error-messages="passwordErrors"
+                                              :hide-details="passwordErrors.length === 0"
+                                              outlined></v-text-field>
+                                <v-checkbox v-model="notMMEmail" :label="`I am not Mentor Media staff`" color="primary"></v-checkbox>
+                                <!-- <v-checkbox v-model="mmEmail" :label="`Use Mentor Media email`" color="primary"></v-checkbox> -->
+                                <div class="d-flex justify-center">
+                                    <v-btn color="primary" type="submit" :loading="logging" block>Log in</v-btn>
+                                </div>
+                            </form>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-content>
+</v-app>
 
-<v-container>Hello world</v-container>
-<v-data-table :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              class="elevation-1"></v-data-table>
 @section scripts {
     <script>
         $(document).ready(function () {
@@ -37,7 +81,6 @@
         })
     </script>
     <script>
-
         $(document).ready(function () {
 
             var vueApp = new Vue({
@@ -46,230 +89,147 @@
                 icons: {
                     iconfont: 'mdi', // default - only for display purposes
                 },
-                mounted() {
-                    //  this.getPendingRoute();
-                    //  this.getRouteCategory();
-                },
-                data() {
-                    return {
-                        lat: [],
-                        lng: [],
-                        headers: [
-                            {
-                                text: 'Dessert (100g serving)',
-                                align: 'start',
-                                sortable: false,
-                                value: 'name',
-                            },
-                            { text: 'Calories', value: 'calories' },
-                            { text: 'Fat (g)', value: 'fat' },
-                            { text: 'Carbs (g)', value: 'carbs' },
-                            { text: 'Protein (g)', value: 'protein' },
-                            { text: 'Iron (%)', value: 'iron' },
-                        ],
-                        desserts: [
-                            {
-                                name: 'Frozen Yogurt',
-                                calories: 159,
-                                fat: 6.0,
-                                carbs: 24,
-                                protein: 4.0,
-                                iron: '1%',
-                            },
-                            {
-                                name: 'Ice cream sandwich',
-                                calories: 237,
-                                fat: 9.0,
-                                carbs: 37,
-                                protein: 4.3,
-                                iron: '1%',
-                            },
-                            {
-                                name: 'Eclair',
-                                calories: 262,
-                                fat: 16.0,
-                                carbs: 23,
-                                protein: 6.0,
-                                iron: '7%',
-                            },
-                            {
-                                name: 'Cupcake',
-                                calories: 305,
-                                fat: 3.7,
-                                carbs: 67,
-                                protein: 4.3,
-                                iron: '8%',
-                            },
-                            {
-                                name: 'Gingerbread',
-                                calories: 356,
-                                fat: 16.0,
-                                carbs: 49,
-                                protein: 3.9,
-                                iron: '16%',
-                            },
-                            {
-                                name: 'Jelly bean',
-                                calories: 375,
-                                fat: 0.0,
-                                carbs: 94,
-                                protein: 0.0,
-                                iron: '0%',
-                            },
-                            {
-                                name: 'Lollipop',
-                                calories: 392,
-                                fat: 0.2,
-                                carbs: 98,
-                                protein: 0,
-                                iron: '2%',
-                            },
-                            {
-                                name: 'Honeycomb',
-                                calories: 408,
-                                fat: 3.2,
-                                carbs: 87,
-                                protein: 6.5,
-                                iron: '45%',
-                            },
-                            {
-                                name: 'Donut',
-                                calories: 452,
-                                fat: 25.0,
-                                carbs: 51,
-                                protein: 4.9,
-                                iron: '22%',
-                            },
-                            {
-                                name: 'KitKat',
-                                calories: 518,
-                                fat: 26.0,
-                                carbs: 65,
-                                protein: 7,
-                                iron: '6%',
-                            },
-                        ],
-                        selected_stop: '',
-                        route_data_headers: [{
-                            text: 'STOP NAME',
-                            value: 'name',
-                        },
-                        {
-                            text: 'NEARBY STOPS',
-                            value: 'near_by_stop'
-                        },
-                        {
-                            text: 'ADDRESS',
-                            value: 'address'
-                        },
-                        {
-                            text: 'ACTIONS',
-                            value: 'action',
-                            width: 100
-                        },
-                        ],
+                data: () => ({
+                    logo: "/assets/logo.png",
+                    usernameErrors: [],
+                    passwordErrors: [],
+                    username: "",
+                    password: "",
+                    logging: false,
+                    notMMEmail: false,
+                    mmEmail: false,
+                    urlRedirect: "https://ebiz3-uat.mentormedia.com/UAT/O365Login?Redirect="
+                }),
 
-                        data: [],
-                        row_data: [
-                            {
-                                route_detail: {
-                                    driver: '',
+                methods: {
+                    submit() {
+                        this.usernameErrors = [];
+                        this.passwordErrors = [];
+                        this.logging = true;
+                        let username = this.username;
+                        if (this.notMMEmail === false) {
+                            let url = this.urlRedirect + window.location.href;
+                            window.location.replace(url);
+                            return;
+                        }
+                        this.$LOGIN(username, this.password)
+                            .then(response => {
+                                let loginer = response.data.data;
+
+                                if (response.data.error.code === API_Responses.OK.code) {
+                                    Cookies.set("username", loginer.UserName);
+                                    Cookies.set("token_key", loginer.TokenKey);
+                                    this.logging = false;
+                                    this.$router.push("/");
+                                } else if (
+                                    response.data.error.code === API_Responses.login["2"].code
+                                ) {
+                                    this.usernameErrors = "Email does not exist or invalid";
+                                    this.logging = false;
+                                } else if (
+                                    response.data.error.code === API_Responses.login["3"].code
+                                ) {
+                                    this.passwordErrors = "Password is invalid";
+                                    this.logging = false;
+                                } else if (
+                                    response.data.error.code === API_Responses.login["6"].code
+                                ) {
+                                    this.usernameErrors = "Email or password is invalid";
+                                    this.passwordErrors = "Email or password is invalid";
+                                    this.logging = false;
+                                } else if (
+                                    response.data.error.code === API_Responses.login["4"].code
+                                ) {
+                                    this.logging = false;
+                                    this.$notify({
+                                        group: "login",
+                                        title: "Alert",
+                                        type: "warn",
+                                        text: API_Responses.login["4"].message,
+                                        duration: 10000
+                                    });
+                                } else {
+                                    this.logging = false;
+                                    this.$notify({
+                                        group: "login",
+                                        type: "warn",
+                                        title: "Alert",
+                                        text: response.data.data,
+                                        duration: 10000
+                                    });
                                 }
-                            }
-                        ],
-                        id: '',
-                        paginate: false,
-                        tab: null,
-                        alert: {
-                            type: '',
-                            message: '',
-                            isShowAlert: false
-                        },
-                        isDisable: true,
-                        route_category: [],
-                        deleteResolve: null,
-                        delDialog: false,
-                        freeTravelConfigsData: [],
-                        isShowOrganisation: false,
+                            })
+                            .catch(e => {
+                                this.logging = false;
+                                this.$notify({
+                                    group: "login",
+                                    type: "error",
+                                    title: "Error",
+                                    text: "Cannot connect to the server",
+                                    duration: 10000
+                                });
+                            });
+                    },
+                    loginBy2FA(username) {
+                        this.$LOGIN_2FA(username)
+                            .then(response => {
+                                if (response.data.error.code === API_Responses.OK.code) {
+                                    let loginer = response.data.data;
+                                    Cookies.set("username", loginer.UserName);
+                                    Cookies.set("token_key", loginer.TokenKey);
+                                    this.logging = false;
+                                    this.$router.push("/");
+                                } else {
+                                    this.logging = false;
+                                    let msg = response.data.data;
+                                    this.$notify({
+                                        group: "login",
+                                        title: "Alert",
+                                        type: "warn",
+                                        text: msg, //API_Responses.login['4'].message,
+                                        duration: 10000
+                                    });
+                                }
+                            })
+                            .catch(e => {
+                                this.logging = false;
+                                this.$notify({
+                                    group: "login",
+                                    type: "error",
+                                    title: "Error",
+                                    text: "Cannot connect to the server",
+                                    duration: 10000
+                                });
+                            });
+                    },
+                    validatePasword(value) {
+                        if (typeof value === "object") {
+                            value = value.target.value;
+                        }
+                        let errors = [];
+                        if (value.length === 0) {
+                            errors.push("This field is required");
+                        }
+                        this.passwordErrors = errors;
+                    },
+
+                    validateUsername(value) {
+                        if (typeof value === "object") {
+                            value = value.target.value;
+                        }
+                        let errors = [];
+                        if (value.length === 0) {
+                            errors.push("This field is required");
+                        }
+                        this.usernameErrors = errors;
                     }
                 },
-                created() {
-                    //this.id = configsData;
-                },
-                computed: {
-
-                },
-                methods: {
-                    changeStopName: function (item, nbs_name) {
-                        item.name = nbs_name;
-                    },
-                    showDelConfirm: function (params) {
-                        this.delDialog = true;
-                        this.selected_stop = params;
-
-                    },
-                    getParameterByName: function (name) {
-                        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-                        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                            results = regex.exec(location.search);
-                        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-                    },
-                    saveRouteStop: function (is_redirect) {
-                        try {
-                            const _this = this;
-                            if (_this.route_data.route_detail.name_route === '') {
-                                this.alert = {
-                                    type: 'error',
-                                    message: 'Please enter route name',
-                                    isShowAlert: true
-                                }
-                                return;
-                            }
-                            if (_this.route_data.route_detail.route_category_id === '0') {
-                                this.alert = {
-                                    type: 'error',
-                                    message: 'Please choose route category',
-                                    isShowAlert: true
-                                }
-                                return;
-                            }
-                            let apiUrl = "index.php/routes/save_pending_route";
-                            $.ajax({
-                                type: "POST",
-                                url: base_url + apiUrl,
-                                data: JSON.stringify({
-                                    route_id: _this.id,
-                                    route_name: _this.route_data.route_detail.name_route,
-                                    route_category_id: _this.route_data.route_detail.route_category_id,
-                                    stops: _this.route_data.stops
-                                }),
-                                contentType: 'application/json',
-                                success: function (response) {
-                                    if (is_redirect == 0) {
-                                        _this.alert = {
-                                            type: 'success',
-                                            message: _this.route_data.route_detail.name_route + ' saved successfully',
-                                            isShowAlert: true
-                                        };
-                                    } else {
-                                        window.location.href = "<?php echo base_url() ?>routes/edit_route/id/" + _this.id;
-                                    }
-                                }
-                            });
-                        } catch (e) {
-                            this.alert = {
-                                type: 'error',
-                                message: e.message,
-                                isShowAlert: true
-                            }
-                        }
-                    },
-
-                    closeAlert: function () {
-                        this.alert.isShowAlert = false
-                    },
+                mounted() {
+                    //if (!this.$isServer) {
+                    //    let id = this.$route.query.ID;
+                    //    if (id != undefined) this.loginBy2FA(id);
+                    //}
                 }
-
             })
         })
     </script>
