@@ -1,105 +1,276 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Login";
 }
-<link href="~/Style/login.css" rel="stylesheet" />
-<div class="wrapper fadeInDown">
-    <div id="formContent">
-        <div class="fadeIn first" style="margin-top:30px">
-            <img src="https://ebiz5-staging.mentormedia.com/RFID-WIREFRAME/_nuxt/img/logo.9b9a022.png" id="icon" alt="User Icon" />
-        </div>
-        <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
-        <form id="app">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email </label>
-                <input type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" style="margin-left:35px;max-width:380px">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                @*<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">*@
-                <input type="password" name="pwd" class="form-control" id="exampleInputPassword1" placeholder="Password" style="margin-left: 35px; max-width: 380px">
-            </div>
-            <div class="form-group form-check">
-                @*<input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>*@
-            </div>
-            <button id="submitButton" type="button" class="btn btn-primary" style="width: 17%; margin-top: 15px;">
-            LOG IN
-           @* @Html.ActionLink("Submit", "Login", "Account", null, new { @class = "submit" })*@
-            </button>
-            @*<v-btn color="primary"
-                   elevation="2"></v-btn>*@
-        </form>
-        @*<form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" style="">
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <input type="submit" class="fadeIn fourth" value="Log In">
-            </form>*@
-        <div id="formFooter" style="margin-top:20px">
 
-        </div>
-
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#submitButton").click(function () {
-            var login = {
-                channel: "web",
-                username: $("#exampleInputEmail1").val(),
-                pwd: $("#exampleInputPassword1").val()
-            }
-            console.log("---> data", login);
-            var CTLSX = JSON.stringify(login)
-            $.ajax({
-                url: "/account/login",
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                data: CTLSX,
-                success: function (data) {
-                    window.location.href = "/Calculator/Index";
-                },
-                error: function (xhr, status, error) {
-                    alert("Error");
+<v-container>Hello world</v-container>
+<v-data-table :headers="headers"
+              :items="desserts"
+              :items-per-page="5"
+              class="elevation-1"></v-data-table>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#submitButton").click(function () {
+                var login = {
+                    channel: "web",
+                    username: $("#exampleInputEmail1").val(),
+                    pwd: $("#exampleInputPassword1").val()
                 }
-            });
-           
-        })
-        
-    })
-</script>
-<script>
-    new Vue({
-        el: '#app',
-        data: () => ({
-        }),
-        methods: {
-        }
-    })
-    Vue.use(Vuetify, {
-        theme: {
-            primary: '#C0D8D8',
-            secondary: '#D8F0F0',
-            accent: '#303030',
-            error: '#F72A38',
-            warning: '#F5E582',
-            info: '#F0F0F0',
-            success: '#789078'
-        }
-    })</script>
-@*<h2>@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
+                console.log("---> data", login);
+                var CTLSX = JSON.stringify(login)
+                $.ajax({
+                    url: "/account/login",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: CTLSX,
+                    success: function (data) {
+                        window.location.href = "/Calculator/Index";
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
 
-    <p>Use this area to provide additional information.</p>*@
+            })
+
+        })
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+            var vueApp = new Vue({
+                el: '#app',
+                vuetify: new Vuetify(),
+                icons: {
+                    iconfont: 'mdi', // default - only for display purposes
+                },
+                mounted() {
+                    //  this.getPendingRoute();
+                    //  this.getRouteCategory();
+                },
+                data() {
+                    return {
+                        lat: [],
+                        lng: [],
+                        headers: [
+                            {
+                                text: 'Dessert (100g serving)',
+                                align: 'start',
+                                sortable: false,
+                                value: 'name',
+                            },
+                            { text: 'Calories', value: 'calories' },
+                            { text: 'Fat (g)', value: 'fat' },
+                            { text: 'Carbs (g)', value: 'carbs' },
+                            { text: 'Protein (g)', value: 'protein' },
+                            { text: 'Iron (%)', value: 'iron' },
+                        ],
+                        desserts: [
+                            {
+                                name: 'Frozen Yogurt',
+                                calories: 159,
+                                fat: 6.0,
+                                carbs: 24,
+                                protein: 4.0,
+                                iron: '1%',
+                            },
+                            {
+                                name: 'Ice cream sandwich',
+                                calories: 237,
+                                fat: 9.0,
+                                carbs: 37,
+                                protein: 4.3,
+                                iron: '1%',
+                            },
+                            {
+                                name: 'Eclair',
+                                calories: 262,
+                                fat: 16.0,
+                                carbs: 23,
+                                protein: 6.0,
+                                iron: '7%',
+                            },
+                            {
+                                name: 'Cupcake',
+                                calories: 305,
+                                fat: 3.7,
+                                carbs: 67,
+                                protein: 4.3,
+                                iron: '8%',
+                            },
+                            {
+                                name: 'Gingerbread',
+                                calories: 356,
+                                fat: 16.0,
+                                carbs: 49,
+                                protein: 3.9,
+                                iron: '16%',
+                            },
+                            {
+                                name: 'Jelly bean',
+                                calories: 375,
+                                fat: 0.0,
+                                carbs: 94,
+                                protein: 0.0,
+                                iron: '0%',
+                            },
+                            {
+                                name: 'Lollipop',
+                                calories: 392,
+                                fat: 0.2,
+                                carbs: 98,
+                                protein: 0,
+                                iron: '2%',
+                            },
+                            {
+                                name: 'Honeycomb',
+                                calories: 408,
+                                fat: 3.2,
+                                carbs: 87,
+                                protein: 6.5,
+                                iron: '45%',
+                            },
+                            {
+                                name: 'Donut',
+                                calories: 452,
+                                fat: 25.0,
+                                carbs: 51,
+                                protein: 4.9,
+                                iron: '22%',
+                            },
+                            {
+                                name: 'KitKat',
+                                calories: 518,
+                                fat: 26.0,
+                                carbs: 65,
+                                protein: 7,
+                                iron: '6%',
+                            },
+                        ],
+                        selected_stop: '',
+                        route_data_headers: [{
+                            text: 'STOP NAME',
+                            value: 'name',
+                        },
+                        {
+                            text: 'NEARBY STOPS',
+                            value: 'near_by_stop'
+                        },
+                        {
+                            text: 'ADDRESS',
+                            value: 'address'
+                        },
+                        {
+                            text: 'ACTIONS',
+                            value: 'action',
+                            width: 100
+                        },
+                        ],
+
+                        data: [],
+                        row_data: [
+                            {
+                                route_detail: {
+                                    driver: '',
+                                }
+                            }
+                        ],
+                        id: '',
+                        paginate: false,
+                        tab: null,
+                        alert: {
+                            type: '',
+                            message: '',
+                            isShowAlert: false
+                        },
+                        isDisable: true,
+                        route_category: [],
+                        deleteResolve: null,
+                        delDialog: false,
+                        freeTravelConfigsData: [],
+                        isShowOrganisation: false,
+                    }
+                },
+                created() {
+                    //this.id = configsData;
+                },
+                computed: {
+
+                },
+                methods: {
+                    changeStopName: function (item, nbs_name) {
+                        item.name = nbs_name;
+                    },
+                    showDelConfirm: function (params) {
+                        this.delDialog = true;
+                        this.selected_stop = params;
+
+                    },
+                    getParameterByName: function (name) {
+                        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                            results = regex.exec(location.search);
+                        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+                    },
+                    saveRouteStop: function (is_redirect) {
+                        try {
+                            const _this = this;
+                            if (_this.route_data.route_detail.name_route === '') {
+                                this.alert = {
+                                    type: 'error',
+                                    message: 'Please enter route name',
+                                    isShowAlert: true
+                                }
+                                return;
+                            }
+                            if (_this.route_data.route_detail.route_category_id === '0') {
+                                this.alert = {
+                                    type: 'error',
+                                    message: 'Please choose route category',
+                                    isShowAlert: true
+                                }
+                                return;
+                            }
+                            let apiUrl = "index.php/routes/save_pending_route";
+                            $.ajax({
+                                type: "POST",
+                                url: base_url + apiUrl,
+                                data: JSON.stringify({
+                                    route_id: _this.id,
+                                    route_name: _this.route_data.route_detail.name_route,
+                                    route_category_id: _this.route_data.route_detail.route_category_id,
+                                    stops: _this.route_data.stops
+                                }),
+                                contentType: 'application/json',
+                                success: function (response) {
+                                    if (is_redirect == 0) {
+                                        _this.alert = {
+                                            type: 'success',
+                                            message: _this.route_data.route_detail.name_route + ' saved successfully',
+                                            isShowAlert: true
+                                        };
+                                    } else {
+                                        window.location.href = "<?php echo base_url() ?>routes/edit_route/id/" + _this.id;
+                                    }
+                                }
+                            });
+                        } catch (e) {
+                            this.alert = {
+                                type: 'error',
+                                message: e.message,
+                                isShowAlert: true
+                            }
+                        }
+                    },
+
+                    closeAlert: function () {
+                        this.alert.isShowAlert = false
+                    },
+                }
+
+            })
+        })
+    </script>
+}
