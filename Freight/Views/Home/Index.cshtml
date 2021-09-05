@@ -8,98 +8,57 @@
             <img src="https://ebiz5-staging.mentormedia.com/RFID-WIREFRAME/_nuxt/img/logo.9b9a022.png" id="icon" alt="User Icon" />
         </div>
         <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
-        <form id="app">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email </label>
-                <input type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" style="margin-left:35px;max-width:380px">
+        <form action="/Home/Index" method="post" enctype="multipart/form-data">
+            <div class="form-group row">
+                <label class="col-md-3"><img src="https://img.icons8.com/ios-glyphs/30/000000/user--v1.png" /></label>
+                <input type="email" class="col-md-9" style="margin-left: -30px;" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" style="max-width:380px">
             </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                @*<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">*@
-                <input type="password" name="pwd" class="form-control" id="exampleInputPassword1" placeholder="Password" style="margin-left: 35px; max-width: 380px">
+            <div class="form-group row">
+                <label class="col-md-3"><img src="https://img.icons8.com/ios-glyphs/30/000000/password.png" /></label>
+                <input type="password" class="col-md-9" style="margin-left: -30px;" id="exampleInputPassword1" placeholder="Password" name="password">
             </div>
             <div class="form-group form-check">
-                @*<input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>*@
+                <button class="btn btn-primary btn-lg" id="signin" type="button">Login</button>
+                <button class="btn btn-primary btn-lg" onclick="GoToSigncUp()" type="button">Sign Up</button>
+                <button class="btn btn-primary btn-lg fw" onclick="SSO()" type="button">Login As Mentor Media Staff</button>
             </div>
-            <button id="submitButton" type="button" class="btn btn-primary" style="width: 17%; margin-top: 15px;">
-            LOG IN
-           @* @Html.ActionLink("Submit", "Login", "Account", null, new { @class = "submit" })*@
-            </button>
-            @*<v-btn color="primary"
-                   elevation="2"></v-btn>*@
-        </form>
-        @*<form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" style="">
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <input type="submit" class="fadeIn fourth" value="Log In">
-            </form>*@
-        <div id="formFooter" style="margin-top:20px">
 
-        </div>
-
+            <div id="formFooter" style="margin-top:20px">
+            </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
 <script>
-    $(document).ready(function () {
-        $("#submitButton").click(function () {
-            var login = {
-                channel: "web",
-                username: $("#exampleInputEmail1").val(),
-                pwd: $("#exampleInputPassword1").val()
-            }
-            console.log("---> data", login);
-            var CTLSX = JSON.stringify(login)
-            $.ajax({
-                url: "/account/login",
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json;charset=utf-8",
-                data: CTLSX,
-                success: function (data) {
-                    window.location.href = "/Calculator/Index";
-                },
-                error: function (xhr, status, error) {
-                    alert("Error");
+        $(document).ready(function () {
+            $("#submitButton").click(function () {
+                var login = {
+                    channel: "web",
+                    username: $("#exampleInputEmail1").val(),
+                    pwd: $("#exampleInputPassword1").val()
                 }
-            });
-           
-        })
-        
-    })
-</script>
-<script>
-    new Vue({
-        el: '#app',
-        data: () => ({
-        }),
-        methods: {
-        }
-    })
-    Vue.use(Vuetify, {
-        theme: {
-            primary: '#C0D8D8',
-            secondary: '#D8F0F0',
-            accent: '#303030',
-            error: '#F72A38',
-            warning: '#F5E582',
-            info: '#F0F0F0',
-            success: '#789078'
-        }
-    })</script>
-@*<h2>@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
+                console.log("---> data", login);
+                var CTLSX = JSON.stringify(login)
+                $.ajax({
+                    url: "/account/login",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: CTLSX,
+                    success: function (data) {
+                        window.location.href = "/Calculator/Index";
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
 
-    <p>Use this area to provide additional information.</p>*@
+            });
+
+            function GoToSigncUp() {
+                location.href = '@Url.Action("SignUp","Home")';
+            }
+
+            function SSO() {
+                location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=staff1@gmail.com';
+            }
+        })
+</script>
