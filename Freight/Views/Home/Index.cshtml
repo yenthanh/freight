@@ -20,14 +20,28 @@
             <div class="form-group form-check">
                 <button class="btn btn-primary btn-lg" id="signin" type="button">Login</button>
                 <button class="btn btn-primary btn-lg" onclick="GoToSigncUp()" type="button">Sign Up</button>
-                <button class="btn btn-primary btn-lg fw" onclick="SSO()" type="button">Login As Mentor Media Staff</button>
+                <button class="btn btn-primary btn-lg fw" onclick="SSO();" type="button">Login As Mentor Media Staff</button>
             </div>
 
             <div id="formFooter" style="margin-top:20px">
             </div>
+        </form>
     </div>
 </div>
-<script>
+<script type="text/javascript">
+        function GoToSigncUp() {
+            location.href = '@Url.Action("SignUp","Home")';
+        }
+
+        function SSO() {
+            //location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=staff1@gmail.com';
+            let urlMM = 'https://ebiz3-uat.mentormedia.com/UAT/O365Login?Redirect=';
+            let urlLocal = window.location.href;
+            location.href = urlMM + urlLocal;
+        }
+        function login2FA(ID) {
+            console.log(ID);
+        }
         $(document).ready(function () {
             $("#submitButton").click(function () {
                 var login = {
@@ -51,14 +65,11 @@
                     }
                 });
 
-            });
-
-            function GoToSigncUp() {
-                location.href = '@Url.Action("SignUp","Home")';
-            }
-
-            function SSO() {
-                location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=staff1@gmail.com';
-            }
+            });      
+            var url = new URL(window.location.href);
+            var idReturn = url.searchParams.get("ID");
+            if (idReturn != null)
+                
+                login2FA(idReturn);
         })
 </script>
