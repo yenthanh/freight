@@ -1,0 +1,300 @@
+﻿@{
+    ViewBag.Title = "User";
+}
+<style>
+    .input-group-lg > .form-control:not(textarea), .input-group-lg > .custom-select {
+        font-size: 15px;
+    }
+
+    .form-control-lg {
+        width: 100%;
+        height: 48px;
+        max-width: 91%;
+    }
+
+    .form-select {
+        height: 48px;
+        font-size: 15px;
+    }
+
+    .form-control {
+        font-size: 1.5rem;
+    }
+
+    label {
+        font-size: 15px;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-family: Roboto,sans-serif;
+    }
+
+    h4 {
+        font-size: 13px;
+    }
+</style>
+
+
+@Html.Partial("~/Views/_Header.cshtml")
+@section sidebar{
+    <div class="nav-side-menu">
+        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+        <div class="menu-list">
+
+            <ul id="menu-content" class="menu-content collapse out">
+                <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#products" class="collapsed">
+                    <i class="fa fa-dashboard fa-lg" style="padding-right:10px"></i>
+                    Calculator
+                </li>
+
+                </a>
+                <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="uprate" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Upload rate
+                </li>
+                </a>
+                <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="surrate" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Surcharge Rate
+                </li>
+                </a>
+                <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed active">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    User
+                </li>
+                </a>
+            </ul>
+        </div>
+    </div>
+}
+<body>
+    <div style="min-height:80vH">
+        <section>
+            <div style=" font-size:1.5rem">
+                <div class="row" id="divMonth" hidden>
+                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Email</label>
+                        <input class="form-select form-control-lg mb-5 col-md-12" type="text" readonly id="email" value="" />
+                    </div>
+                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Profile</label>
+                        <select id="role" class="form-select form-control-lg mb-5 col-md-9">
+                            <option value="System Administrator">System Administrator</option>
+                            <option value="Enquity">Enquity</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-4 col-md-4 " style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Status</label>
+                        <select id="active1" class="form-select form-control-lg mb-5 col-md-9">
+                            <option value="Pending">Pending</option>
+                            <option value="Active">Active</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row ml-0" style="margin-bottom:20px">
+                    <button type="button" class="btn btn-primary btn-lg" hidden id="saveButton">Save Change</button>
+                </div>
+                <div class="row ml-0">
+                    <div class="col-md-6 mr-0 row">
+                        <label class="col-md-12 row">Search:</label>
+                        <input type="text" id="myInput" style=" max-width: 395px" class="form-control" onkeyup="search()" placeholder="Search for email..">
+                    </div>
+                    <div class="col-md-6 row">
+                        <label style="margin-right: 21px;">Status:</label>
+                        <input type="checkbox" id="pending" value="pending" onclick="myFunc(1)" /><p style="margin-left: 3px; margin-right: 15px;">Pending</p>
+                        <input type="checkbox" id="approved" value="approved" onclick="myFunc(2)" /><p style="margin-left: 3px; margin-right: 15px;">Approved</p>
+                        <input type="checkbox" id="active" value="active" onclick="myFunc(3)" /><p style="margin-left: 3px; margin-right: 15px;">Active</p>
+                        <input type="checkbox" id="inactive" value="inactive" onclick="myFunc(4)" /><p style="margin-left: 3px; margin-right: 15px;">Inactive</p>
+                        <input type="checkbox" id="all" value="all" onclick="myFunc(5)" /><p style="margin-left: 3px; margin-right: 15px;">All</p>
+                    </div>
+                </div>
+                <div class="row" style="margin-left:0px">
+                    <table class="table table-striped" id="tableSurchargeRate">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Name</th>
+                                <th>Site ID</th>
+                                <th>Profile</th>
+                                <th>Status</th>
+                                <th class="record">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="user_1">admin@gmail.com</td>
+                                <td id="name_1">admin</td>
+                                <td id="siteid_1">MMCA</td>
+                                <td id="role_1">System Administrator</td>
+                                <td id="active_1">Active</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(1)" /></td>
+                            </tr>
+                            <tr>
+                                <td id="user_2">test@gmail.com</td>
+                                <td id="name_2">test1</td>
+                                <td id="siteid_2">MMCA</td>
+                                <td id="role_2">Enquity</td>
+                                <td id="active_2">Active</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(2)" /></td>
+                            </tr>
+                            <tr>
+                                <td id="user_3">test2@gmail.com</td>
+                                <td id="name_3">test2</td>
+                                <td id="siteid_3">MMCA</td>
+                                <td id="role_3">Enquity</td>
+                                <td id="active_3">Inactive</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(3)" /></td>
+                            </tr>
+                            <tr>
+                                <td id="user_4">test3@gmail.com</td>
+                                <td id="name_4">test2</td>
+                                <td id="siteid_4">MMCA</td>
+                                <td id="role_4">Enquity</td>
+                                <td id="active_4">Pending</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(4)" /></td>
+                            </tr>
+                            <tr>
+                                <td id="user_5">test4@gmail.com</td>
+                                <td id="name_5">test2</td>
+                                <td id="siteid_5">MMCA</td>
+                                <td id="role_5">Enquity</td>
+                                <td id="active_5">Approved</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(5)" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button onclick="location.href='/template-user.xlsx'" class="btn btn-primary btn-lg" role="button" type="button">Export</button>
+                </div>
+                </div>
+                <div>
+                    <input hidden id="selected" />
+                </div>
+</section>      
+        <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
+            <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
+        </footer>
+    </div>
+</body>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    function Edit(id) {
+        var iduser = "#user_" + id;
+        var idrole = "#role_" + id;
+        var idactive = "#active_" + id;
+        var s = $(iduser).text();
+        var s2 = $(idrole).text();
+        var s3 = $(idactive).text();
+        $("#email").val(s);
+        $("#role").val(s2).change();
+        $("#active1").val(s3).change();
+        $("#selected").val(id);
+        $("#divMonth").removeAttr("hidden");
+        $("#saveButton").removeAttr("hidden");
+    }
+    $("#saveButton").click(function () {
+        var s = $("#role").val();
+        var s1 = $("#active1").val();
+        var tdrole = "#role_" + $("#selected").val();
+        var html = '<td id="' + tdrole + '">' + s + '</td>';
+        $(tdrole).replaceWith(html);
+        var tdactive = "#active_" + $("#selected").val();
+        var html1 = '<td id="' + tdactive + '">' + s1 + '</td>';
+        $(tdactive).replaceWith(html1);
+        $("#email").val("");
+        $("#selected").val("");
+        $("#divMonth").attr("hidden", true);
+        $("#saveButton").attr("hidden",true);
+    });
+    function myFunc(id) {
+        debugger
+        var s = "";
+        if (id == 1) {
+            s = "pending";
+            $("#approved").prop("checked", false);
+            $("#active").prop("checked", false);
+            $("#inactive").prop("checked", false);
+            $("#all").prop("checked", false);
+        }
+        if (id == 2) {
+            s = "approved";
+            $("#pending").prop("checked", false);
+            $("#active").prop("checked", false);
+            $("#inactive").prop("checked", false);
+            $("#all").prop("checked", false);
+        }
+        if (id == 3) {
+            s = "active";
+            $("#pending").prop("checked", false);
+            $("#approved").prop("checked", false);
+            $("#inactive").prop("checked", false);
+            $("#all").prop("checked", false);
+        }
+        if (id == 4) {
+            s = "inactive";
+            $("#pending").prop("checked", false);
+            $("#active").prop("checked", false);
+            $("#approved").prop("checked", false);
+            $("#all").prop("checked", false);
+        }
+        if (id == 5) {
+            s = "all";
+            $("#pending").prop("checked", false);
+            $("#active").prop("checked", false);
+            $("#approved").prop("checked", false);
+            $("#inactive").prop("checked", false);
+        }
+        var idcheck = "#" + s;
+        if (s !== "all" && $(idcheck).prop("checked") == true) {
+            var table = document.getElementById("tableSurchargeRate");
+            var tr = table.getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[4];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase() === s.toUpperCase()) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        else {
+            var table = document.getElementById("tableSurchargeRate");
+            var tr = table.getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+                tr[i].style.display = "";
+            }
+        }
+    }
+    function search() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tableSurchargeRate");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

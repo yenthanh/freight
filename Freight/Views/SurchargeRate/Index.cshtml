@@ -1,0 +1,248 @@
+﻿<style>
+    h3 {
+        font-family: Roboto,sans-serif;
+        font-size: 20px;
+    }
+</style>
+
+@Html.Partial("~/Views/_Header.cshtml")
+@section sidebar{
+    <div class="nav-side-menu">
+        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+        <div class="menu-list">
+
+            <ul id="menu-content" class="menu-content collapse out">
+                <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#products" class="collapsed">
+                    <i class="fa fa-dashboard fa-lg" style="padding-right:10px"></i>
+                    Calculator
+                </li>
+
+                </a>
+                <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Upload rate
+                </li>
+                </a>
+                <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" class="collapsed active">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Surcharge Rate
+                </li>
+                </a>
+                <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    User
+                </li>
+                </a>
+            </ul>
+        </div>
+    </div>
+}
+<body>
+    <div style="min-height:80vH">
+        <section>
+            <div style=" font-size:1.5rem">
+                <h3>Surcharge Rate</h3>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Year</label>
+                        <select class="form-select form-control-lg mb-5 col-md-9" id="carrierSelect">
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option selected value="2021">2021</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" hidden id="divMonth">
+                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Month</label>
+                        <input class="form-select form-control-lg mb-5 col-md-12" type="text" readonly id="month" placeholder="Month" value=""/>
+                    </div>
+                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">DHL (%)</label>
+                        <input id="tdSelectdhl" value="" hidden />
+                        <input class="form-select form-control-lg mb-5 col-md-12" type="text" id="dhl" value="" />
+                    </div>
+                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">FedEx (%)</label>
+                        <input id="tdSelectfedex" value="" hidden />
+                        <input class="form-select form-control-lg mb-5 col-md-12" type="text" id="fedex" value="" />
+                    </div>
+                </div>
+                <div class="row ml-0" style="margin-top:20px">
+                    <button type="button" class="btn btn-primary btn-lg" id="saveButton" hidden>Save Change</button>
+                </div>
+                <div class="row" style="margin-left:0px">
+                    <table class="table table-striped" id="tableSurchargeRate">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>DHL (%)</th>
+                                <th>FedEx (%)</th>
+                                <th class="record">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tdMonth">January</td>
+                                <td class="tdSurchargeRate" id="DHL_1">8</td>
+                                <td class="tdSurchargeRate" id="FedEx_1">6</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(1)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">February</td>
+                                <td class="tdSurchargeRate" id="DHL_2">9</td>
+                                <td class="tdSurchargeRate" id="FedEx_2">13</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(2)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">March</td>
+                                <td class="tdSurchargeRate" id="DHL_3">10</td>
+                                <td class="tdSurchargeRate" id="FedEx_3">11</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(3)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">April</td>
+                                <td class="tdSurchargeRate" id="DHL_4">7</td>
+                                <td class="tdSurchargeRate" id="FedEx_4">8</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(4)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">May</td>
+                                <td class="tdSurchargeRate" id="DHL_5">9</td>
+                                <td class="tdSurchargeRate" id="FedEx_5">10</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(5)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">June</td>
+                                <td class="tdSurchargeRate" id="DHL_6">8</td>
+                                <td class="tdSurchargeRate" id="FedEx_6">5</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(6)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">July</td>
+                                <td class="tdSurchargeRate" id="DHL_7">6</td>
+                                <td class="tdSurchargeRate" id="FedEx_7">12</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(7)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">August</td>
+                                <td class="tdSurchargeRate" id="DHL_8">10</td>
+                                <td class="tdSurchargeRate" id="FedEx_8">8</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(8)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">September</td>
+                                <td class="tdSurchargeRate" id="DHL_9">5</td>
+                                <td class="tdSurchargeRate" id="FedEx_9">7</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(9)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">October</td>
+                                <td class="tdSurchargeRate" id="DHL_10">9</td>
+                                <td class="tdSurchargeRate" id="FedEx_10">6</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(10)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">November</td>
+                                <td class="tdSurchargeRate" id="DHL_11">6</td>
+                                <td class="tdSurchargeRate" id="FedEx_11">8</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(11)" /></td>
+                            </tr>
+                            <tr>
+                                <td class="tdMonth">December</td>
+                                <td class="tdSurchargeRate" id="DHL_12">10</td>
+                                <td class="tdSurchargeRate" id="FedEx_12">12</td>
+                                <td><input value="Edit" class="record" type="button" onclick="Edit(12)" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <footer style=" position:absolute;top:100%; font-size:15px;">
+            <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
+        </footer>
+    </div>
+</body>
+<script>
+    function Edit(month) {
+        let monthEng;
+        if (month === 1) {
+            monthEng = "January";
+        }
+        else if (month === 2) {
+            monthEng = "February";
+        }
+        else if (month === 3) {
+            monthEng = "March";
+        }
+        else if (month === 4) {
+            monthEng = "April";
+        }
+        else if (month === 5) {
+            monthEng = "May";
+        }
+        else if (month === 6) {
+            monthEng = "June";
+        }
+        else if (month === 7) {
+            monthEng = "July";
+        }
+        else if (month === 8) {
+            monthEng = "August";
+        }
+        else if (month === 9) {
+            monthEng = "September";
+        }
+        else if (month === 10) {
+            monthEng = "October";
+        }
+        else if (month === 11) {
+            monthEng = "November";
+        }
+        else if (month === 12) {
+            monthEng = "December";
+        }
+        $("#month").val(monthEng);
+        var id = "#DHL_" + month;
+        var s = $(id).text();
+        var id1 = "#FedEx_" + month;
+        var s1 = $(id1).text();
+        $("#dhl").val(s);
+        $("#fedex").val(s1);
+        $("#tdSelectdhl").val(id);
+        $("#tdSelectfedex").val(id1);
+        $("#saveButton").removeAttr("hidden");
+        $("#divMonth").removeAttr("hidden");
+    }
+    $("#saveButton").click(function () {
+        var s = $("#tdSelectdhl").val();
+        var s1 = $("#tdSelectfedex").val();
+        var val = $("#dhl").val();
+        var val1 = $("#fedex").val();
+        var html = '<td class="tdSurchargeRate" id="' + s + '">' + val + '</td>';
+        $(s).replaceWith(html);
+        var html1 = '<td class="tdSurchargeRate" id="' + s1 + '">' + val1 + '</td>';
+        $(s1).replaceWith(html1);
+        $("#dhl").val("");
+        $("#fedex").val("");
+        $("#month").val("");
+        $("#saveButton").attr("hidden", true);
+        $("#divMonth").attr("hidden", true);
+    });
+    $("#carrierSelect").change(function () {
+        if ($("#carrierSelect").val() != 2021) {
+            $(".record").css("display", "none");
+        }
+        else {
+            $(".record").css("display", "block");
+        }
+    });
+</script>

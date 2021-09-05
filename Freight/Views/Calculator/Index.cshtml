@@ -1,6 +1,6 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Caculator";
+    var role = ViewBag.role;
 }
 <style>
     .input-group-lg > .form-control:not(textarea), .input-group-lg > .custom-select {
@@ -44,19 +44,31 @@
 
         <div class="menu-list">
 
-            <ul id="menu-content" class="menu-content collapse out" >
-                <a href="/Calculator/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#products" class="collapsed active">
-                        <i class="fa fa-dashboard fa-lg" style="padding-right:10px"></i>
-                        Calculator
-                    </li>
+            <ul id="menu-content" class="menu-content collapse out">
+                <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                    <i class="fa fa-dashboard fa-lg" style="padding-right:10px"></i>
+                    Calculator
+                </li>
 
                 </a>
-                <a href="/UploadRate/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#new" class="collapsed">
-                        <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
-                        Upload rate
-                    </li>
+                <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="uprate" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Upload rate
+                </li>
+                </a>
+                <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="surrate" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Surcharge Rate
+                </li>
+                </a>
+                 <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    User
+                </li>
                 </a>
             </ul>
         </div>
@@ -67,47 +79,68 @@
         <section>
             <h3>Freight Rates Portal</h3>
             <div>
+                <input type="text" value="@role" id="role" hidden />
                 <div class="row">
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;">
-                        <label>Source</label>
-                        <select class="form-select form-control-lg mb-5" id="sourceSelect" style=" height: 48px;">
-                            <option value="-1">Please Select a Country</option>
+                        <label>Origin<i style="color:red" title="Required">*</i></label>
+                        <select class="form-select form-control-lg mb-5" id="sourceSelect">
+                            <option selected>Origin</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Chile">Chile</option>
+
                         </select>
                     </div>
 
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
-                        <label>Destination</label>
-                        <select class="form-select form-control-lg mb-5" id="destinationSelect" style=" height: 48px;">
-                            <option value="-1">Please Select a Country</option>
+                        <label>Destination<i style="color:red" title="Required">*</i></label>
+                        <select class="form-select form-control-lg mb-5" id="destinationSelect">
+                            <option selected>Destination</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Chile">Chile</option>
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
                         <label>Carrier</label>
-                        <select class="form-select form-control-lg mb-5" id="carrierSelect" style=" height: 48px;">
-                            <option value="-1">Please Select a Carrier</option>
+                        <select class="form-select form-control-lg mb-5" id="carrierSelect">
+                            <option selected value="0">Carrier</option>
+                            <option value="1">Fedex</option>
+                            <option value="2">DHL</option>
                         </select>
                     </div>
 
                 </div>
                 <div class="row">
-
                     <div class="col-xs-6 col-md-4">
-                        <label>Service type</label>
-                        <select class="form-select form-control-lg mb-5" id="servicesSelect" style=" height: 48px;">
+                        <label id="lableService">Service type</label>
+                        <select class="form-select form-control-lg mb-5" id="servicesSelect">
                             <option selected>Services Type</option>
                         </select>
                     </div>
 
                     <div class="col-xs-6 col-md-4">
-                        <label>Packaging type</label>
-                        <select class="form-select form-control-lg mb-5" id="packagingSelect" style=" height: 48px;">
-                            <option value="-1">Please Select a Packaging</option>
+                        <label id="lablePackaging">Packaging type</label>
+                        <select class="form-select form-control-lg mb-5" id="packagingSelect">
+                            <option selected value="0">Packaging Type</option>
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <label for="exampleInputEmail1">Weight</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex;">
-                            <input type="text" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight" style="height: 48px;max-width:395px">
+                            <input type="text" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight" style="max-width:395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">Kg</span>
                             </div>
@@ -119,7 +152,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="lengthGroup">
                         <label for="exampleInputEmail1">Length</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Length" class="form-control" aria-label="Weight" style="height: 48px; max-width: 395px">
+                            <input type="text" id="weightSelect" placeholder="Length" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -129,7 +162,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px" id="widthGroup">
                         <label for="exampleInputEmail1">Width</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Width" class="form-control" aria-label="Weight" style="height: 48px;max-width: 395px">
+                            <input type="text" id="weightSelect" placeholder="Width" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -138,7 +171,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="heightGroup">
                         <label for="exampleInputEmail1">Height</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Height" class="form-control" aria-label="Weight" style="height: 48px; max-width: 395px">
+                            <input type="text" id="weightSelect" placeholder="Height" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -155,6 +188,10 @@
                 <h3>
                     Corporate Rate
                 </h3>
+                <div class="col-md-6 mr-0 row">
+                    <label class="col-md-12 row">Search:</label>
+                    <input type="text" id="myInput" onkeyup="search()" style="max-width: 395px" class="form-control" placeholder="Search for carrier..">
+                </div>
                 <table class="table" id="example">
                     <thead>
                         <tr>
@@ -162,17 +199,22 @@
                             <th scope="col">Service Type</th>
                             <th scope="col">Packaging Type</th>
                             <th scope="col">Weight Range(kg)</th>
-                            <th scope="col">Surcharge</th>
+                            <th scope="col">Current FSC</th>
                             <th scope="col">Working days(day)</th>
-                            <th scope="col">Cost</th>
+                            <th scope="col">Rate Before Surcharge (SGD)</th>
+                            <th scope="col">Rate After Surcharge (SGD)</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
             </div>
-           
-            <button onclick="location.href='/shipping-cost1.xlsx'" class="btn btn-primary btn-lg" role="button" type="button">Export</button>
+            <p style="margin-top:60px;margin-bottom:60px">
+                <b>Disclaimers:</b><br />
+                ·       Customs duties, taxes, service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.<br />
+                ·       Freight rates effective for the current calendar year.
+            </p>
+            <button onclick="location.href='~/shipping-cost1.xlsx'" class="btn btn-primary btn-lg" role="button" type="button">Export</button>
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -190,6 +232,19 @@
         var weightOptionDefault = "<option selected value='0'>Weight</option>";
         // Event choose carrier
         $("#carrierSelect").change(function () {
+            var valueOfCarrier = $("#carrierSelect").val();
+            if (valueOfCarrier !== "0") {
+                var lableService = '<label id="lableService">Service Type<i style="color:red" title="Required">*</i></label>';
+                $("#lableService").html(lableService);
+                var lablePackaging = '<label id="lablePackaging">Packaging Type<i style="color:red" title="Required">*</i></label>';
+                $("#lablePackaging").html(lablePackaging);
+            }
+            else {
+                var lableService = '<label id="lableService">Service Type</label>';
+                $("#lableService").html(lableService);
+                var lablePackaging = '<label id="lablePackaging">Packaging Type</label>';
+                $("#lablePackaging").html(lablePackaging);
+            }
             $("#packagingSelect").html(pakagingOptionDefault);
             $("#weightSelect").html(weightOptionDefault);
             var servicesForFedex = serviceOptionDefault + "<option value='1'>Priority (IP)</option>"
@@ -233,7 +288,7 @@
 
             var packagingValue = $(this).val();
             var weightElement = $("#weightSelect");
-
+     
             if (packagingValue == '0' || packagingValue == '5') {
                 $('#heightGroup').attr('hidden', false);
                 $('#widthGroup').attr('hidden', false);
@@ -261,7 +316,7 @@
                 weightElement.html(option3);
             }
 
-
+         
 
 
         })
@@ -274,17 +329,17 @@
             var serviceValue = $("#servicesSelect").val()
             var packagingSelect = $("#packagingSelect").val()
             var weightSelect = $("#weightSelect").val()
-            var priorityEnvelope = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 1000 }
-            var priorityPak = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "11.2%", "Workingdays": "2-4", "Cost": 2000 }
-            var priorityPackage = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 3000 }
-            var economyEnvelope = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 4000 }
-            var economyPak = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 5000 }
-            var economyPackage = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "3-6", "Cost": 6000 }
-            var priorityFreightNIL = { "Carrier": "Fedex", "Service": "Priority Freight", "Packaging": "NIL", "Weight": "68-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 7000 }
-            var economyFreightEnvelope = { "Carrier": "Fedex", "Service": "Economy Freight", "Packaging": "NIL", "Weight": "68.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 8000 }
+            var priorityEnvelope = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000,"AfterSC":1100 }
+            var priorityPak = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "11.2%", "Workingdays": "2-4", "BeforeSC": 2000,"AfterSC": 2200 }
+            var priorityPackage = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
+            var economyEnvelope = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 4000, "AfterSC": 4400 }
+            var economyPak = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 5000, "AfterSC": 5500 }
+            var economyPackage = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 6000, "AfterSC": 6600 }
+            var priorityFreightNIL = { "Carrier": "Fedex", "Service": "Priority Freight", "Packaging": "NIL", "Weight": "68-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 7000, "AfterSC": 7700 }
+            var economyFreightEnvelope = { "Carrier": "Fedex", "Service": "Economy Freight", "Packaging": "NIL", "Weight": "68.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 8000, "AfterSC": 8800 }
 
-            var expressEnvelope = { "Carrier": "DHL", "Service": "Express", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 1000 }
-            var expressPackage = { "Carrier": "DHL", "Service": "Express", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "Cost": 3000 }
+            var expressEnvelope = { "Carrier": "DHL", "Service": "Express", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000, "AfterSC": 1100}
+            var expressPackage = { "Carrier": "DHL", "Service": "Express", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
 
 
             var data = [];
@@ -370,98 +425,92 @@
             }
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
-            if (source == "Source" || desination == "Destination" || weightSelect == "") {
-                alert('Source, destination, weight are not empty');
+            if (source == "Origin" || desination == "Destination") {
+                alert('Source, destination are not empty');
             }
             else {
+                if ($("#carrierSelect").val() !== "0") {
+                    if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                        alert('Service, Packaging are not empty');
+                    }
+                    else {
+                        for (i = 0; i < data.length; i++) {
+                            var cost = data[i].BeforeSC * parseFloat(weightSelect);
+                            var string = Number(cost).toLocaleString();
+                            var cost1 = Number(cost) + (Number(cost) * 0.2);
+                            var string1 = Number(cost1).toLocaleString();
+                            console.log(string)
+                            $('<tr id="tr-id">')
+                                .append($('<td>').append(data[i].Carrier))
+                                .append($('<td>').append(data[i].Service))
+                                .append($('<td>').append(data[i].Packaging))
+                                .append($('<td>').append(data[i].Weight))
+                                .append($('<td>').append(data[i].Surcharge))
+                                .append($('<td>').append(data[i].Workingdays))
+                                .append($('<td>').append(string))
+                                .append($('<td>').append(string1))
+                                //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
+                                .appendTo('table tbody');
+                        }
+                    }
+                }
                 //var month = [2, 3, 6, 5, 4];
-                for (i = 0; i < data.length; i++) {
-                    var cost = data[i].Cost * parseFloat(weightSelect);
-                    var string = Number(cost).toLocaleString();
-                    console.log(string)
-                    $('<tr id="tr-id">')
-                        .append($('<td>').append(data[i].Carrier))
-                        .append($('<td>').append(data[i].Service))
-                        .append($('<td>').append(data[i].Packaging))
-                        .append($('<td>').append(data[i].Weight))
-                        .append($('<td>').append(data[i].Surcharge))
-                        .append($('<td>').append(data[i].Workingdays))
-                        .append($('<td>').append(string, " SGD"))
-                        //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
-                        .appendTo('table tbody');
+                else {
+                    for (i = 0; i < data.length; i++) {
+                        debugger
+                        var cost = data[i].BeforeSC * parseFloat(weightSelect);
+                        var string = Number(cost).toLocaleString();
+                        var cost1 = Number(cost) + (Number(cost) * 0.2);
+                        var string1 = Number(cost1).toLocaleString();
+                        console.log(string)
+                        $('<tr id="tr-id">')
+                            .append($('<td>').append(data[i].Carrier))
+                            .append($('<td>').append(data[i].Service))
+                            .append($('<td>').append(data[i].Packaging))
+                            .append($('<td>').append(data[i].Weight))
+                            .append($('<td>').append(data[i].Surcharge))
+                            .append($('<td>').append(data[i].Workingdays))
+                            .append($('<td>').append(string))
+                            .append($('<td>').append(string1))
+                            //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
+                            .appendTo('table tbody');
+                    }
                 }
             }
-
         })
-    });
-    $(document).ready(function () {       
-        $.ajax({
-            type: "GET",
-            url: "/Utility/GetListCountry",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (data) {
-                var s = '<option value="-1">Please Select a Country</option>';
-                for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
-                }
-                $("#sourceSelect").html(s);
-                $("#destinationSelect").html(s);
-            }
-        });
-    });
+    })
     $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "/Utility/GetListCarriers",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (data) {
-                var s = '<option value="-1">Please Select a Carrier</option>';
-                for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
-                }
-                $("#carrierSelect").html(s);
-            }
-        });
-    });
-    $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "/Utility/GetListPackageType",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (data) {
-                var s = '<option value="-1">Please Select a Packing</option>';
-                for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
-                }
-                $("#packagingSelect").html(s);
-            }
-        });
-    });
-    $("#searchButton").click(function () {
-        var model = {
-            From: $("#sourceSelect").val(),
-            To: $("#destinationSelect").val(),
-            ServiceType: "",
-            PackageType: $("#packagingSelect").val(),
-            Region: "",
-            Weight: $("#weightSelect").val(),
+        var role = $("#role").val();
+        if (role == "sa") {
+            $("#uprate").css("display", "block");
+            $("#surrate").css("display", "block");
+            $("#asrole").css("display", "block");
         }
-        var data = JSON.stringify(model);
-        $.ajax({
-            url: "/Calculator/GetPrice",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            data: data,
-            success: function (result) {
-                console.log(result);
-            },
-            error: function (xhr, status, error) {
-                alert("Error");
-            }
-        });
+        else {
+            $("#uprate").css("display", "none");
+            $("#surrate").css("display", "none");
+            $("#asrole").css("display", "none");
+        }
     });
+    function search() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("example");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>

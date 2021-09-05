@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Sign Up";
+}
+<link href="~/Style/login.css" rel="stylesheet" />
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="fadeIn first" style="margin-top:30px">
+            <img src="https://ebiz5-staging.mentormedia.com/RFID-WIREFRAME/_nuxt/img/logo.9b9a022.png" id="icon" alt="User Icon" />
+        </div>
+        <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
+        <form>
+            <div class="form-group">
+                <label style="width:380px">Your Name</label>
+                <input type="text" class="form-group" id="exampleInputName1" placeholder="Your Name" />
+            </div>
+            <div class="form-group">
+                <label style="width:380px">Email</label>
+                <input type="text" class="form-group" id="exampleInputEmail1" placeholder="Email" />
+            </div>
+            <div class="form-group">
+                <label style="width: 380px;">Site Id</label>
+                <select id="selectSiteID" class="form-select form-control-lg mb-5" style="width:380px">
+                    <option>MMCA</option>
+                    <option>MMCD</option>
+                    <option>MMCN</option>
+                    <option>MMCQ</option>
+                    <option>MMCQCBZ</option>
+                    <option>MMCZ</option>
+                    <option>MMJZ</option>
+                    <option>MMKS</option>
+                    <option>MMSG</option>
+                    <option>MMSH</option>
+                    <option>MMSZ</option>
+                    <option>MMXM</option>
+                </select>                
+            </div>
+            <div class="form-group form-check">
+                <button class="btn btn-primary btn-lg" id="signup" type="button">Sign Up</button>
+            </div>
+        </form>
+        <div id="formFooter" style="margin-top:20px">
+
+        </div>
+    </div>
+</div>
+<script>
+    $("#submitButton").click(function () {
+        window.location.href = "/About";
+    })
+    $("#signup").click(function () {
+        alert("Thank you for registering at the Mentor Media Freight Rate Portal. We will send you an activation email upon your request is approved.");
+        location.href = '@Url.Action("Index","Home")';
+    })
+</script>

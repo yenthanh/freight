@@ -13,18 +13,30 @@
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
-                <a href="/Calculator/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#products" class="collapsed">
-                        <i class="fa fa-dashboard fa-lg" style="padding-right:10px"></i>
-                        Calculator
-                    </li>
+                <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#products" class="collapsed">
+                    <i class="fa fa-dashboard fa-lg" style="padding-right:10px"></i>
+                    Calculator
+                </li>
 
                 </a>
-                <a href="/UploadRate/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#new" class="collapsed active">
-                        <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
-                        Upload rate
-                    </li>
+                <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" class="collapsed active">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Upload rate
+                </li>
+                </a>
+                <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    Surcharge Rate
+                </li>
+                </a>
+                <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    User
+                </li>
                 </a>
             </ul>
         </div>
@@ -36,21 +48,47 @@
             <div style=" font-size:1.5rem">
                 <h3>Upload Rate</h3>
                 <div class="row">
-                    <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
-                        <label>Carrier</label>
-                        <select class="form-select form-control-lg mb-5" id="carrierSelect" style=" height: 48px;">
+                    <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Carrier</label>
+                        <select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
                             <option value="-1">Please Select a Carrier</option>
                             <option value="-1">DHL</option>
                             <option value="-1">FedEx</option>
                         </select>
                     </div>
+                    <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Year</label>
+                        <select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
+                            <option value="0">Please Select Year</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="row" style="margin-left:0px">
+                <div class="row mb-3" style="margin-left:0px">
                     <input type="file" name="file" id="file" />
                     <br />
                     @*<input type="submit" value="Upload Image" id="upload" />*@
                     <div style="display:block">
                         <button type="button" class="btn btn-primary btn-lg" id="upload">Submit</button>
+                    </div>
+                </div>
+                <div class="row ml-0">
+                    <div>
+                        <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate DHL</a>
+                    </div>
+                </div>
+                <div class="row ml-0">
+                    <div>
+                        <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate FedEx</a>
                     </div>
                 </div>
             </div>
