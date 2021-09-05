@@ -2,3 +2,6 @@
 /Freight/obj/
 /.vs/
 /packages
+*/obj/
+*.dll
+*.pdb
