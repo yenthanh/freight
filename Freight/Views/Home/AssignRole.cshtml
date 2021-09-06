@@ -39,33 +39,33 @@
 @Html.Partial("~/Views/_Header.cshtml")
 @section sidebar{
     <div class="nav-side-menu">
-        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+        <i class="fa fa-lg fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
                 <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
                 <li data-toggle="collapse" data-target="#products" class="collapsed">
-                    <i class="fa fa-dashboard fa-lg" style="padding-right:10px"></i>
+                    <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
                     Calculator
                 </li>
 
                 </a>
                 <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" id="uprate" class="collapsed">
-                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
-                    Upload rate
-                </li>
+                    <li data-toggle="collapse" data-target="#new" id="uprate" class="collapsed">
+                        <i class="fa fa-lg fa-upload" style="padding-right:8px"></i>
+                        Upload rate
+                    </li>
                 </a>
                 <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" id="surrate" class="collapsed">
-                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
-                    Surcharge Rate
-                </li>
+                    <li data-toggle="collapse" data-target="#new" id="surrate" class="collapsed">
+                        <i class="fa fa-lg fa-caret-up" style="padding-right:8px"></i>
+                        Surcharge Rate
+                    </li>
                 </a>
                 <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
                 <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed active">
-                    <i class="fa fa-car fa-lg" style="padding-right:8px"></i>
+                    <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
                     User
                 </li>
                 </a>
@@ -94,7 +94,6 @@
                         <select id="active1" class="form-select form-control-lg mb-5 col-md-9">
                             <option value="Pending">Pending</option>
                             <option value="Active">Active</option>
-                            <option value="Approved">Approved</option>
                             <option value="Inactive">Inactive</option>
                         </select>
                     </div>
@@ -110,7 +109,6 @@
                     <div class="col-md-6 row">
                         <label style="margin-right: 21px;">Status:</label>
                         <input type="checkbox" id="pending" value="pending" onclick="myFunc(1)" /><p style="margin-left: 3px; margin-right: 15px;">Pending</p>
-                        <input type="checkbox" id="approved" value="approved" onclick="myFunc(2)" /><p style="margin-left: 3px; margin-right: 15px;">Approved</p>
                         <input type="checkbox" id="active" value="active" onclick="myFunc(3)" /><p style="margin-left: 3px; margin-right: 15px;">Active</p>
                         <input type="checkbox" id="inactive" value="inactive" onclick="myFunc(4)" /><p style="margin-left: 3px; margin-right: 15px;">Inactive</p>
                         <input type="checkbox" id="all" value="all" onclick="myFunc(5)" /><p style="margin-left: 3px; margin-right: 15px;">All</p>
@@ -166,7 +164,7 @@
                                 <td id="name_5">test2</td>
                                 <td id="siteid_5">MMCA</td>
                                 <td id="role_5">Enquity</td>
-                                <td id="active_5">Approved</td>
+                                <td id="active_5">Pending</td>
                                 <td><input value="Edit" class="record" type="button" onclick="Edit(5)" /></td>
                             </tr>
                         </tbody>

@@ -1,3 +1,8 @@
 /Freight/bin
 /Freight/obj/
 /.vs/
+/Core/obj/
+/Core/bin/
+/packages/
+/ServiceDB/obj
+/ServiceDB/bin/
