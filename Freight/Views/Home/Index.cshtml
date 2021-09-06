@@ -32,7 +32,6 @@
         function GoToSigncUp() {
             location.href = '@Url.Action("SignUp","Home")';
         }
-
         function SSO() {
             //location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=staff1@gmail.com';
             let urlMM = 'https://ebiz3-uat.mentormedia.com/UAT/O365Login?Redirect=';
@@ -40,7 +39,30 @@
             location.href = urlMM + urlLocal;
         }
         function login2FA(ID) {
-            console.log(ID);
+            var login = {
+                channel: "web",
+                username: ID,
+                pwd: ''
+            }
+            console.log("---> data", login);
+            var CTLSX = JSON.stringify(login)
+            $.ajax({
+                url: "/account/Login_2FA",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: CTLSX,
+                success: function (data) {
+                    if (data.error.code == 0)
+                        window.location.href = "/Calculator/Index";
+                    else {
+                        alert(data.data);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error");
+                }
+            });
         }
         $(document).ready(function () {
             $("#submitButton").click(function () {

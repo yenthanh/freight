@@ -156,6 +156,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\UploadModel.cs" />
     <Compile Include="Models\LoginerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestApi\BaseCarrier.cs" />
@@ -361,7 +362,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49431</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44364/</IISUrl>
+          <IISUrl>http://localhost:44364/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

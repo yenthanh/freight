@@ -1,5 +1,6 @@
 ﻿
 
+using ServiceDB.Entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,15 +36,20 @@ namespace ServiceDB.Service
             DataTable obj = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_UPDATE_TOKEN]", sqlParameters.ToArray());
             return CollectionHelper.CreateItem<ReturnItem>(obj);
         }
-        //public DataTable GetUserAfterLogin(string userName, string type, string owner)
-        //{
-        //    List<SqlParameter> sqlParameters = new List<SqlParameter>();
-        //    sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_NAME", Value = userName, DbType = System.Data.DbType.String });
-        //    sqlParameters.Add(new SqlParameter() { ParameterName = "@OWNER_ID", Value = owner, DbType = System.Data.DbType.String });
-        //    sqlParameters.Add(new SqlParameter() { ParameterName = "@ROLE", Value = type, DbType = System.Data.DbType.String });
-        //    DataTable obj = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_GET_USER_WITH_ROLE]", sqlParameters.ToArray());
-        //    return obj;
-        //}
+        public MS_USER GetUser(string userEmail)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = userEmail, DbType = System.Data.DbType.String });            
+            DataTable obj = dbObject.ExecDataTable("SELECT * FROM SV_MS_USER WHERE USER_EMAIL=@USER_EMAIL", sqlParameters.ToArray());
+            return CollectionHelper.CreateItem<MS_USER>(obj);
+        }
+        public List<REF_MODULE> GetModuleByUser(string userEmail)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = userEmail, DbType = System.Data.DbType.String });
+            DataTable dataTable = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_GET_USER_WITH_ROLE]", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<REF_MODULE>(dataTable).ToList();
+        }
         public int IsLogging(string userName,string token)
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
@@ -57,7 +63,19 @@ namespace ServiceDB.Service
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             sqlParameters.Add(new SqlParameter() { ParameterName = "@CMD", Value = cmd, DbType = System.Data.DbType.String });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = username, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = username, DbType = System.Data.DbType.String });            
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@BY", Value = by, DbType = System.Data.DbType.String });
+            DataTable obj = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_USER]", sqlParameters.ToArray());
+            return CollectionHelper.CreateItem<ReturnItem>(obj);
+        }
+        public ReturnItem UpdateUser(string cmd, MS_USER user, string by)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@CMD", Value = cmd, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = user.USER_EMAIL, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@SITE_ID", Value = user.SITE_ID, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@GROUP_ID", Value = user.GROUP_ID, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@STATUS", Value = user.USER_STATUS, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@BY", Value = by, DbType = System.Data.DbType.String });
             DataTable obj = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_USER]", sqlParameters.ToArray());
             return CollectionHelper.CreateItem<ReturnItem>(obj);

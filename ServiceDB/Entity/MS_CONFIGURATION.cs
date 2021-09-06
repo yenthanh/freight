@@ -20,4 +20,22 @@ namespace ServiceDB.Entity
 
         public string description { get; set; }
     }
+    public partial class REF_MODULE:BaseEntity
+    {
+        public string MODULE_ID { get; set; }
+
+        public string MODULE_NAME { get; set; }
+
+        public string PARENT_MODULE_ID { get; set; }
+
+        public string ICON_IMAGE { get; set; }
+
+        public string URL { get; set; }
+
+        public string MODULE_TYPE { get; set; }
+        public bool IS_ENABLED { get; set; }
+
+        public int MODULE_ORDER { get; set; }
+    }
 }
+

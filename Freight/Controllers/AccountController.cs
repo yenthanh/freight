@@ -138,7 +138,6 @@ namespace Freught1.Controllers
                 login.pwd = null;
                 login.username = realEmail;
                 result=LoginByEmail(login,"OFFICE365");
-
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
@@ -197,6 +196,8 @@ namespace Freught1.Controllers
                     return new JsonObject(returnItem.ERR_NO, returnItem.CODE,returnItem.MSG);
                 else//auto add email
                 {
+                    if(returnItem.ERR_NO == 11 && role != "PROFILE")
+                        return new JsonObject(returnItem.ERR_NO, returnItem.CODE, returnItem.MSG);
                     var isAdd= sv.UpdateUser("ADD",login.username,"");                    
                     if(isAdd.ERR_NO==0)
                         returnItem = sv.CheckLogin(login.username, login.pwd);
