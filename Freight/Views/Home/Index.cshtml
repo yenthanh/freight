@@ -9,21 +9,21 @@
         </div>
         <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
         <form action="/Home/Index" method="post" enctype="multipart/form-data">
-            <div class="form-group row">
+            @*<div class="form-group row">
                 <label class="col-md-3"><img src="https://img.icons8.com/ios-glyphs/30/000000/user--v1.png" /></label>
                 <input type="email" class="col-md-9" style="margin-left: -30px;" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" style="max-width:380px">
-            </div>
+            </div>*@
             <div class="form-group row">
-                <label class="col-md-3"><img src="https://img.icons8.com/ios-glyphs/30/000000/password.png" /></label>
-                <input type="password" class="col-md-9" style="margin-left: -30px;" id="exampleInputPassword1" placeholder="Password" name="password">
+                <label class="col-md-12" style="font-weight:bold;color:red">For Mentor Media Employee, Please click "LOGIN" button directly</label>                
             </div>
             <div class="form-group form-check">
-                <button class="btn btn-primary btn-lg" id="signin" type="button">Login</button>
-                <button class="btn btn-primary btn-lg" onclick="GoToSigncUp()" type="button">Sign Up</button>
-                <button class="btn btn-primary btn-lg fw" onclick="SSO();" type="button">Login As Mentor Media Staff</button>
+                @*<button class="btn btn-primary btn-lg" id="signin" type="button">Login</button>*@
+                <button class="btn btn-primary btn-lg fw" onclick="SSO();" type="button">LOGIN</button>
+                <button class="btn btn-secondary btn-lg" onclick="GoToSigncUp()" type="button">SIGN UP</button>
             </div>
 
             <div id="formFooter" style="margin-top:20px">
+                <label class="col-md-12">Copyright @@2021 Mentor Media Pte Ltd</label>
             </div>
         </form>
     </div>
