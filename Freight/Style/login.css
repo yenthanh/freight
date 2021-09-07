@@ -57,7 +57,9 @@ h2 {
 
 
 /* STRUCTURE */
-
+button {
+    background: #008aab;
+}
 .wrapper {
     display: flex;
     align-items: center;
@@ -84,7 +86,7 @@ h2 {
 
 }
     #formContent label {
-        text-align: left;
+        text-align: left    ;
     }
     #formFooter {
     background-color: #f6f6f6;
