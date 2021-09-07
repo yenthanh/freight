@@ -107,7 +107,12 @@ namespace ServiceDB.Service
             DataTable tbl = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_CONFIGURATION_GET_OBJ]", sqlParameters.ToArray());
             return CollectionHelper.CreateItem<MS_CONFIGURATION>(tbl);
         }
-
+        public List<DropDownItem> GetListSite()
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            DataTable table = dbObject.ExecDataTable("SELECT STATUS as value, DESCRIPTION as text from REF_STATUS_TYPE WHERE TYPE='MM_SITE'  ORDER BY STATUS", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
+        }
     }
 }
 

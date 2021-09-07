@@ -32,6 +32,13 @@ namespace ServiceDB.Service
             DataTable tbl = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_CONFIGURATION_GET_OBJ]", sqlParameters.ToArray());
             return CollectionHelper.CreateItem<MS_CONFIGURATION>(tbl);
         }
+        public List<MS_CONFIGURATION> GetByCode(string CODE)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();            
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@PARA_CODE", Value = CODE, DbType = System.Data.DbType.String });
+            DataTable tbl = dbObject.ExecDataTable("SELECT * FROM MS_CONFIGURATION WHERE PARA_CODE=@PARA_CODE", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<MS_CONFIGURATION>(tbl).ToList();
+        }
         public List<REF_STATUS_TYPE> GetSystemType(string type)
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();

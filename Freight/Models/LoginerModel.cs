@@ -36,5 +36,12 @@ namespace MM_Freight_Rate_API_Backend.Models
         public float Height { get; set; }
         public float Width { get; set; }
     }
-
+    public class UserModel
+    {
+        public string Email { get; set; }
+        public string Site { get; set; }
+        public string Name { get; set; }
+        public string Group { get; set; }
+        public string Status { get; set; }
+    }
 }

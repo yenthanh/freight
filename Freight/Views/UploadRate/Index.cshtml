@@ -1,4 +1,5 @@
-﻿<style>
+﻿@model MM_Freight_Rate_API_Backend.Models.UploadRateView
+<style>
     h3 {
         font-family: Roboto,sans-serif;
         font-size: 20px;
@@ -42,64 +43,75 @@
         </div>
     </div>
 }
-<body>
-    <div style="min-height:80vH">
-        <section>
-            <div style=" font-size:1.5rem">
-                <h3>Upload Rate</h3>
-                <div class="row">
-                    <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
-                        <label class="col-md-12 row">Carrier</label>
-                        <select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
-                            <option value="-1">Please Select a Carrier</option>
-                            <option value="-1">DHL</option>
-                            <option value="-1">FedEx</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
-                        <label class="col-md-12 row">Year</label>
-                        <select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
-                            <option value="0">Please Select Year</option>
-                            <option value="2017">2017</option>
-                            <option value="2018">2018</option>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row mb-3" style="margin-left:0px">
-                    <input type="file" name="file" id="file" />
-                    <br />
-                    @*<input type="submit" value="Upload Image" id="upload" />*@
-                    <div style="display:block">
-                        <button type="button" class="btn btn-primary btn-lg" id="upload">Submit</button>
-                    </div>
-                </div>
-                <div class="row ml-0">
-                    <div>
-                        <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate DHL</a>
-                    </div>
-                </div>
-                <div class="row ml-0">
-                    <div>
-                        <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate FedEx</a>
-                    </div>
-                </div>
+    <body>
+        @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "edit-form", enctype = "multipart/form-data" }))
+        {
+            <div style="min-height:80vH">
+                <section>
+                    <div style=" font-size:1.5rem">
+                        <h3>Upload Rate</h3>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
+                                <label class="col-md-12 row">Carrier</label>
+                                @Html.DropDownList("filter-cate", Model.ListCarriers, new { @class = "form-select form-control-lg mb-5 col-md-8", @id = "carrierSelect" })
+                                @*<select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
+                    <option value="-1">Please Select a Carrier</option>
+                    <option value="-1">DHL</option>
+                    <option value="-1">FedEx</option>
+                </select>*@
+                            </div>
+                            <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
+                                <label class="col-md-12 row">Year</label>
+                                @Html.DropDownList("filter-cate", Model.Years, new { @class = "form-select form-control-lg mb-5 col-md-8", @id = "yearSelect" })
+                                @*<select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
+                    <option value="0">Please Select Year</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                </select>*@
+                            </div>
+                        </div>
+                        <div class="row mb-3" style="margin-left:0px">
+                            <input type="file" name="file" id="file" />
+                            <br />
+                            @*<input type="submit" value="Upload Image" id="upload" />*@
+                            <div style="display:block">
+                                <button type="button" class="btn btn-primary btn-lg" id="upload">Submit</button>
+                            </div>
+                        </div>
+                        @foreach (var c in Model.ListFiles)
+                        {
+                            <div class="row ml-0">
+                                <div>
+                                    <a href="@c.Text" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate @c.Value</a>
+                                </div>
+                            </div>
+                        }
+                        @*<div class="row ml-0">
+            <div>
+                <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate DHL</a>
             </div>
-        </section>
-        <footer style=" position:absolute;top:100%; font-size:15px;">
-            <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
-        </footer>
-    </div>
-</body>
+        </div>*@
+
+                    </div>
+                </section>
+                <footer style=" position:absolute;top:100%; font-size:15px;">
+                    <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
+                </footer>
+            </div>
+        }
+
+    </body>
 
 <script>
+
     $("#upload").click(function () {
         console.log("hello")
         var file = $("#file").val();
@@ -135,66 +147,6 @@
         //}
         else {
             alert("You have not imported the file ")
-        }
-    })
-
-
-    $("#weightSelect").change(function () {
-        console.log("sadsadaf")
-        var source = $("#weightSelect").val();
-        console.log(source)
-        var contentToRemove = document.querySelectorAll("#tr-id");
-        $(contentToRemove).remove();
-        if (source == "") {
-            for (i = 1; i < 15; i++) {
-                //var cost = data[i].Cost * parseFloat(weightSelect);
-                var cost = i * 1.5 + 20;
-                var Australia = Number(cost).toLocaleString();
-                var Argentina = Number(i * 1.7 + 20).toLocaleString()
-                var Austria = Number(i * 1.9 + 20).toLocaleString()
-                var Belgium = Number(i * 2.1 + 20).toLocaleString()
-                var Bolivia = Number(i * 2.3 + 20).toLocaleString()
-                var Brazil = Number(i * 2.1 + 20).toLocaleString()
-                var Canada = Number(i * 2 + 20).toLocaleString()
-                var Chile = Number(i * 1.9 + 20).toLocaleString()
-                var package = Number(i).toLocaleString();
-                console.log(cost)
-                $('<tr id="tr-id">')
-                    .append($('<td>').append(package))
-                    .append($('<td>').append(Argentina))
-                    .append($('<td>').append(Australia))
-                    .append($('<td>').append(Austria))
-                    .append($('<td>').append(Belgium))
-                    .append($('<td>').append(Bolivia))
-                    .append($('<td>').append(Brazil))
-                    .append($('<td>').append(Canada))
-                    .append($('<td>').append(Chile))
-                    .appendTo('table tbody');
-            }
-        }
-        else {
-            var cost = source * 1.5 + 20;
-            var Australia = Number(cost).toLocaleString();
-            var Argentina = Number(source * 1.7 + 20).toLocaleString()
-            var Austria = Number(source * 1.9 + 20).toLocaleString()
-            var Belgium = Number(source * 2.1 + 20).toLocaleString()
-            var Bolivia = Number(source * 2.3 + 20).toLocaleString()
-            var Brazil = Number(source * 2.1 + 20).toLocaleString()
-            var Canada = Number(source * 2 + 20).toLocaleString()
-            var Chile = Number(source * 1.9 + 20).toLocaleString()
-            var package = Number(source).toLocaleString();
-            console.log(cost)
-            $('<tr id="tr-id">')
-                .append($('<td>').append(package))
-                .append($('<td>').append(Argentina))
-                .append($('<td>').append(Australia))
-                .append($('<td>').append(Austria))
-                .append($('<td>').append(Belgium))
-                .append($('<td>').append(Bolivia))
-                .append($('<td>').append(Brazil))
-                .append($('<td>').append(Canada))
-                .append($('<td>').append(Chile))
-                .appendTo('table tbody');
         }
     })
 </script>

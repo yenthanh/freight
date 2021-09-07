@@ -80,6 +80,22 @@ namespace ServiceDB.Service
             DataTable obj = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_USER]", sqlParameters.ToArray());
             return CollectionHelper.CreateItem<ReturnItem>(obj);
         }
+        public List<MS_USER> GetListUser(AdvSearchModel model,out int total)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_NAME", Value = model.name, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = model.id, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@SITE_ID", Value = model.code, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@GROUP_ID", Value = model.category, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@STATUS", Value = model.status, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@pageIndex", Value = model.pageIndex, DbType = System.Data.DbType.Int16 });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@pageSize", Value = model.pageSize, DbType = System.Data.DbType.Int16 });
+            SqlParameter totalParameter = new SqlParameter() { ParameterName = "@Total", Direction = ParameterDirection.Output, DbType = DbType.Int16 };
+            sqlParameters.Add(totalParameter);
+            DataTable table = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_USER_GET_LIST]", sqlParameters.ToArray());
+            total = int.Parse(totalParameter.Value.ToString());
+            return CollectionHelper.ConvertTo<MS_USER>(table).ToList();
+        }
         //public int CheckAccess(string username, string module)
         //{
         //    List<SqlParameter> sqlParameters = new List<SqlParameter>();

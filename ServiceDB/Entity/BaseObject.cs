@@ -15,19 +15,17 @@ namespace ServiceDB.Entity
     }
     public class SearchModel
     {
-        public string name { get; set; }
-        public string owner { get; set; }
+        public string name { get; set; }        
         public int pageIndex { get; set; }
         public int pageSize { get; set; }
         public string order_by { get; set; }
     }
     public class AdvSearchModel : SearchModel
-    {
+    {        
         public string id { get; set; }
         public string code { get; set; }
         public string category { get; set; }
-        public string status { get; set; }
-        public string family { get; set; }
+        public string status { get; set; }        
         public string type { get; set; }
     }
     public class DropDownItem 

@@ -2,6 +2,7 @@
 using MM_Freight_Rate_API_Backend;
 using MM_Freight_Rate_API_Backend.Models;
 using Newtonsoft.Json;
+using ServiceDB.Entity;
 using ServiceDB.Service;
 using System;
 using System.Configuration;
@@ -23,7 +24,7 @@ namespace Freught1.Controllers
         {
            sv = new UserService();
         }
-   
+        #region Login
         [HttpGet]
        
         public JsonResult Logout()
@@ -294,6 +295,80 @@ namespace Freught1.Controllers
             }
             
         }
+        #endregion
 
+        [HttpGet]        
+        [CustomExceptionFilter]
+        public JsonResult GetListSites()
+        {
+            try
+            {
+                UtilityService sv = new UtilityService();
+                var result = sv.GetListSite();
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        [HttpPost]
+        [CustomExceptionFilter]
+        public JsonResult GetListUsers(AdvSearchModel model)
+        {
+            try
+            {               
+                int total = 0;
+                var result = sv.GetListUser(model,out total);
+                var newResult = new { Items = result, Total = total };
+                return Json(new JsonObject(0, "SUCCESS", newResult), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        [HttpPost]
+        public JsonResult UpdateUser(UserModel model)
+        {
+            if(string.IsNullOrEmpty(model.Email))
+                return Json(new JsonObject(999, "INVALID","Invalid parameter"), JsonRequestBehavior.AllowGet);
+            try
+            {
+                var result= sv.UpdateUser("UPDATE", new MS_USER() { USER_EMAIL = model.Email, SITE_ID = model.Site,GROUP_ID=model.Group,
+                USER_STATUS=model.Status},"");
+                if(result.ERR_NO==0)
+                    return Json(new JsonObject(0, "SUCCESS",result.MSG), JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new JsonObject(result.ERR_NO, result.CODE, result.MSG), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddUser(UserModel model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Site))
+                    return Json(new JsonObject(999, "INVALID", "Invalid parameter"), JsonRequestBehavior.AllowGet);
+                if (model.Email.ToLower().IndexOf("@mentormedia.com")<0)
+                    return Json(new JsonObject(998, "INVALID_EMAIL", "The email must have a valid Mentor Media email"), JsonRequestBehavior.AllowGet);
+                var result = sv.UpdateUser("ADD", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Email, SITE_ID = model.Site }, "");
+                if (result.ERR_NO == 0)
+                    return Json(new JsonObject(0, "SUCCESS", "Added successfull"), JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new JsonObject(result.ERR_NO, result.CODE, result.MSG), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
