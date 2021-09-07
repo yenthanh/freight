@@ -131,18 +131,31 @@ namespace MM_Freight_Rate_API_Backend
                 saveFolder = obj.PARA_VALUE;
             return saveFolder.Replace("[OWNER_ID]", owner_id);
         }
+        public static void AddSession(string userName,string token)
+        {
+            HttpContext.Current.Session.Add("UserName", userName);
+            HttpContext.Current.Session.Add("token_key", token);
+        }
+        public static void RemoveSession()
+        {
+            HttpContext.Current.Session["UserName"]= null;
+            HttpContext.Current.Session["token_key"] = null;
+        }
         public static Models.LoggedModel GetLogged
         {
             get
             {
                 //return new Models.LoggedModel() {Channel="Web",UserEmail="admin@hotmail.com",UserName= "admin@hotmail.com", Role="WEB" };
-                if (string.IsNullOrEmpty(HttpContext.Current.Request.Headers["token_key"]))
+                //if (string.IsNullOrEmpty(HttpContext.Current.Request.Headers["token_key"]))
+                
+                if (HttpContext.Current.Session["token_key"]==null|| string.IsNullOrEmpty(HttpContext.Current.Session["token_key"].ToString()))
                 {
                     return null;
                 }
                 else
                 {
-                    string userToken = HttpContext.Current.Request.Headers["token_key"];
+                    //string userToken = HttpContext.Current.Request.Headers["token_key"];
+                    string userToken = HttpContext.Current.Session["token_key"].ToString();
                     string userInfo = "";
                     try
                     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -12,6 +13,7 @@ namespace ExcelProcess
     {
         public static DataTable GetDataTableFromExcel(string path,string sheetName)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var pck = new OfficeOpenXml.ExcelPackage())
             {
                 using (var stream = File.OpenRead(path))
@@ -71,6 +73,7 @@ namespace ExcelProcess
         }
         public static List<string> GetSheetsFromExcel(string path)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             List<string> listSheets = new List<string>();
             using (var pck = new OfficeOpenXml.ExcelPackage())
             {
@@ -89,6 +92,7 @@ namespace ExcelProcess
 
         public static DataSet GetDataTableFromExcel(string path)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             DataSet dtsData = new DataSet();
             
             using (var pck = new OfficeOpenXml.ExcelPackage())

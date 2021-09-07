@@ -10,8 +10,10 @@ using System.Web.Mvc;
 
 namespace Freught1.Controllers
 {
+    //[CustomAuthorization(LoginPage ="/Home")]
     public class CalculatorController : BaseController
-    {        
+    {
+        
         public ActionResult Index()
         {
             return View();

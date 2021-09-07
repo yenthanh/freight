@@ -29,7 +29,13 @@ namespace ServiceDB.Entity
         public double CARRIER_EX_2 { get; set; }
         public double CARRIER_EX_3 { get; set; }
         public string MONTH_NAME { get; set; }
-        
     }
-    
+    public class SURCHARGE_ITEM
+    {
+        public int Year { get; set; }
+        public string Month { get; set; }
+        public string Carrier { get; set; }
+        public double Rate { get; set; }
+    }
+
 }

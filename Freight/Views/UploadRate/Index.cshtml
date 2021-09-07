@@ -79,7 +79,8 @@
                             </div>
                         </div>
                         <div class="row mb-3" style="margin-left:0px">
-                            <input type="file" name="file" id="file" />
+                            @Html.TextBoxFor(m => m.file, new { @type = "file", id = "file", name = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" })
+                            @*<input type="file" name="file" id="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />*@
                             <br />
                             @*<input type="submit" value="Upload Image" id="upload" />*@
                             <div style="display:block">
@@ -112,42 +113,60 @@
 
 <script>
 
-    $("#upload").click(function () {
-        console.log("hello")
-        var file = $("#file").val();
-        console.log("file:", file)
-        $('<tr id="tr-id">')
-
-        if (file != "")
-            alert("Import file sucessful")
-        //for (i = 1; i < 15; i++) {
-        //    //var cost = data[i].Cost * parseFloat(weightSelect);
-        //    var cost = i * 1.5 + 20;
-        //    var Australia = Number(cost).toLocaleString();
-        //    var Argentina = Number(i * 1.7 + 20).toLocaleString()
-        //    var Austria = Number(i * 1.9 + 20).toLocaleString()
-        //    var Belgium = Number(i * 2.1 + 20).toLocaleString()
-        //    var Bolivia = Number(i * 2.3 + 20).toLocaleString()
-        //    var Brazil = Number(i * 2.1 + 20).toLocaleString()
-        //    var Canada = Number(i * 2 + 20).toLocaleString()
-        //    var Chile = Number(i * 1.9 + 20).toLocaleString()
-        //    var package = Number(i).toLocaleString();
-        //    console.log(cost)
-        //    $('<tr id="tr-id">')
-        //        .append($('<td>').append(package))
-        //        .append($('<td>').append(Argentina))
-        //        .append($('<td>').append(Australia))
-        //        .append($('<td>').append(Austria))
-        //        .append($('<td>').append(Belgium))
-        //        .append($('<td>').append(Bolivia))
-        //        .append($('<td>').append(Brazil))
-        //        .append($('<td>').append(Canada))
-        //        .append($('<td>').append(Chile))
-        //        .appendTo('table');
-        //}
-        else {
-            alert("You have not imported the file ")
+    $("#upload").click(function () {   
+        //check year
+        var year = $('#yearSelect').val();
+        var carrier = $('#carrierSelect').val();
+        if (year == '') {
+            alert('You must choose a year');
+            return;
         }
+        if (carrier == '') {
+            alert('You must choose a carrier');
+            return;
+        }
+        var form = $("#edit-form");
+        //console.log(fileUpload, fileUpload.files);        
+        //check file
+        var fileData = new FormData(form[0]);
+        var fileUpload = $("#file")[0];
+        if (fileUpload.files.length > 0) {
+            let fileInput = fileUpload.files[0];
+            let name = fileInput.name;
+            if (name.indexOf('.xls') < 0) {
+                alert('You must select an excel file.');
+                return;
+            }            
+        }
+        else {
+            alert('You must select an excel file.');
+            return;
+        }
+        fileData.set('Year', year);
+        fileData.set('Carrier', carrier);
+        $("#upload").attr("disabled", true);
+        $.ajax({
+            url: '/UploadRate/UploadFile',
+            type: 'POST',
+            data: fileData,            
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                console.log(data);
+                if (data.error.code == 0) {
+                    alert('The file uploaded successfully.');
+                }
+                else {
+                    alert('The file uploaded unsuccessfully.'+ data.data);
+                }                
+                $("#file").val('');
+                $("#upload").removeAttr("disabled");
+            },
+            error: function (xhr, error, status) {
+                $("#upload").removeAttr("disabled");
+                console.log(error, status);
+            }
+        });
     })
 </script>
 

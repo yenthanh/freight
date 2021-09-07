@@ -35,7 +35,8 @@ namespace Freught1.Controllers
             if (logger != null)
             {
                 sv.Logout(logger.UserName);
-                result=new JsonObject(0, "SUCCESS", "Logout");
+                Hepler.RemoveSession();
+                result =new JsonObject(0, "SUCCESS", "Logout");
             }
             else
             {
@@ -164,7 +165,9 @@ namespace Freught1.Controllers
             var returnItem = sv.UpdateLogger(model.username, tokenKey, roleID);
             if (returnItem.ERR_NO == 0)
             {
+                MM_Freight_Rate_API_Backend.Hepler.AddSession(model.username, tokenKey);
                 return new JsonObject(0, "SUCCESS", new { Role = roleID, UserName = model.username, TokenKey = tokenKey});
+                
                 //return new JsonObject(0, "SUCCESS", sv.GetUserAfterLogin(model.username));
                 //DataTable owner = sv.GetUserAfterLogin(model.username, "OWNER","");                
                 //DataTable module = sv.GetAllModule();
@@ -338,7 +341,7 @@ namespace Freught1.Controllers
             try
             {
                 var result= sv.UpdateUser("UPDATE", new MS_USER() { USER_EMAIL = model.Email, SITE_ID = model.Site,GROUP_ID=model.Group,
-                USER_STATUS=model.Status},"");
+                USER_STATUS=model.Status}, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
                 if(result.ERR_NO==0)
                     return Json(new JsonObject(0, "SUCCESS",result.MSG), JsonRequestBehavior.AllowGet);
                 else
@@ -350,7 +353,8 @@ namespace Freught1.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost]        
+        [CustomExceptionFilter]
         public JsonResult AddUser(UserModel model)
         {
             try
@@ -359,7 +363,7 @@ namespace Freught1.Controllers
                     return Json(new JsonObject(999, "INVALID", "Invalid parameter"), JsonRequestBehavior.AllowGet);
                 if (model.Email.ToLower().IndexOf("@mentormedia.com")<0)
                     return Json(new JsonObject(998, "INVALID_EMAIL", "The email must have a valid Mentor Media email"), JsonRequestBehavior.AllowGet);
-                var result = sv.UpdateUser("ADD", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Email, SITE_ID = model.Site }, "");
+                var result = sv.UpdateUser("ADD", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Email, SITE_ID = model.Site }, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
                 if (result.ERR_NO == 0)
                     return Json(new JsonObject(0, "SUCCESS", "Added successfull"), JsonRequestBehavior.AllowGet);
                 else

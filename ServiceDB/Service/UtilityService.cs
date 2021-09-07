@@ -78,6 +78,19 @@ namespace ServiceDB.Service
             DataTable table = dbObject.ExecDataTableByStoreProcedure("SP_WEB_GET_SHEET_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<MS_EXCEL_RATE>(table).ToList();
         }
+
+        public ReturnItem UploadFile(string cmd,string carrier, int year, string fileName,string by)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@CMD", Value = cmd, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@CARRIER_ID", Value = carrier, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@YEAR", Value = year, DbType = System.Data.DbType.Int16 });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@FILE_NAME", Value = fileName, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@BY", Value = by, DbType = System.Data.DbType.String });
+            DataTable obj = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_TR_UPLOAD_HISTORY]", sqlParameters.ToArray());
+            return CollectionHelper.CreateItem<ReturnItem>(obj);
+        }
+
         public float GetSurchage(string carrier, string month, int year)
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
@@ -99,10 +112,10 @@ namespace ServiceDB.Service
             return result.ToString();
         }
 
-        public MS_CONFIGURATION GetByCode(string OWNER_ID, string CODE)
+        public MS_CONFIGURATION GetByCode(string CARRIER_ID, string CODE)
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            sqlParameters.Add(new SqlParameter() { ParameterName = "@OWNER_ID", Value = OWNER_ID, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@CARRIER_ID", Value = CARRIER_ID, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@CODE", Value = CODE, DbType = System.Data.DbType.String });
             DataTable tbl = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_CONFIGURATION_GET_OBJ]", sqlParameters.ToArray());
             return CollectionHelper.CreateItem<MS_CONFIGURATION>(tbl);
@@ -112,6 +125,13 @@ namespace ServiceDB.Service
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             DataTable table = dbObject.ExecDataTable("SELECT STATUS as value, DESCRIPTION as text from REF_STATUS_TYPE WHERE TYPE='MM_SITE'  ORDER BY STATUS", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
+        }
+        public DataTable GetAllSheetByCarrier(string carrier)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@CARRIER_ID", Value = carrier, DbType = System.Data.DbType.String });
+            DataTable table = dbObject.ExecDataTable("SELECT SHEET_NAME from MS_EXCEL_WEIGHT_RATE WHERE CARRIER_ID=@CARRIER_ID", sqlParameters.ToArray());
+            return table;
         }
     }
 }

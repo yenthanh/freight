@@ -18,6 +18,12 @@ namespace MM_Freight_Rate_API_Backend.Models
         public List<SelectListItem> ListCarriers { get; set; }
         public List<SelectListItem> Years { get; set; }
         public List<SelectListItem> ListFiles { get; set; }
+        public string Carrier { get; set; }        
+        public int Year { get; set; }
+        public System.Web.HttpPostedFileBase file { get; set; }
 
+    }
+    public class SurchageModel
+    {        
     }
 }
