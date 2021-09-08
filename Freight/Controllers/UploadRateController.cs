@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace Freught1.Controllers
 {
+    [CustomAuthorization(LoginPage ="/Home/Index")]
     public class UploadRateController : BaseController
     {
         // GET: UploadRate

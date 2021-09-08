@@ -23,7 +23,8 @@ namespace MM_Freight_Rate_API_Backend
         {            
             if (HttpContext.Current.Session["token_key"] ==null || string.IsNullOrEmpty(HttpContext.Current.Session["token_key"].ToString()))
             {
-                filterContext.HttpContext.Response.Redirect(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
+                //filterContext.HttpContext.Response.Redirect(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
+                filterContext.HttpContext.Response.Redirect(LoginPage);
             }
             base.OnAuthorization(filterContext);
             //if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
@@ -35,7 +36,8 @@ namespace MM_Freight_Rate_API_Backend
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.Result = new RedirectResult(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
+            //filterContext.Result = new RedirectResult(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
+            filterContext.HttpContext.Response.Redirect(LoginPage);
         }
 
     }
