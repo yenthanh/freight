@@ -18,10 +18,23 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
-
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script type="text/javascript">
+        function showMsg(msg,type=''){
+            if(type=='' || type=='warn') 
+                $('#alertMsg').attr('class','alert alert-warning');
+            else if(type=='error')
+                $('#alertMsg').attr('class','alert alert-danger');
+            else $('#alertMsg').attr('class','alert alert-info');
+            $('#alertMsg').html('<b>'+msg+'</b>');
+            $("#alertMsg").fadeTo(7000, 500).slideUp(500, function () {
+                $("#salertMsg").slideUp(500);
+            });
+        }
+    </script>
+
 </head>
 <body>
     <div class="row no-marrgin">
@@ -39,5 +52,8 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
+    <div class="alert" id="alertMsg">
+        
+    </div>
 </body>
 </html>

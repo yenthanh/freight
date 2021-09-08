@@ -2,6 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 <link href="~/Style/login.css" rel="stylesheet" />
+
 <div class="wrapper fadeInDown">
     <div id="formContent">
         <div class="fadeIn first" style="margin-top:30px">
@@ -16,37 +17,59 @@
                 <button class="btn btn-primary btn-lg" onclick="GoToSigncUp()" type="button">Sign Up</button>
                 <button class="btn btn-primary btn-lg fw" onclick="SSO()" type="button">Login As Mentor Media Staff</button>
             </div>
-
             <div id="formFooter" style="margin-top:20px">
             </div>
+        </form>
     </div>
+    
 </div>
+
 <script>
     $("#submitButton").click(function () {
         window.location.href = "/About";
     })
-    function GoToSigncUp() {
+    function GoToSigncUp() {     
+        
         location.href = '@Url.Action("SignUp","Home")';
     }
 
     function SSO() {
-        location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=staff1@gmail.com';
+        //location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=staff1@gmail.com';
+        let urlMM = 'https://ebiz3-uat.mentormedia.com/UAT/O365Login?Redirect=';
+        let urlLocal = window.location.href;
+        location.href = urlMM + urlLocal;
     }
-
-    $("#signin").click(function () {
-        debugger
-        var s = $("#exampleInputEmail1").val();
-        var s1 = $("#exampleInputPassword1").val();
-        if ($("#staff").prop("checked") === true) {
-            if (s === "" || s1 === "") {
-                alert("Please enter Email and Password!");
-            }
-            else {
-                location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=' + s;
-            }
-        }
-        else {
-            location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=' + s;
-        }
+    $(document).ready(function () {
+        var url = new URL(window.location.href);
+        var idReturn = url.searchParams.get("ID");
+        if (idReturn != null)
+            login2FA(idReturn);
     });
+    
+    function login2FA(ID) {
+        var login = {
+            channel: "web",
+            username: ID,
+            pwd: ''
+        }
+        var CTLSX = JSON.stringify(login)
+        $.ajax({
+            url: "/account/Login_2FA",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            data: CTLSX,
+            success: function (data) {
+                console.log("---> data", data);
+                if (data.error.code == 0)
+                    window.location.href = "/Calculator/Index";
+                else {
+                    showMsg(data.data);
+                }
+            },
+            error: function (xhr, status, error) {
+                showMsg("Please contact to your IT team.",'error');
+            }
+        });
+    }
 </script>

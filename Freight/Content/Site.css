@@ -46,3 +46,11 @@ h3 {
 .hasbg {
     /*background-color: #2e353d;*/
 }
+#alertMsg {
+    position: fixed;
+    left: 50%;
+    bottom: 10px;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+}
+.alert-warning{background-color:orange; color:white;}
