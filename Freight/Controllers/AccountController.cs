@@ -158,15 +158,18 @@ namespace Freught1.Controllers
         }
         private JsonObject UpdateLogger(LoginerModel model,string roleID)
         {
+            
             int hourZero = 24 - DateTime.Now.AddDays(1).Hour;
             DateTime loginValidTime = DateTime.Now.AddHours(hourZero);
             string tokenKey = model.username.Trim().ToString() + "|" + roleID + "|" + loginValidTime + "|" + model.channel;
             tokenKey = CryptorEngine.Encrypt(tokenKey, true);
             var returnItem = sv.UpdateLogger(model.username, tokenKey, roleID);
+            UserService userService = new UserService();
+            var modules = userService.GetModuleByUser(model.username);
             if (returnItem.ERR_NO == 0)
             {
-                MM_Freight_Rate_API_Backend.Hepler.AddSession(model.username, tokenKey);
-                return new JsonObject(0, "SUCCESS", new { Role = roleID, UserName = model.username, TokenKey = tokenKey});
+                MM_Freight_Rate_API_Backend.Hepler.AddSession(model.username, tokenKey,modules);
+                return new JsonObject(0, "SUCCESS", new { Role = roleID, UserName = model.username, TokenKey = tokenKey, Modules= modules });
                 
                 //return new JsonObject(0, "SUCCESS", sv.GetUserAfterLogin(model.username));
                 //DataTable owner = sv.GetUserAfterLogin(model.username, "OWNER","");                
@@ -363,9 +366,17 @@ namespace Freught1.Controllers
                     return Json(new JsonObject(999, "INVALID", "Invalid parameter"), JsonRequestBehavior.AllowGet);
                 if (model.Email.ToLower().IndexOf("@mentormedia.com")<0)
                     return Json(new JsonObject(998, "INVALID_EMAIL", "The email must have a valid Mentor Media email"), JsonRequestBehavior.AllowGet);
-                var result = sv.UpdateUser("ADD", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Email, SITE_ID = model.Site }, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
+                var result = sv.UpdateUser("SIGN_UP", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Email, SITE_ID = model.Site }, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
                 if (result.ERR_NO == 0)
-                    return Json(new JsonObject(0, "SUCCESS", "Added successfull"), JsonRequestBehavior.AllowGet);
+                {
+                    MM.AlertEmail.SendAlertEmail sendAlert = new MM.AlertEmail.SendAlertEmail();
+                    var sendEmailResult = sendAlert.SendSignUpEmail(model.Email);
+                    if(sendEmailResult.error.code==0)
+                    //Send email
+                        return Json(new JsonObject(0, "SUCCESS", "Added and sent email successfull"), JsonRequestBehavior.AllowGet);
+                    else
+                        return Json(new JsonObject(0, "SUCCESS", "The system has added this account but cannot send an email to this email. Please check again with this email."), JsonRequestBehavior.AllowGet);
+                }                    
                 else
                     return Json(new JsonObject(result.ERR_NO, result.CODE, result.MSG), JsonRequestBehavior.AllowGet);
             }

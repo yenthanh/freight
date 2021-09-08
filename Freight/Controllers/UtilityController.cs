@@ -116,5 +116,22 @@ namespace Freught1.Controllers
             }
 
         }
+
+        [HttpGet]        
+        [CustomExceptionFilter]
+        public JsonResult TestSendEmail()
+        {
+            try
+            {
+                MM.AlertEmail.SendAlertEmail sendAlertEmail = new MM.AlertEmail.SendAlertEmail();
+                var result = sendAlertEmail.TestSendEmail("hoaithanhtrinh@gmail.com", "yin-yin_hlaing@mentormedia.com");
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+
+        }
     }
 }

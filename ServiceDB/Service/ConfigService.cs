@@ -58,5 +58,13 @@ namespace ServiceDB.Service
             DataTable tbl = dbObject.ExecDataTableByStoreProcedure("[SP_WEB_MS_CONFIGURATION]", sqlParameters.ToArray());
             return CollectionHelper.CreateItem<ReturnItem>(tbl);
         }
+
+        public DataTable GetEmailConfigByParameter(string titleParameter)
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@EMAIL_TITLE", Value = titleParameter, DbType = System.Data.DbType.String });
+            DataTable tbl = dbObject.ExecDataTableByStoreProcedure("SELECT TOP 1 * FROM REF_EMAIL_LIST WHERE EMAIL_TITLE=@EMAIL_TITLE", sqlParameters.ToArray());
+            return tbl;
+        }
     }
 }

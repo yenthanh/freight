@@ -6,6 +6,9 @@
     <div id="formContent">
         <div class="fadeIn first" style="margin-top:30px">
             <img src="https://ebiz5-staging.mentormedia.com/RFID-WIREFRAME/_nuxt/img/logo.9b9a022.png" id="icon" alt="User Icon" />
+            <h3 style="margin-top: 10px;">
+                MENTOR MEDIA FREIGHT PORTAL
+            </h3>
         </div>
         <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
         <form action="/Home/Index" method="post" enctype="multipart/form-data">
@@ -13,9 +16,9 @@
                 <label class="col-md-3"><img src="https://img.icons8.com/ios-glyphs/30/000000/user--v1.png" /></label>
                 <input type="email" class="col-md-9" style="margin-left: -30px;" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" style="max-width:380px">
             </div>*@
-            <div class="form-group row">
+            @*<div class="form-group row">
                 <label class="col-md-12" style="font-weight:bold;color:red">For Mentor Media Employee, Please click "LOGIN" button directly</label>                
-            </div>
+            </div>*@
             <div class="form-group form-check">
                 @*<button class="btn btn-primary btn-lg" id="signin" type="button">Login</button>*@
                 <button class="btn btn-primary btn-lg fw" onclick="SSO();" type="button">LOGIN</button>
@@ -23,7 +26,7 @@
             </div>
 
             <div id="formFooter" style="margin-top:20px">
-                <label class="col-md-12">Copyright @@2021 Mentor Media Pte Ltd</label>
+                @*<label class="col-md-12">Copyright @@2021 Mentor Media Pte Ltd</label>*@
             </div>
         </form>
     </div>
@@ -95,3 +98,15 @@
                 login2FA(idReturn);
         })
 </script>
+<style>
+    h3 {
+        background: #008aab;
+        color: #fff;
+        padding: 10px;
+        max-width: 100%;
+        display: block;
+    }
+    .btn.btn-primary {
+        background: #008aab;
+    }
+</style>

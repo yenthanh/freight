@@ -1,0 +1,10 @@
+
+09:47:26 CONTROLLER ERROR: Object reference not set to an instance of an object.
+ TRACE:    at Freught1.Controllers.SurchargeRateController.InitNewSurcharge(Int32 year) in D:\DATA\CODE\GitHub\Freight Rate Portal Back-End\freight\Freight\Controllers\SurchargeRateController.cs:line 42
+09:47:38 CONTROLLER ERROR: Object reference not set to an instance of an object.
+ TRACE:    at Freught1.Controllers.SurchargeRateController.InitNewSurcharge(Int32 year) in D:\DATA\CODE\GitHub\Freight Rate Portal Back-End\freight\Freight\Controllers\SurchargeRateController.cs:line 42
+09:48:13 CONTROLLER ERROR: Object reference not set to an instance of an object.
+ TRACE:    at Freught1.Controllers.SurchargeRateController.InitNewSurcharge(Int32 year) in D:\DATA\CODE\GitHub\Freight Rate Portal Back-End\freight\Freight\Controllers\SurchargeRateController.cs:line 42
+09:57:28 CONTROLLER ERROR: Object reference not set to an instance of an object.
+ TRACE:    at MM_Freight_Rate_API_Backend.Hepler.get_GetLogged() in D:\DATA\CODE\GitHub\Freight Rate Portal Back-End\freight\Freight\App_Start\Hepler.cs:line 159
+   at Freught1.Controllers.SurchargeRateController.UpdateSurcharge(SHOW_SURCHARGE_ITEM model) in D:\DATA\CODE\GitHub\Freight Rate Portal Back-End\freight\Freight\Controllers\SurchargeRateController.cs:line 67

@@ -32,6 +32,22 @@ namespace Freught1.Controllers
             }
 
         }
+        [HttpGet]
+        [CustomExceptionFilter]
+        public JsonResult InitNewSurcharge(int year)
+        {
+            try
+            {
+                SurchargeService surchargeService = new SurchargeService();
+                var result = surchargeService.UpdateSurcharge("ADD_NEW_YEAR",new SURCHARGE_ITEM() {Year= year },Hepler.GetLogged.UserEmail);
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+
+        }
         [HttpPost]
         [CustomExceptionFilter]
         public JsonResult UpdateSurcharge(SHOW_SURCHARGE_ITEM model)
@@ -46,9 +62,10 @@ namespace Freught1.Controllers
                 lstItem.Add(new SURCHARGE_ITEM() { Carrier = "CARRIER_EX_2", Month = model.MONTH_NAME, Rate = model.CARRIER_EX_2, Year = model.YEAR });
                 lstItem.Add(new SURCHARGE_ITEM() { Carrier = "CARRIER_EX_3", Month = model.MONTH_NAME, Rate = model.CARRIER_EX_3, Year = model.YEAR });
                 int errorCode = 0;
-                foreach(var c in lstItem)
+                string userEmail = MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail;
+                foreach (var c in lstItem)
                 {
-                    var result = surchargeService.UpdateSurcharge("UPDATE", c, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
+                    var result = surchargeService.UpdateSurcharge("UPDATE", c, userEmail);
                     errorCode += result.ERR_NO;
                     if (result.ERR_NO != 0)
                         break;

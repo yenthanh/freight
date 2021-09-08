@@ -131,23 +131,33 @@ namespace MM_Freight_Rate_API_Backend
                 saveFolder = obj.PARA_VALUE;
             return saveFolder.Replace("[OWNER_ID]", owner_id);
         }
-        public static void AddSession(string userName,string token)
+        public static void AddSession(string userName,string token,List<ServiceDB.Entity.REF_MODULE> modules)
         {
             HttpContext.Current.Session.Add("UserName", userName);
             HttpContext.Current.Session.Add("token_key", token);
+            HttpContext.Current.Session.Add("modules", modules);
         }
+        public static List<ServiceDB.Entity.REF_MODULE> ListModules
+        {
+            get
+            {
+                if (HttpContext.Current.Session["modules"] != null) return (List<ServiceDB.Entity.REF_MODULE>)HttpContext.Current.Session["modules"];
+                else return null;
+            }
+        }
+        
         public static void RemoveSession()
         {
             HttpContext.Current.Session["UserName"]= null;
             HttpContext.Current.Session["token_key"] = null;
+            HttpContext.Current.Session["modules"] = null;
         }
         public static Models.LoggedModel GetLogged
         {
             get
             {
-                //return new Models.LoggedModel() {Channel="Web",UserEmail="admin@hotmail.com",UserName= "admin@hotmail.com", Role="WEB" };
-                //if (string.IsNullOrEmpty(HttpContext.Current.Request.Headers["token_key"]))
-                
+                return new Models.LoggedModel() {Channel="Web",UserEmail="admin@hotmail.com",UserName= "admin@hotmail.com", Role="WEB" };
+                //if (string.IsNullOrEmpty(HttpContext.Current.Request.Headers["token_key"]))                
                 if (HttpContext.Current.Session["token_key"]==null|| string.IsNullOrEmpty(HttpContext.Current.Session["token_key"].ToString()))
                 {
                     return null;
