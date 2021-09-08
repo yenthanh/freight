@@ -1,6 +1,8 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace MM_Freight_Rate_API_Backend.Models
 {
@@ -43,5 +45,9 @@ namespace MM_Freight_Rate_API_Backend.Models
         public string Name { get; set; }
         public string Group { get; set; }
         public string Status { get; set; }
+    }
+    public class UserModelView: UserModel
+    {
+        public List<SelectListItem> ListSites { get; set; }
     }
 }

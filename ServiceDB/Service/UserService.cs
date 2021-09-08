@@ -73,6 +73,7 @@ namespace ServiceDB.Service
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             sqlParameters.Add(new SqlParameter() { ParameterName = "@CMD", Value = cmd, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = user.USER_EMAIL, DbType = System.Data.DbType.String });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_NAME", Value = user.USER_NAME, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@SITE_ID", Value = user.SITE_ID, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@GROUP_ID", Value = user.GROUP_ID, DbType = System.Data.DbType.String });
             sqlParameters.Add(new SqlParameter() { ParameterName = "@STATUS", Value = user.USER_STATUS, DbType = System.Data.DbType.String });

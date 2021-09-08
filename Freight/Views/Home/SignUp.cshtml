@@ -1,4 +1,4 @@
-﻿
+﻿@model MM_Freight_Rate_API_Backend.Models.UserModelView
 @{
     ViewBag.Title = "Sign Up";
 }
@@ -12,14 +12,18 @@
             </h3>
         </div>
         <hr role="separator" aria-orientation="horizontal" class="my-8 v-divider theme--light">
-        <form>
+        @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "edit-form", enctype = "multipart/form-data" }))
+        {
+
             <div class="form-group">
                 <label style="width:100%">Your Name</label>
-                <input type="text" class="form-group" id="exampleInputName1" placeholder="Your Name" />
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-group", @placeholder = "Your Name" })
+                @*<input type="text" class="form-group" id="exampleInputName1" placeholder="Your Name" />*@
             </div>
             <div class="form-group">
                 <label style="width:100%">Email</label>
-                <input type="text" class="form-group" id="exampleInputEmail1" placeholder="Email" />
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-group", @placeholder = "Email" })
+                @*<input type="text" class="form-group" id="exampleInputEmail1" placeholder="Email" />*@
                 <span id="ReferenceDomain" style="        position: relative;
         float: right;
         top: -34px;
@@ -28,7 +32,8 @@
             </div>
             <div class="form-group">
                 <label style="width: 100%;">Site Id</label>
-                <select id="selectSiteID" class="form-select form-control-lg" style="width:100%">
+                @Html.DropDownList("filter-cate", Model.ListSites, new { @class = "form-select form-control-lg", @id = "selectSiteID", @style = "width: 100%;" })
+                @*<select id="selectSiteID" class="form-select form-control-lg" style="width:100%">
                     <option>MMCA</option>
                     <option>MMCD</option>
                     <option>MMCN</option>
@@ -41,23 +46,68 @@
                     <option>MMSH</option>
                     <option>MMSZ</option>
                     <option>MMXM</option>
-                </select>                
+                </select>*@
             </div>
             <div class="form-group form-check">
                 <button class="btn btn-primary btn-lg" id="signup" type="button">Sign Up</button>
             </div>
-        </form>
-        <div id="formFooter" style="margin-top:20px">
 
-        </div>
+        }
+        <div id="formFooter" style="margin-top:20px"></div>
     </div>
 </div>
-<script>
-    $("#submitButton").click(function () {
-        window.location.href = "/About";
-    })
+<script>   
     $("#signup").click(function () {
-        alert("Thank you for registering at the Mentor Media Freight Rate Portal. We will send you an activation email upon your request is approved.");
-        location.href = '@Url.Action("Index","Home")';
+       
+        var name = $('#Name').val();
+        //console.log(name, 'name');
+        if (name == '' || name.length == 0) {
+            showMsg("You have entered your name.");
+            return;
+        }
+        var email = $('#Email').val() + '@@mentormedia.com';
+        //console.log(email, 'email');
+        var mailformat = /^\w+([\.-]?\w+)*@@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!email.match(mailformat))
+        {
+            showMsg("You have entered an invalid email address.");            
+            return;
+        }
+        var site = $('#selectSiteID').val();
+        //console.log(site, 'site');
+        if (site == '' || site.length == 0) {
+            showMsg("You have choose an site.");
+            return;
+        }
+
+        var form = $("#edit-form");
+        var formData = new FormData(form[0]);
+        formData.set('Site', site);
+        formData.set('Email', email);
+        $("#signup").attr("disabled", true);
+        $.ajax({
+            url: '/Account/AddUser',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                console.log(data);
+                if (data.error.code == 0) {
+                    showMsg("Thank you for registering at the Mentor Media Freight Rate Portal. We will send you an activation email upon your request is approved.", 'success');
+                    setTimeout(function () { location.href = '@Url.Action("Index","Home")'; }, 5000);
+                }
+                else {
+                    showMsg(data.data);
+                    $("#signup").removeAttr("disabled");
+                }                         
+            },
+            error: function (xhr, error, status) {
+                $("#signup").removeAttr("disabled");
+                console.log(error, status);
+            }
+        });
+        
+        //location.href = '@Url.Action("Index","Home")';
     })
 </script>

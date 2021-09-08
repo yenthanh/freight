@@ -366,7 +366,7 @@ namespace Freught1.Controllers
                     return Json(new JsonObject(999, "INVALID", "Invalid parameter"), JsonRequestBehavior.AllowGet);
                 if (model.Email.ToLower().IndexOf("@mentormedia.com")<0)
                     return Json(new JsonObject(998, "INVALID_EMAIL", "The email must have a valid Mentor Media email"), JsonRequestBehavior.AllowGet);
-                var result = sv.UpdateUser("SIGN_UP", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Email, SITE_ID = model.Site }, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
+                var result = sv.UpdateUser("SIGN_UP", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Name, SITE_ID = model.Site }, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
                 if (result.ERR_NO == 0)
                 {
                     MM.AlertEmail.SendAlertEmail sendAlert = new MM.AlertEmail.SendAlertEmail();

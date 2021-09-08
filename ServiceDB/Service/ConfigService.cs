@@ -63,7 +63,7 @@ namespace ServiceDB.Service
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             sqlParameters.Add(new SqlParameter() { ParameterName = "@EMAIL_TITLE", Value = titleParameter, DbType = System.Data.DbType.String });
-            DataTable tbl = dbObject.ExecDataTableByStoreProcedure("SELECT TOP 1 * FROM REF_EMAIL_LIST WHERE EMAIL_TITLE=@EMAIL_TITLE", sqlParameters.ToArray());
+            DataTable tbl = dbObject.ExecDataTable("SELECT TOP 1 * FROM REF_EMAIL_LIST WHERE EMAIL_TITLE=@EMAIL_TITLE", sqlParameters.ToArray());
             return tbl;
         }
     }

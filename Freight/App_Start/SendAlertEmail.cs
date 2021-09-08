@@ -82,7 +82,8 @@ namespace MM.AlertEmail
                 emailCC = tblEmailConfig.Rows[0]["EMAIL_CC"] != null ? tblEmailConfig.Rows[0]["EMAIL_CC"].ToString() : "";
                 emailBCC = tblEmailConfig.Rows[0]["EMAIL_BCC"] != null ? tblEmailConfig.Rows[0]["EMAIL_BCC"].ToString() : "";
                 emailBody = tblEmailConfig.Rows[0]["EMAIL_BODY"] != null ? tblEmailConfig.Rows[0]["EMAIL_BODY"].ToString() : "";
-                if (string.IsNullOrEmpty(tittle) || string.IsNullOrEmpty(emailBody) || string.IsNullOrEmpty(emailTo))
+                //if (string.IsNullOrEmpty(tittle) || string.IsNullOrEmpty(emailBody) || string.IsNullOrEmpty(emailTo))
+                if (string.IsNullOrEmpty(tittle) || string.IsNullOrEmpty(emailBody))
                 {
                     erroCode = 4;
                     errorCode = "MISS_EMAIL_DETAIL_REF_CONFIG";

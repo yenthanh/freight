@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MM_Freight_Rate_API_Backend.Models;
+using ServiceDB.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,7 +25,15 @@ namespace Freught1.Controllers
         }
         public ActionResult SignUp()
         {
-            return View();
+            UserModelView model = new UserModelView();
+            UtilityService sv = new UtilityService();
+            model.ListSites =new List<SelectListItem>();
+            model.ListSites.Add(new SelectListItem() { Text = "Choose a site", Value ="" });
+            foreach (var c in sv.GetListSite())
+            {
+                model.ListSites.Add(new SelectListItem() { Text = c.text, Value = c.value });
+            }
+            return View(model);
         }
         
         public ActionResult AssignRole()

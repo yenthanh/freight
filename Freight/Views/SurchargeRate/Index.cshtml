@@ -13,31 +13,40 @@
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
-                <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#products" class="collapsed">
-                    <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
-                    Calculator
-                </li>
+                @foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
+                {
+                    <a href="@m.URL" style="text-decoration:none">
+                        <li data-toggle="collapse" class="collapsed" data-target="#products">
+                            <i class="fa fa-lg @m.ICON_IMAGE" style="padding-right:10px"></i>
+                            @m.MODULE_NAME
+                        </li>
+                    </a>
+                }
+                @*<a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
+        <li data-toggle="collapse" data-target="#products" class="collapsed">
+            <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
+            Calculator
+        </li>
 
-                </a>
-                <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#new" class="collapsed">
-                        <i class="fa fa-lg fa-upload" style="padding-right:8px"></i>
-                        Upload rate
-                    </li>
-                </a>
-                <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#new" class="collapsed active">
-                        <i class="fa fa-lg fa-caret-up" style="padding-right:8px"></i>
-                        Surcharge Rate
-                    </li>
-                </a>
-                <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
-                    <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
-                    User
-                </li>
-                </a>
+        </a>
+        <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
+            <li data-toggle="collapse" data-target="#new" class="collapsed">
+                <i class="fa fa-lg fa-upload" style="padding-right:8px"></i>
+                Upload rate
+            </li>
+        </a>
+        <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
+            <li data-toggle="collapse" data-target="#new" class="collapsed active">
+                <i class="fa fa-lg fa-caret-up" style="padding-right:8px"></i>
+                Surcharge Rate
+            </li>
+        </a>
+        <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+        <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+            <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
+            User
+        </li>
+        </a>*@
             </ul>
         </div>
     </div>
