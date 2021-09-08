@@ -4,7 +4,7 @@
         font-size: 20px;
     }
 </style>
-
+@model MM_Freight_Rate_API_Backend.Models.UploadRateView
 @Html.Partial("~/Views/_Header.cshtml")
 @section sidebar{
     <div class="nav-side-menu">
@@ -13,185 +13,158 @@
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
-                <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#products" class="collapsed">
-                    <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
-                    Calculator
-                </li>
+                @foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
+                {
+                    <a href="@m.URL" style="text-decoration:none">
+                        <li data-toggle="collapse" class="collapsed" data-target="#products">
+                            <i class="fa fa-lg @m.ICON_IMAGE" style="padding-right:10px"></i>
+                            @m.MODULE_NAME
+                        </li>
+                    </a>
+                }
+                @*<a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
+                    <li data-toggle="collapse" data-target="#products" class="collapsed">
+                        <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
+                        Calculator
+                    </li>
 
-                </a>
-                <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#new" class="collapsed active">
-                        <i class="fa fa-lg fa-upload" style="padding-right:8px"></i>
-                        Upload rate
+                    </a>
+                    <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
+                        <li data-toggle="collapse" data-target="#new" class="collapsed active">
+                            <i class="fa fa-lg fa-upload" style="padding-right:8px"></i>
+                            Upload rate
+                        </li>
+                    </a>
+                    <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
+                        <li data-toggle="collapse" data-target="#new" class="collapsed">
+                            <i class="fa fa-lg fa-caret-up" style="padding-right:8px"></i>
+                            Surcharge Rate
+                        </li>
+                    </a>
+                    <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                    <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+                        <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
+                        User
                     </li>
-                </a>
-                <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
-                    <li data-toggle="collapse" data-target="#new" class="collapsed">
-                        <i class="fa fa-lg fa-caret-up" style="padding-right:8px"></i>
-                        Surcharge Rate
-                    </li>
-                </a>
-                <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
-                    <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
-                    User
-                </li>
-                </a>
+                    </a>*@
             </ul>
         </div>
     </div>
 }
 <body>
-    <div style="min-height:80vH">
-        <section>
-            <div style=" font-size:1.5rem">
-                <h3>Upload Rate</h3>
-                <div class="row">
-                    <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
-                        <label class="col-md-12 row">Carrier</label>
-                        <select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
-                            <option value="-1">Please Select a Carrier</option>
-                            <option value="-1">DHL</option>
-                            <option value="-1">FedEx</option>
-                        </select>
+    @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "edit-form", enctype = "multipart/form-data" }))
+    {
+
+
+        <div style="min-height:80vH">
+            <section>
+                <div style=" font-size:1.5rem">
+                    <h3>Upload Rate</h3>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
+                            <label class="col-md-12 row">Carrier</label>
+                            @Html.DropDownList("filter-cate", Model.ListCarriers, new { @class = "form-select form-control-lg mb-5 col-md-8", @id = "carrierSelect" })
+                            @*<select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
+                                    <option value="-1">Please Select a Carrier</option>
+                                    <option value="-1">DHL</option>
+                                    <option value="-1">FedEx</option>
+                                </select>*@
+                        </div>
+                        <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
+                            <label class="col-md-12 row">Year</label>
+                            @Html.DropDownList("filter-cate", Model.Years, new { @class = "form-select form-control-lg mb-5 col-md-8", @id = "yearSelect" })
+                            @*<select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
+                                    <option value="0">Please Select Year</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                </select>*@
+                        </div>
                     </div>
-                    <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
-                        <label class="col-md-12 row">Year</label>
-                        <select class="form-select form-control-lg mb-5 col-md-8" id="carrierSelect">
-                            <option value="0">Please Select Year</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                        </select>
+                    <div class="row mb-3" style="margin-left:0px">
+                        @*<input type="file" name="file" id="file" />*@
+                        @Html.TextBoxFor(m => m.file, new { @type = "file", id = "file", name = "file", accept = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" })
+                        <br />
+                        @*<input type="submit" value="Upload Image" id="upload" />*@
+                        <div style="display:block">
+                            <button type="button" class="btn btn-primary btn-lg" id="upload">Submit</button>
+                        </div>
                     </div>
+                    @foreach (var c in Model.ListFiles)
+                    {
+                        <div class="row ml-0">
+                            <div>
+                                <a href="@c.Text" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate @c.Value</a>
+                            </div>
+                        </div>
+                    }
                 </div>
-                <div class="row mb-3" style="margin-left:0px">
-                    <input type="file" name="file" id="file" />
-                    <br />
-                    @*<input type="submit" value="Upload Image" id="upload" />*@
-                    <div style="display:block">
-                        <button type="button" class="btn btn-primary btn-lg" id="upload">Submit</button>
-                    </div>
-                </div>
-                <div class="row ml-0">
-                    <div>
-                        <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate DHL</a>
-                    </div>
-                </div>
-                <div class="row ml-0">
-                    <div>
-                        <a href="/templateDHLFedEx.xlsx" download><img src="https://img.icons8.com/material-outlined/24/000000/download--v1.png" />Download teamplate FedEx</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <footer style=" position:absolute;top:100%; font-size:15px;">
-            <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
-        </footer>
-    </div>
+            </section>
+            <footer style=" position:absolute;top:100%; font-size:15px;">
+                <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
+            </footer>
+        </div>
+    }
 </body>
 
 <script>
+
     $("#upload").click(function () {
-        console.log("hello")
-        var file = $("#file").val();
-        console.log("file:", file)
-        $('<tr id="tr-id">')
-
-        if (file != "")
-            alert("Import file sucessful")
-        //for (i = 1; i < 15; i++) {
-        //    //var cost = data[i].Cost * parseFloat(weightSelect);
-        //    var cost = i * 1.5 + 20;
-        //    var Australia = Number(cost).toLocaleString();
-        //    var Argentina = Number(i * 1.7 + 20).toLocaleString()
-        //    var Austria = Number(i * 1.9 + 20).toLocaleString()
-        //    var Belgium = Number(i * 2.1 + 20).toLocaleString()
-        //    var Bolivia = Number(i * 2.3 + 20).toLocaleString()
-        //    var Brazil = Number(i * 2.1 + 20).toLocaleString()
-        //    var Canada = Number(i * 2 + 20).toLocaleString()
-        //    var Chile = Number(i * 1.9 + 20).toLocaleString()
-        //    var package = Number(i).toLocaleString();
-        //    console.log(cost)
-        //    $('<tr id="tr-id">')
-        //        .append($('<td>').append(package))
-        //        .append($('<td>').append(Argentina))
-        //        .append($('<td>').append(Australia))
-        //        .append($('<td>').append(Austria))
-        //        .append($('<td>').append(Belgium))
-        //        .append($('<td>').append(Bolivia))
-        //        .append($('<td>').append(Brazil))
-        //        .append($('<td>').append(Canada))
-        //        .append($('<td>').append(Chile))
-        //        .appendTo('table');
-        //}
-        else {
-            alert("You have not imported the file ")
+        //check year
+        var year = $('#yearSelect').val();
+        var carrier = $('#carrierSelect').val();
+        if (year == '') {
+            showMsg('You must choose a year', 'warn');
+            return;
         }
-    })
-
-
-    $("#weightSelect").change(function () {
-        console.log("sadsadaf")
-        var source = $("#weightSelect").val();
-        console.log(source)
-        var contentToRemove = document.querySelectorAll("#tr-id");
-        $(contentToRemove).remove();
-        if (source == "") {
-            for (i = 1; i < 15; i++) {
-                //var cost = data[i].Cost * parseFloat(weightSelect);
-                var cost = i * 1.5 + 20;
-                var Australia = Number(cost).toLocaleString();
-                var Argentina = Number(i * 1.7 + 20).toLocaleString()
-                var Austria = Number(i * 1.9 + 20).toLocaleString()
-                var Belgium = Number(i * 2.1 + 20).toLocaleString()
-                var Bolivia = Number(i * 2.3 + 20).toLocaleString()
-                var Brazil = Number(i * 2.1 + 20).toLocaleString()
-                var Canada = Number(i * 2 + 20).toLocaleString()
-                var Chile = Number(i * 1.9 + 20).toLocaleString()
-                var package = Number(i).toLocaleString();
-                console.log(cost)
-                $('<tr id="tr-id">')
-                    .append($('<td>').append(package))
-                    .append($('<td>').append(Argentina))
-                    .append($('<td>').append(Australia))
-                    .append($('<td>').append(Austria))
-                    .append($('<td>').append(Belgium))
-                    .append($('<td>').append(Bolivia))
-                    .append($('<td>').append(Brazil))
-                    .append($('<td>').append(Canada))
-                    .append($('<td>').append(Chile))
-                    .appendTo('table tbody');
+        if (carrier == '') {
+            showMsg('You must choose a carrier', 'warn');
+            return;
+        }
+        var form = $("#edit-form");
+        //console.log(fileUpload, fileUpload.files);
+        //check file
+        var fileData = new FormData(form[0]);
+        var fileUpload = $("#file")[0];
+        if (fileUpload.files.length > 0) {
+            let fileInput = fileUpload.files[0];
+            let name = fileInput.name;
+            if (name.indexOf('.xls') < 0) {
+                showMsg('You must select an excel file.', 'warn');
+                return;
             }
         }
         else {
-            var cost = source * 1.5 + 20;
-            var Australia = Number(cost).toLocaleString();
-            var Argentina = Number(source * 1.7 + 20).toLocaleString()
-            var Austria = Number(source * 1.9 + 20).toLocaleString()
-            var Belgium = Number(source * 2.1 + 20).toLocaleString()
-            var Bolivia = Number(source * 2.3 + 20).toLocaleString()
-            var Brazil = Number(source * 2.1 + 20).toLocaleString()
-            var Canada = Number(source * 2 + 20).toLocaleString()
-            var Chile = Number(source * 1.9 + 20).toLocaleString()
-            var package = Number(source).toLocaleString();
-            console.log(cost)
-            $('<tr id="tr-id">')
-                .append($('<td>').append(package))
-                .append($('<td>').append(Argentina))
-                .append($('<td>').append(Australia))
-                .append($('<td>').append(Austria))
-                .append($('<td>').append(Belgium))
-                .append($('<td>').append(Bolivia))
-                .append($('<td>').append(Brazil))
-                .append($('<td>').append(Canada))
-                .append($('<td>').append(Chile))
-                .appendTo('table tbody');
+            showMsg('You must select an excel file.','warn');
+            return;
         }
+        fileData.set('Year', year);
+        fileData.set('Carrier', carrier);
+        $("#upload").attr("disabled", true);
+        $.ajax({
+            url: '/UploadRate/UploadFile',
+            type: 'POST',
+            data: fileData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                console.log(data);
+                if (data.error.code == 0) {
+                    showMsg('The file uploaded successfully.','success');
+                }
+                else {
+                    showMsg('The file uploaded unsuccessfully.' + data.data);
+                }
+                $("#file").val('');
+                $("#upload").removeAttr("disabled");
+            },
+            error: function (xhr, error, status) {
+                $("#upload").removeAttr("disabled");
+                console.log(error, status);
+            }
+        });
     })
 </script>
-

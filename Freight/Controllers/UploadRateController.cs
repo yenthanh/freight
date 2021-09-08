@@ -61,6 +61,7 @@ namespace Freught1.Controllers
         [HttpPost]
         public JsonResult UploadFile(UploadRateView model)
         {
+            string tempFileName = "";
             try
             {
                 string serverPath = Hepler.ServerPath + "/UploadFolder/";
@@ -76,10 +77,10 @@ namespace Freught1.Controllers
                 HttpPostedFileBase file = model.file;// Request.Files[0];
                 int fileSize = file.ContentLength;
                 string fileName = file.FileName;
-                string tempFileName = serverPath+ "temp_" + DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + fileName;
+                tempFileName = serverPath+ "temp_" + DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + fileName;
                 //Step 1: Save the tempfile int Upload Folder
                 file.SaveAs(tempFileName);
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 //Step 2: Check validate the file base on carrier sheet
                 string checkFile = CheckUploadFile(model.Carrier, tempFileName);            
                 //Setp 3: If not ok, delete it => Insert log
@@ -96,6 +97,8 @@ namespace Freught1.Controllers
             }
             catch (Exception ex)
             {
+                if(System.IO.File.Exists(tempFileName))
+                    System.IO.File.Delete(tempFileName);
                 return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
             }
         }

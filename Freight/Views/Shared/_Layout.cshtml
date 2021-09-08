@@ -27,6 +27,8 @@
                 $('#alertMsg').attr('class','alert alert-warning');
             else if(type=='error')
                 $('#alertMsg').attr('class','alert alert-danger');
+            else if(type=='success')
+                $('#alertMsg').attr('class','alert alert-success');
             else $('#alertMsg').attr('class','alert alert-info');
             $('#alertMsg').html('<b>'+msg+'</b>');
             $("#alertMsg").fadeTo(7000, 500).slideUp(500, function () {
@@ -52,8 +54,6 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    <div class="alert" id="alertMsg">
-        
-    </div>
+    <div class="alert" id="alertMsg"></div>
 </body>
 </html>
