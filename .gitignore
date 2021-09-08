@@ -5,3 +5,9 @@
 */obj/
 *.dll
 *.pdb
+/Core/obj/
+/Core/bin/
+/packages/
+/ServiceDB/obj
+/ServiceDB/bin/
+/Freight/Properties/PublishProfiles/FolderProfile.pubxml.user
