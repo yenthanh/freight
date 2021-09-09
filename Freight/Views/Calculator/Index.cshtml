@@ -358,6 +358,7 @@
         $("#searchButton").click(function () {
             var source = $("#sourceSelect").val();
             var desination = $("#destinationSelect").val();
+            var carrier = $("#carrierSelect").val();
             var serviceValue = $("#servicesSelect").val();
             var packagingSelect = $("#packagingSelect").val();
             var weightSelect = $("#weightSelect").val();
@@ -394,14 +395,11 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (response) {
-                    if (response.data.Data.length == 0) {
-                        $('<tr id="tr-id" colspan="8">')
-                            .append($('<td>').append("Can not found"))
-                            .appendTo('table tbody');
-                    }
-                    else {
-                        for (var i = 0; i < response.data.Data.length; i++) {
-                            var item = response.data.Data[i];
+                    var count = 0;
+                    for (var i = 0; i < response.data.Data.length; i++) {
+                        var item = response.data.Data[i];
+                        if (carrier == '' || carrier == item.CARRIER_NAME) {
+                            count++;
                             $('<tr id="tr-id">')
                                 .append($('<td>').append(item.CARRIER_NAME))
                                 .append($('<td>').append(item.SERVICE_TYPE))
@@ -413,6 +411,12 @@
                                 .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
                                 .appendTo('table tbody');
                         }
+                    }
+
+                    if (count == 0) {
+                        $('<tr id="tr-id" colspan="8">')
+                            .append($('<td>').append("Can not found"))
+                            .appendTo('table tbody');
                     }
                 }
             });
