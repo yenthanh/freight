@@ -104,16 +104,16 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-6 col-md-4">
-                        <label id="lableService">Service type</label>
+                        <label id="lableService">Service Type</label>
                         <select class="form-select form-control-lg mb-5" id="servicesSelect">
                             <option selected>Services Type</option>
                         </select>
                     </div>
 
                     <div class="col-xs-6 col-md-4">
-                        <label id="lablePackaging">Packaging type</label>
+                        <label id="lablePackaging">Packaging Type</label>
                         <select class="form-select form-control-lg mb-5" id="packagingSelect">
-                            <option value="-1">Please Select a Packaging Type</option>
+                            <option selected>Please select carrier firstly</option>
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4">
@@ -234,19 +234,6 @@
                     s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
                 }
                 $("#carrierSelect").html(s);
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/Utility/GetListPackageType",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (data) {
-                var s = '<option value="-1">Please Select a Packing</option>';
-                for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
-                }
-                $("#packagingSelect").html(s);
             }
         });
 
