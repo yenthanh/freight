@@ -358,160 +358,52 @@
         $("#searchButton").click(function () {
             var source = $("#sourceSelect").val();
             var desination = $("#destinationSelect").val();
-            console.log("Source:", source)
-            console.log("desination:", desination)
-            console.log("search button")
-            var serviceValue = $("#servicesSelect").val()
-            var packagingSelect = $("#packagingSelect").val()
-            var weightSelect = $("#weightSelect").val()
-            var priorityEnvelope = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000, "AfterSC": 1100 }
-            var priorityPak = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "11.2%", "Workingdays": "2-4", "BeforeSC": 2000, "AfterSC": 2200 }
-            var priorityPackage = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
-            var economyEnvelope = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 4000, "AfterSC": 4400 }
-            var economyPak = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 5000, "AfterSC": 5500 }
-            var economyPackage = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 6000, "AfterSC": 6600 }
-            var priorityFreightNIL = { "Carrier": "Fedex", "Service": "Priority Freight", "Packaging": "NIL", "Weight": "68-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 7000, "AfterSC": 7700 }
-            var economyFreightEnvelope = { "Carrier": "Fedex", "Service": "Economy Freight", "Packaging": "NIL", "Weight": "68.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 8000, "AfterSC": 8800 }
-
-            var expressEnvelope = { "Carrier": "DHL", "Service": "Express", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000, "AfterSC": 1100 }
-            var expressPackage = { "Carrier": "DHL", "Service": "Express", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
-
-
-            var data = [];
-            console.log("Service:", serviceValue);
-            console.log("packaging:", packagingSelect);
-            var carrier = $("#carrierSelect").val()
-            console.log(carrier)
-            if (carrier == '0') {
-                data.push(priorityEnvelope,
-                    priorityPak,
-                    priorityPackage,
-                    economyEnvelope,
-                    economyPak,
-                    economyPackage,
-                    priorityFreightNIL,
-                    economyFreightEnvelope,
-                    expressEnvelope,
-                    expressPackage
-                )
-            }
-            if (carrier == '1') {
-                if (serviceValue == '0') {
-                    data.push(priorityEnvelope,
-                        priorityPak,
-                        priorityPackage,
-                        economyEnvelope,
-                        economyPak,
-                        economyPackage,
-                        priorityFreightNIL,
-                        economyFreightEnvelope
-                    )
-                }
-                if (serviceValue == '1') {
-                    if (packagingSelect == '0') {
-                        data.push(priorityPak, priorityEnvelope, priorityPackage)
-                    }
-                    if (packagingSelect == '1') {
-                        data.push(priorityEnvelope)
-                    }
-                    if (packagingSelect == '2') {
-                        data.push(priorityPak)
-                    }
-                    if (packagingSelect == '3') {
-                        data.push(priorityPackage)
-                    }
-                }
-                if (serviceValue == '2') {
-                    if (packagingSelect == '0') {
-                        data.push(economyEnvelope, economyPak, economyPackage)
-                    }
-                    if (packagingSelect == '1') {
-                        data.push(economyEnvelope)
-                    }
-                    if (packagingSelect == '2') {
-                        data.push(economyPak)
-                    }
-                    if (packagingSelect == '3') {
-                        data.push(economyPackage)
-                    }
-                }
-                if (serviceValue == '3') {
-                    data.push(priorityFreightNIL)
-                }
-                if (serviceValue == '4') {
-                    data.push(economyFreightEnvelope)
-                }
-            }
-            if (carrier == "2") {
-                if (serviceValue == "0") {
-                    data.push(expressEnvelope, expressPackage)
-                }
-                if (serviceValue == '5') {
-                    if (packagingSelect == '0') {
-                        data.push(expressEnvelope, expressPackage)
-                    }
-                    if (packagingSelect == '5') {
-                        data.push(expressEnvelope)
-                    }
-                    if (packagingSelect == '6') {
-                        data.push(expressPackage)
-                    }
-                }
-            }
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
-            if (source == "Origin" || desination == "Destination") {
+            if (source == "-1" || desination == "-1") {
                 alert('Source, destination are not empty');
+                return false;
             }
-            else {
-                if ($("#carrierSelect").val() !== "0") {
-                    if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-                        alert('Service, Packaging are not empty');
-                    }
-                    else {
-                        for (i = 0; i < data.length; i++) {
-                            var cost = data[i].BeforeSC * parseFloat(weightSelect);
-                            var string = Number(cost).toLocaleString();
-                            var cost1 = Number(cost) + (Number(cost) * 0.2);
-                            var string1 = Number(cost1).toLocaleString();
-                            console.log(string)
-                            $('<tr id="tr-id">')
-                                .append($('<td>').append(data[i].Carrier))
-                                .append($('<td>').append(data[i].Service))
-                                .append($('<td>').append(data[i].Packaging))
-                                .append($('<td>').append(data[i].Weight))
-                                .append($('<td>').append(data[i].Surcharge))
-                                .append($('<td>').append(data[i].Workingdays))
-                                .append($('<td>').append(string))
-                                .append($('<td>').append(string1))
-                                //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
-                                .appendTo('table tbody');
-                        }
-                    }
+            if ($("#carrierSelect").val() !== "0") {
+                if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                    alert('Service, Packaging are not empty');
+                    return false;
                 }
-                //var month = [2, 3, 6, 5, 4];
-                else {
-                    for (i = 0; i < data.length; i++) {
-                        debugger
-                        var cost = data[i].BeforeSC * parseFloat(weightSelect);
-                        var string = Number(cost).toLocaleString();
-                        var cost1 = Number(cost) + (Number(cost) * 0.2);
-                        var string1 = Number(cost1).toLocaleString();
-                        console.log(string)
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Calculator/GetPriceAdvance",
+                data: JSON.stringify({
+                    "Length": 1,
+                    "Height": 1,
+                    "Width": 1,
+                    "From": "SINGAPORE",
+                    "To": "MALAYSIA",
+                    "ServiceType": "",
+                    "PackageType": "",
+                    "Region": "",
+                    "Weight": 1
+                }),
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+
+                    var data = [];
+                    for (var i = 0; i < response.data.Data.length; i++) {
+                        var item = response.data.Data[i];
                         $('<tr id="tr-id">')
-                            .append($('<td>').append(data[i].Carrier))
-                            .append($('<td>').append(data[i].Service))
-                            .append($('<td>').append(data[i].Packaging))
-                            .append($('<td>').append(data[i].Weight))
-                            .append($('<td>').append(data[i].Surcharge))
-                            .append($('<td>').append(data[i].Workingdays))
-                            .append($('<td>').append(string))
-                            .append($('<td>').append(string1))
-                            //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
+                            .append($('<td>').append(item.CARRIER_NAME))
+                            .append($('<td>').append(item.SERVICE_TYPE))
+                            .append($('<td>').append(item.PACKAGE_TYPE))
+                            .append($('<td>').append(item.WEIGHT_RANGE))
+                            .append($('<td>').append(item.SURCHARGE))
+                            .append($('<td>').append(item.WORKING_DAYS))
+                            .append($('<td>').append(item.COST))
+                            .append($('<td>').append(item.COST * (1 + item.SURCHARGE/100)))
                             .appendTo('table tbody');
                     }
                 }
-            }
+            });
         })
     })
     $(document).ready(function () {
