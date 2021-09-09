@@ -279,7 +279,21 @@
                 var lablePackaging = '<label id="lablePackaging">Packaging Type</label>';
                 $("#lablePackaging").html(lablePackaging);
             }
-            $("#packagingSelect").html(pakagingOptionDefault);
+
+            $.ajax({
+                type: "GET",
+                url: "/Utility/GetListPackageTypeByCarrier?carrier=" + valueOfCarrier,
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    var s = '<option value="-1">Please Select a Packing Type</option>';
+                    for (var i = 0; i < data.data.length; i++) {
+                        s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                    }
+                    $("#packagingSelect").html(s);
+                }
+            });
+            
             $("#weightSelect").html(weightOptionDefault);
             var servicesForFedex = serviceOptionDefault + "<option value='1'>Priority (IP)</option>"
                 + "<option value='2'>Economy (IE)</option>"
