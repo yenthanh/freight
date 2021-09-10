@@ -257,39 +257,44 @@
     }
 
     $(document).ready(function () {
-        $.ajax({
-            type: "POST",
-            url: "/account/GetListUsers",
-            data: JSON.stringify({
-                "name": "",
-                "id": "",
-                "category": "",
-                "code": "",
-                "status": "",
-                "order_by": "",
-                "pageIndex": 1,
-                "pageSize": 20
-            }),
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-                for (var i = 0; i < response.data.Items.length; i++) {
-                    var item = response.data.Items[i];
-                    var btnEdit = $('<input value="Edit" class="record" type="button" onclick="Edit(1)" />');
-                    $('<tr id="tr-id">')
-                        .append($('<td>').append(item.USER_EMAIL))
-                        .append($('<td>').append(item.USER_NAME))
-                        .append($('<td>').append(item.SITE_ID))
-                        .append($('<td>').append(item.GROUP_ID))
-                        .append($('<td>').append(item.USER_STATUS))
-                        .append($('<td>').append(btnEdit))
-                        .appendTo('table tbody');
+        
+        function search() {
+            input = document.getElementById("myInput");
+            $.ajax({
+                type: "POST",
+                url: "/account/GetListUsers",
+                data: JSON.stringify({
+                    "name": input,
+                    "id": "",
+                    "category": "",
+                    "code": "",
+                    "status": "",
+                    "order_by": "",
+                    "pageIndex": 1,
+                    "pageSize": 2000
+                }),
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    for (var i = 0; i < response.data.Items.length; i++) {
+                        var item = response.data.Items[i];
+                        var btnEdit = $('<input value="Edit" class="record" type="button" onclick="Edit(1)" />');
+                        $('<tr id="tr-id">')
+                            .append($('<td>').append(item.USER_EMAIL))
+                            .append($('<td>').append(item.USER_NAME))
+                            .append($('<td>').append(item.SITE_ID))
+                            .append($('<td>').append(item.GROUP_ID))
+                            .append($('<td>').append(item.USER_STATUS))
+                            .append($('<td>').append(btnEdit))
+                            .appendTo('table tbody');
+                    }
+                    if (response.data.Items.length == 0) {
+                        $('<tr id="tr-id" colspan="8">')
+                            .append($('<td>').append("Can not found"))
+                            .appendTo('table tbody');
+                    }
                 }
-                if (response.data.Items.length == 0) {
-                    $('<tr id="tr-id" colspan="8">')
-                        .append($('<td>').append("Can not found"))
-                        .appendTo('table tbody');
-                }
-            }
-        })
+            })
+        };
+        search();
     });
 </script>
