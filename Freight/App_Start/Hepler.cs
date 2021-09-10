@@ -212,9 +212,23 @@ namespace MM_Freight_Rate_API_Backend
                 }
             }
         }
+
+        public static string LogFolder {
+            get
+            {
+                try {
+                    return System.Configuration.ConfigurationManager.AppSettings["LogFolder"];
+                }
+                catch
+                {
+                    return  Hepler.ServerPath ;
+                }
+            }
+        }
+
         public static bool DeleteLog()
         {
-            var mappedPath = Hepler.ServerPath + "Log\\";
+            var mappedPath = LogFolder;
             try
             {
                 if (Directory.Exists(mappedPath))
@@ -239,7 +253,7 @@ namespace MM_Freight_Rate_API_Backend
         }
         public static void Save2Log(string logMsg)
         {
-            var mappedPath = Hepler.ServerPath + "Log\\Error\\";
+            var mappedPath = Hepler.LogFolder;
             if (!Directory.Exists(mappedPath))
                 Directory.CreateDirectory(mappedPath);
             string fileName = mappedPath + "error_" + DateTime.Now.ToString("dd_MM_yyyy") + ".txt";
