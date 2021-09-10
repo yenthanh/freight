@@ -171,7 +171,7 @@
                     <label class="col-md-12 row">Search:</label>
                     <input type="text" id="myInput" onkeyup="search()" style="max-width: 395px" class="form-control" placeholder="Search for carrier..">
                 </div>
-                <table class="table" id="example">
+                <table class="table" id="tbResult">
                     <thead>
                         <tr>
                             <th scope="col">Carrier</th>
@@ -193,7 +193,7 @@
                 ·       Customs duties, taxes, service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.<br />
                 ·       Freight rates effective for the current calendar year.
             </p>
-            <button onclick="location.href='~/shipping-cost1.xlsx'" class="btn btn-primary btn-lg" role="button" type="button">Export</button>
+            <a href="#" id="btnExport" class="btn btn-primary btn-lg">Export</a>
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -204,6 +204,92 @@
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
     $(document).ready(function () {
+
+        function exportTableToCSV($table, filename) {
+
+            var $rows = $table.find('tbody tr:has(td)'),
+
+                // Temporary delimiter characters unlikely to be typed by keyboard
+                // This is to avoid accidentally splitting the actual contents
+                tmpColDelim = String.fromCharCode(11), // vertical tab character
+                tmpRowDelim = String.fromCharCode(0), // null character
+
+                // actual delimiter characters for CSV format
+                colDelim = ',',
+                rowDelim = '\r\n',
+
+                // Grab text from table into CSV formatted string
+                csv = $rows.map(function (i, row) {
+                    var $row = $(row),
+                        $cols = $row.find('td');
+
+                    return $cols.map(function (j, col) {
+                        var $col = $(col),
+                            text = $col.text();
+
+                        return text;//.replace(/"/g, '""'); // escape double quotes
+
+                    }).get().join(tmpColDelim);
+
+                }).get().join(tmpRowDelim)
+                    .split(tmpRowDelim).join(rowDelim)
+                    .split(tmpColDelim).join(colDelim);// + '"';
+            csv = "Carrier,Service Type,Packaging Type,Weight Range(kg),Current FSC	Working days(day),Rate Before Surcharge (SGD),Rate After Surcharge (SGD)" + rowDelim + csv;
+            csv += rowDelim + "Disclaimers:";
+            csv += rowDelim + "Customs duties; taxes; service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.";
+            csv += rowDelim + "Freight rates effective for the current calendar year.";
+
+            // Deliberate 'false', see comment below
+            if (false && window.navigator.msSaveBlob) {
+
+                var blob = new Blob([decodeURIComponent(csv)], {
+                    type: 'text/csv;charset=utf8'
+                });
+
+                // Crashes in IE 10, IE 11 and Microsoft Edge
+                // See MS Edge Issue #10396033
+                // Hence, the deliberate 'false'
+                // This is here just for completeness
+                // Remove the 'false' at your own risk
+                window.navigator.msSaveBlob(blob, filename);
+
+            } else if (window.Blob && window.URL) {
+                // HTML5 Blob        
+                var blob = new Blob([csv], {
+                    type: 'text/csv;charset=utf-8'
+                });
+                var csvUrl = URL.createObjectURL(blob);
+
+                $(this)
+                    .attr({
+                        'download': filename,
+                        'href': csvUrl
+                    });
+            } else {
+                // Data URI
+                var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+                $(this)
+                    .attr({
+                        'download': filename,
+                        'href': csvData,
+                        'target': '_blank'
+                    });
+            }
+        }
+
+        // This must be a hyperlink
+
+        $("#btnExport").click(function () {
+            // CSV
+            var args = [$('#tbResult'), 'export.csv'];
+
+            exportTableToCSV.apply(this, args);
+
+            // If CSV, don't do event.preventDefault() or return false
+            // We actually need this to be a typical hyperlink
+        });
+   
         var arr = [];
 
         var serviceOptionDefault = " <option selected value='0'>Services Type</option>";
@@ -360,6 +446,7 @@
 
 
         })
+        
         $("#searchButton").click(function () {
             var source = $("#sourceSelect").val();
             var desination = $("#destinationSelect").val();
@@ -446,7 +533,7 @@
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        table = document.getElementById("example");
+        table = document.getElementById("tbResult");
         tr = table.getElementsByTagName("tr");
 
         // Loop through all table rows, and hide those who don't match the search query
