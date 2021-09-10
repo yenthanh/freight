@@ -87,19 +87,19 @@
                         <label class="col-md-12 row">Name</label>
                         <input class="col-md-12" type="text" id="editName" value="" />
                     </div>
-                    <div class="col-xs-4 col-md-3" style="margin-top: 15px; ">
-                        <label class="col-md-12 row">Profile</label>
-                        <select id="editProfile" class="form-select form-control-lg mb-1 col-md-9">
-                            <option value="System Administrator">System Administrator</option>
-                            <option value="Enquiry">Enquiry</option>
+                    <div class="col-xs-4 col-md-2" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Site</label>
+                        <select id="editSite" class="form-select form-control-lg mb-1 col-md-9">
                         </select>
                     </div>
-                    <div class="col-xs-4 col-md-3" style="margin-top: 15px; ">
+                    <div class="col-xs-4 col-md-2" style="margin-top: 15px; ">
+                        <label class="col-md-12 row">Profile</label>
+                        <select id="editProfile" class="form-select form-control-lg mb-1 col-md-9">
+                        </select>
+                    </div>
+                    <div class="col-xs-4 col-md-2" style="margin-top: 15px; ">
                         <label class="col-md-12 row">Status</label>
                         <select id="editStatus" class="form-select form-control-lg mb-1 col-md-9">
-                            <option value="Pending">Pending</option>
-                            <option value="Active">Approve</option>
-                            <option value="Inactive">Inactive</option>
                         </select>
                     </div>
                 </div>
@@ -250,6 +250,21 @@
                 $("#editStatus").html(s);
             }
         });
+
+        $.ajax({
+            type: "GET",
+            url: "/Account/GetListSites",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                var s = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
+                }
+                $("#editSite").html(s);
+            }
+        });
+        
         $.ajax({
             type: "GET",
             url: "/Account/GetListGroup",
@@ -263,15 +278,46 @@
                 $("#editProfile").html(s);
             }
         });
+
+        function toggleEdit(isEdit) {
+            if (isEdit == true) {
+                $("#divMonth").removeAttr("hidden");
+            }
+            else {
+                $("#divMonth").attr("hidden", "true");
+            }
+        }
+
         $(document).on('click', ".edit-record", function () {
             var index = $(this).attr("editId");
             $("#editEmail").val(userList[index].USER_EMAIL);
             $("#editName").val(userList[index].USER_NAME);
+            $("#editSite").val(userList[index].SITE_ID).change();
             $("#editProfile").val(userList[index].GROUP_ID).change();
             $("#editStatus").val(userList[index].USER_STATUS).change();
             $("#divMonth").removeAttr("hidden");
             $("#saveButton").removeAttr("hidden");
         });
+
+        $("#saveButton").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/account/UpdateUser",
+                data: JSON.stringify({
+                    "Name": $("#editName").val(),
+                    "email": $("#editEmail").val(),
+                    "Site": $("#editSite").val(),
+                    "Group": $("#editProfile").val(),
+                    "Status": $("#editStatus").val()
+                }),
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    toggleEdit(false);
+                    search();
+                }
+            })
+        });
+
         function search() {
             input = document.getElementById("myInput");
             $.ajax({
