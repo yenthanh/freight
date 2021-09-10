@@ -26,7 +26,7 @@ namespace MM_Freight_Rate_API_Backend
                 //filterContext.HttpContext.Response.Redirect(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
                 filterContext.HttpContext.Response.Redirect(LoginPage);
             }
-            base.OnAuthorization(filterContext);
+            //base.OnAuthorization(filterContext);
             //if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
             //{
             //    filterContext.HttpContext.Response.Redirect(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
@@ -37,7 +37,7 @@ namespace MM_Freight_Rate_API_Backend
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             //filterContext.Result = new RedirectResult(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
-            filterContext.HttpContext.Response.Redirect(LoginPage);
+            filterContext.Result = new RedirectResult(LoginPage);
         }
 
     }
