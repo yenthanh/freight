@@ -45,10 +45,10 @@
 
             <ul id="menu-content" class="menu-content collapse out">
                 <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#products" class="collapsed">
-                    <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
-                    Calculator
-                </li>
+                    <li data-toggle="collapse" data-target="#products" class="collapsed">
+                        <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
+                        Calculator
+                    </li>
 
                 </a>
                 <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
@@ -64,10 +64,10 @@
                     </li>
                 </a>
                 <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed active">
-                    <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
-                    User
-                </li>
+                    <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed active">
+                        <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
+                        User
+                    </li>
                 </a>
             </ul>
         </div>
@@ -76,6 +76,7 @@
 <body>
     <div style="min-height:80vH">
         <section>
+            <h3>User</h3>
             <div style=" font-size:1.5rem">
                 <div class="row" id="divMonth" hidden>
                     <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
@@ -127,54 +128,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td id="user_1">admin@gmail.com</td>
-                                <td id="name_1">admin</td>
-                                <td id="siteid_1">MMCA</td>
-                                <td id="role_1">System Administrator</td>
-                                <td id="active_1">Active</td>
-                                <td><input value="Edit" class="record" type="button" onclick="Edit(1)" /></td>
-                            </tr>
-                            <tr>
-                                <td id="user_2">test@gmail.com</td>
-                                <td id="name_2">test1</td>
-                                <td id="siteid_2">MMCA</td>
-                                <td id="role_2">Enquiry</td>
-                                <td id="active_2">Active</td>
-                                <td><input value="Edit" class="record" type="button" onclick="Edit(2)" /></td>
-                            </tr>
-                            <tr>
-                                <td id="user_3">test2@gmail.com</td>
-                                <td id="name_3">test2</td>
-                                <td id="siteid_3">MMCA</td>
-                                <td id="role_3">Enquiry</td>
-                                <td id="active_3">Inactive</td>
-                                <td><input value="Edit" class="record" type="button" onclick="Edit(3)" /></td>
-                            </tr>
-                            <tr>
-                                <td id="user_4">test3@gmail.com</td>
-                                <td id="name_4">test2</td>
-                                <td id="siteid_4">MMCA</td>
-                                <td id="role_4">Enquiry</td>
-                                <td id="active_4">Pending</td>
-                                <td><input value="Edit" class="record" type="button" onclick="Edit(4)" /></td>
-                            </tr>
-                            <tr>
-                                <td id="user_5">test4@gmail.com</td>
-                                <td id="name_5">test2</td>
-                                <td id="siteid_5">MMCA</td>
-                                <td id="role_5">Enquiry</td>
-                                <td id="active_5">Pending</td>
-                                <td><input value="Edit" class="record" type="button" onclick="Edit(5)" /></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
-                </div>
-                <div>
-                    <input hidden id="selected" />
-                </div>
-</section>      
+            </div>
+            <div>
+                <input hidden id="selected" />
+            </div>
+        </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
         </footer>
@@ -209,7 +170,7 @@
         $("#email").val("");
         $("#selected").val("");
         $("#divMonth").attr("hidden", true);
-        $("#saveButton").attr("hidden",true);
+        $("#saveButton").attr("hidden", true);
     });
     function myFunc(id) {
         debugger
@@ -294,4 +255,41 @@
             }
         }
     }
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/account/GetListUsers",
+            data: JSON.stringify({
+                "name": "",
+                "id": "",
+                "category": "",
+                "code": "",
+                "status": "",
+                "order_by": "",
+                "pageIndex": 1,
+                "pageSize": 20
+            }),
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                for (var i = 0; i < response.data.Items.length; i++) {
+                    var item = response.data.Items[i];
+                    var btnEdit = $('<input value="Edit" class="record" type="button" onclick="Edit(1)" />');
+                    $('<tr id="tr-id">')
+                        .append($('<td>').append(item.USER_EMAIL))
+                        .append($('<td>').append(item.USER_NAME))
+                        .append($('<td>').append(item.SITE_ID))
+                        .append($('<td>').append(item.GROUP_ID))
+                        .append($('<td>').append(item.USER_STATUS))
+                        .append($('<td>').append(btnEdit))
+                        .appendTo('table tbody');
+                }
+                if (response.data.Items.length == 0) {
+                    $('<tr id="tr-id" colspan="8">')
+                        .append($('<td>').append("Can not found"))
+                        .appendTo('table tbody');
+                }
+            }
+        })
+    });
 </script>
