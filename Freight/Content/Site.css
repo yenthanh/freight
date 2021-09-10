@@ -54,3 +54,4 @@ h3 {
     margin: 0 auto;
 }
 .alert-warning{background-color:orange; color:white;}
+.mgroup label {font-weight: 400; padding-right: 10px}
