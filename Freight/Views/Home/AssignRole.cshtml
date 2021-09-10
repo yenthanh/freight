@@ -240,14 +240,13 @@
         });
 
         function search(status) {
-            input = document.getElementById("myInput");
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
             $.ajax({
                 type: "POST",
                 url: "/account/GetListUsers",
                 data: JSON.stringify({
-                    "name": input.textContent,
+                    "name": $("#myInput").val(),
                     "id": "",
                     "category": "",
                     "code": "",
