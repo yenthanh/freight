@@ -303,6 +303,22 @@ namespace Freught1.Controllers
         }
         #endregion
 
+        [HttpGet]
+        [CustomExceptionFilter]
+        public JsonResult GetUserStatus()
+        {
+            try
+            {
+                UtilityService sv = new UtilityService();
+                var result = sv.GetListUserStatus();
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+
+        }
         [HttpGet]        
         [CustomExceptionFilter]
         public JsonResult GetListSites()
@@ -319,6 +335,24 @@ namespace Freught1.Controllers
             }
 
         }
+
+        [HttpGet]
+        [CustomExceptionFilter]
+        public JsonResult GetListGroup()
+        {
+            try
+            {
+                UtilityService sv = new UtilityService();
+                var result = sv.GetListUserGroup();
+                return Json(new JsonObject(0, "SUCCESS", result), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
         [HttpPost]
         [CustomExceptionFilter]
         public JsonResult GetListUsers(AdvSearchModel model)

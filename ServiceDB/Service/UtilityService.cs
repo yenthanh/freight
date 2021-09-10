@@ -123,7 +123,19 @@ namespace ServiceDB.Service
         public List<DropDownItem> GetListSite()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            DataTable table = dbObject.ExecDataTable("SELECT STATUS as value, DESCRIPTION as text from REF_STATUS_TYPE WHERE TYPE='MM_SITE'  ORDER BY STATUS", sqlParameters.ToArray());
+            DataTable table = dbObject.ExecDataTable("SELECT STATUS as value, DESCRIPTION as text from REF_STATUS_TYPE WHERE TYPE='MM_SITE'  ORDER BY ORDER_SEQ", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
+        }
+        public List<DropDownItem> GetListUserGroup()
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            DataTable table = dbObject.ExecDataTable("SELECT GROUP_ID as value, GROUP_NAME as text from REF_GROUP_USER   ORDER BY GROUP_NAME", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
+        }
+        public List<DropDownItem> GetListUserStatus()
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            DataTable table = dbObject.ExecDataTable("SELECT STATUS as value, DESCRIPTION as text from REF_STATUS_TYPE WHERE TYPE='USER_STATUS'  ORDER BY ORDER_SEQ", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
         public DataTable GetAllSheetByCarrier(string carrier)
