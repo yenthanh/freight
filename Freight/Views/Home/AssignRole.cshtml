@@ -81,18 +81,22 @@
                 <div class="row" id="divMonth" hidden>
                     <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
                         <label class="col-md-12 row">Email</label>
-                        <input class="form-select form-control-lg mb-5 col-md-12" type="text" readonly id="email" value="" />
+                        <input class="col-md-12" type="text" readonly id="editEmail" value="" />
+                    </div>
+                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; " hidden>
+                        <label class="col-md-12 row">Name</label>
+                        <input class="col-md-12" type="text" readonly id="editName" value="" />
                     </div>
                     <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
                         <label class="col-md-12 row">Profile</label>
-                        <select id="role" class="form-select form-control-lg mb-5 col-md-9">
+                        <select id="editProfile" class="form-select form-control-lg mb-1 col-md-9">
                             <option value="System Administrator">System Administrator</option>
                             <option value="Enquiry">Enquiry</option>
                         </select>
                     </div>
                     <div class="col-xs-4 col-md-4 " style="margin-top: 15px; ">
                         <label class="col-md-12 row">Status</label>
-                        <select id="active1" class="form-select form-control-lg mb-5 col-md-9">
+                        <select id="editStatus" class="form-select form-control-lg mb-1 col-md-9">
                             <option value="Pending">Pending</option>
                             <option value="Active">Approve</option>
                             <option value="Inactive">Inactive</option>
@@ -144,34 +148,8 @@
 
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
-    function Edit(id) {
-        var iduser = "#user_" + id;
-        var idrole = "#role_" + id;
-        var idactive = "#active_" + id;
-        var s = $(iduser).text();
-        var s2 = $(idrole).text();
-        var s3 = $(idactive).text();
-        $("#email").val(s);
-        $("#role").val(s2).change();
-        $("#active1").val(s3).change();
-        $("#selected").val(id);
-        $("#divMonth").removeAttr("hidden");
-        $("#saveButton").removeAttr("hidden");
-    }
-    $("#saveButton").click(function () {
-        var s = $("#role").val();
-        var s1 = $("#active1").val();
-        var tdrole = "#role_" + $("#selected").val();
-        var html = '<td id="' + tdrole + '">' + s + '</td>';
-        $(tdrole).replaceWith(html);
-        var tdactive = "#active_" + $("#selected").val();
-        var html1 = '<td id="' + tdactive + '">' + s1 + '</td>';
-        $(tdactive).replaceWith(html1);
-        $("#email").val("");
-        $("#selected").val("");
-        $("#divMonth").attr("hidden", true);
-        $("#saveButton").attr("hidden", true);
-    });
+
+    
     function myFunc(id) {
         debugger
         var s = "";
@@ -257,7 +235,42 @@
     }
 
     $(document).ready(function () {
-        
+        var userList;
+
+        $.ajax({
+            type: "GET",
+            url: "/Account/GetUserStatus",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                var s = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
+                }
+                $("#editStatus").html(s);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "/Account/GetListGroup",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                var s = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
+                }
+                $("#editProfile").html(s);
+            }
+        });
+        $(document).on('click', ".edit-record", function () {
+            var index = $(this).attr("editId");
+            $("#editEmail").val(userList[index].USER_EMAIL);
+            $("#editProfile").val(userList[index].GROUP_ID).change();
+            $("#editStatus").val(userList[index].USER_STATUS).change();
+            $("#divMonth").removeAttr("hidden");
+            $("#saveButton").removeAttr("hidden");
+        });
         function search() {
             input = document.getElementById("myInput");
             $.ajax({
@@ -275,9 +288,12 @@
                 }),
                 contentType: "application/json;charset=utf-8",
                 success: function (response) {
+                    userList = response.data.Items;
                     for (var i = 0; i < response.data.Items.length; i++) {
                         var item = response.data.Items[i];
-                        var btnEdit = $('<input value="Edit" class="record" type="button" onclick="Edit(1)" />');
+                        //var btnEdit = $('<input value="Edit" class="record" type="button" onclick="Edit(' + item.USER_EMAIL + '","' + item.USER_NAME + '","' + item.SITE_ID + '","' + item.GROUP_ID + '","' + item.USER_STATUS + '")" />');
+
+                        var btnEdit = $('<input value="Edit" class="edit-record" type="button" editId="' + i + '"  />');
                         $('<tr id="tr-id">')
                             .append($('<td>').append(item.USER_EMAIL))
                             .append($('<td>').append(item.USER_NAME))
