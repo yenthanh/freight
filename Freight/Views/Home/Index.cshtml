@@ -35,7 +35,8 @@
 
     function SSO() {
         //location.href = '/UAT/Freight_Wireframe/Calculator/Index?email=staff1@gmail.com';
-        let urlMM = 'https://ebiz3-uat.mentormedia.com/UAT/O365Login?Redirect=';
+        //let urlMM = 'https://ebiz3-uat.mentormedia.com/UAT/O365Login?Redirect=';
+        let urlMM = 'https://sgweb07-uat.mentormedia.com/UAT/O365Login?Redirect=';
         let urlLocal = window.location.href;
         location.href = urlMM + urlLocal;
     }
@@ -54,7 +55,7 @@
         }
         var CTLSX = JSON.stringify(login)
         $.ajax({
-            url: "/account/Login_2FA",
+            url: baseURL+"/account/Login_2FA",
             type: "POST",
             dataType: "json",
             contentType: "application/json;charset=utf-8",
@@ -62,7 +63,7 @@
             success: function (data) {
                 console.log("---> data", data);
                 if (data.error.code == 0)
-                    window.location.href = "/Calculator/Index";
+                    window.location.href = baseURL + "/Calculator/Index";
                 else {
                     showMsg(data.data);
                 }

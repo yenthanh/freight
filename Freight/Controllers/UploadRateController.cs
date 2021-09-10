@@ -37,7 +37,7 @@ namespace Freught1.Controllers
             model.ListFiles = new List<SelectListItem>();
             foreach (var c in configService.GetByCode("FILE_TEMPLATE"))
             {
-                model.ListFiles.Add(new SelectListItem() { Text = c.PARA_VALUE, Value = c.CARRIER_ID });
+                model.ListFiles.Add(new SelectListItem() { Text =Hepler.URL+c.PARA_VALUE, Value = c.CARRIER_ID });
             }
             return View(model);
         }

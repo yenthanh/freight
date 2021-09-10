@@ -22,6 +22,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript">
+        var baseURL = '@MM_Freight_Rate_API_Backend.Hepler.URL';
         function showMsg(msg,type=''){
             if(type=='' || type=='warn') 
                 $('#alertMsg').attr('class','alert alert-warning');
@@ -35,6 +36,7 @@
                 $("#salertMsg").slideUp(500);
             });
         }
+        
     </script>
 
 </head>

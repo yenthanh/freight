@@ -203,11 +203,11 @@ namespace Freught1.Controllers
                     return new JsonObject(returnItem.ERR_NO, returnItem.CODE,returnItem.MSG);
                 else//auto add email
                 {
-                    if(returnItem.ERR_NO == 11 && role != "PROFILE")
-                        return new JsonObject(returnItem.ERR_NO, returnItem.CODE, returnItem.MSG);
-                    var isAdd= sv.UpdateUser("ADD",login.username,"");                    
-                    if(isAdd.ERR_NO==0)
-                        returnItem = sv.CheckLogin(login.username, login.pwd);
+                    //if(returnItem.ERR_NO == 11 && role != "PROFILE")
+                    //    return new JsonObject(returnItem.ERR_NO, returnItem.CODE, returnItem.MSG);
+                    //var isAdd= sv.UpdateUser("ADD",login.username,"");                    
+                    //if(isAdd.ERR_NO==0)
+                    //    returnItem = sv.CheckLogin(login.username, login.pwd);
                     if (returnItem.ERR_NO != 0)
                         return new JsonObject(returnItem.ERR_NO, returnItem.CODE, returnItem.MSG);
                     else
@@ -373,11 +373,11 @@ namespace Freught1.Controllers
         [HttpPost]
         public JsonResult UpdateUser(UserModel model)
         {
-            if(string.IsNullOrEmpty(model.Email))
-                return Json(new JsonObject(999, "INVALID","Invalid parameter"), JsonRequestBehavior.AllowGet);
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Site))
+                return Json(new JsonObject(999, "INVALID", "Invalid parameter"), JsonRequestBehavior.AllowGet);            
             try
             {
-                var result= sv.UpdateUser("UPDATE", new MS_USER() { USER_EMAIL = model.Email, SITE_ID = model.Site,GROUP_ID=model.Group,
+                var result= sv.UpdateUser("UPDATE", new MS_USER() { USER_EMAIL = model.Email,USER_NAME=model.Name, SITE_ID = model.Site,GROUP_ID=model.Group,
                 USER_STATUS=model.Status}, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
                 if(result.ERR_NO==0)
                     return Json(new JsonObject(0, "SUCCESS",result.MSG), JsonRequestBehavior.AllowGet);

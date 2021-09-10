@@ -61,6 +61,21 @@ namespace MM_Freight_Rate_API_Backend
                 return true;
             }
         }
+        public static string URL
+        {
+            get
+            {
+                try
+                {
+                    return System.Configuration.ConfigurationManager.AppSettings["URL"];
+                }
+                catch
+                {
+                    return "";
+                }
+            }
+            
+        }
         public static string ImageToBase64(System.Drawing.Bitmap image)
         {
             var imageStream = new MemoryStream();
@@ -156,7 +171,7 @@ namespace MM_Freight_Rate_API_Backend
         {
             get
             {
-                return new Models.LoggedModel() {Channel="Web",UserEmail="admin@hotmail.com",UserName= "admin@hotmail.com", Role="WEB" };
+               // return new Models.LoggedModel() {Channel="Web",UserEmail="admin@hotmail.com",UserName= "admin@hotmail.com", Role="WEB" };
                 //if (string.IsNullOrEmpty(HttpContext.Current.Request.Headers["token_key"]))                
                 if (HttpContext.Current.Session["token_key"]==null|| string.IsNullOrEmpty(HttpContext.Current.Session["token_key"].ToString()))
                 {

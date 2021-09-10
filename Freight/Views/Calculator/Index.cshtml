@@ -280,7 +280,7 @@
         var weightOptionDefault = "<option selected value='0'>Weight</option>";
         $.ajax({
             type: "GET",
-            url: "/Utility/GetListCountry",
+            url: baseURL +"/Utility/GetListCountry",
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (data) {
@@ -294,7 +294,7 @@
         });
         $.ajax({
             type: "GET",
-            url: "/Utility/GetListCarriers",
+            url: baseURL +"/Utility/GetListCarriers",
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (data) {
@@ -325,7 +325,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "/Utility/GetListPackageTypeByCarrier?carrier=" + valueOfCarrier,
+                url: baseURL +"/Utility/GetListPackageTypeByCarrier?carrier=" + valueOfCarrier,
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
@@ -339,7 +339,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "/Utility/GetListServices",
+                url: baseURL +"/Utility/GetListServices",
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
@@ -455,7 +455,7 @@
             }
             $.ajax({
                 type: "POST",
-                url: "/Calculator/GetPriceAdvance",
+                url: baseURL +"/Calculator/GetPriceAdvance",
                 data: JSON.stringify({
                     "Length": length,
                     "Height": height,
