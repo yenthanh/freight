@@ -79,22 +79,22 @@
             <h3>User</h3>
             <div style=" font-size:1.5rem">
                 <div class="row" id="divMonth" hidden>
-                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
+                    <div class="col-xs-4 col-md-3" style="margin-top: 15px; ">
                         <label class="col-md-12 row">Email</label>
-                        <input class="col-md-12" type="text" readonly id="editEmail" value="" />
+                        <input class="col-md-12" type="text" readonly disabled id="editEmail" value="" />
                     </div>
-                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; " hidden>
+                    <div class="col-xs-4 col-md-3" style="margin-top: 15px; ">
                         <label class="col-md-12 row">Name</label>
-                        <input class="col-md-12" type="text" readonly id="editName" value="" />
+                        <input class="col-md-12" type="text" id="editName" value="" />
                     </div>
-                    <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
+                    <div class="col-xs-4 col-md-3" style="margin-top: 15px; ">
                         <label class="col-md-12 row">Profile</label>
                         <select id="editProfile" class="form-select form-control-lg mb-1 col-md-9">
                             <option value="System Administrator">System Administrator</option>
                             <option value="Enquiry">Enquiry</option>
                         </select>
                     </div>
-                    <div class="col-xs-4 col-md-4 " style="margin-top: 15px; ">
+                    <div class="col-xs-4 col-md-3" style="margin-top: 15px; ">
                         <label class="col-md-12 row">Status</label>
                         <select id="editStatus" class="form-select form-control-lg mb-1 col-md-9">
                             <option value="Pending">Pending</option>
@@ -266,6 +266,7 @@
         $(document).on('click', ".edit-record", function () {
             var index = $(this).attr("editId");
             $("#editEmail").val(userList[index].USER_EMAIL);
+            $("#editName").val(userList[index].USER_NAME);
             $("#editProfile").val(userList[index].GROUP_ID).change();
             $("#editStatus").val(userList[index].USER_STATUS).change();
             $("#divMonth").removeAttr("hidden");
