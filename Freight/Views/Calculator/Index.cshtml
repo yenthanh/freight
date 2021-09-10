@@ -46,10 +46,10 @@
 
             <ul id="menu-content" class="menu-content collapse out">
                 <a href="/UAT/Freight_Wireframe/Calculator/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#products" class="collapsed active">
-                    <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
-                    Calculator
-                </li>
+                    <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                        <i class="fa fa-lg fa-dashboard fa-lg" style="padding-right:10px"></i>
+                        Calculator
+                    </li>
 
                 </a>
                 <a href="/UAT/Freight_Wireframe/UploadRate/Index" style="text-decoration:none">
@@ -59,16 +59,16 @@
                     </li>
                 </a>
                 <a href="/UAT/Freight_Wireframe/SurchargeRate/Index" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" id="surrate" class="collapsed">
-                    <i class="fa fa-lg fa-caret-up" style="padding-right:8px"></i>
-                    Surcharge Rate
-                </li>
+                    <li data-toggle="collapse" data-target="#new" id="surrate" class="collapsed">
+                        <i class="fa fa-lg fa-caret-up" style="padding-right:8px"></i>
+                        Surcharge Rate
+                    </li>
                 </a>
-                 <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
-                <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
-                    <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
-                    User
-                </li>
+                <a href="/UAT/Freight_Wireframe/Home/AssignRole" style="text-decoration:none">
+                    <li data-toggle="collapse" data-target="#new" id="asrole" class="collapsed">
+                        <i class="fa fa-lg fa-user" style="padding-right:8px"></i>
+                        User
+                    </li>
                 </a>
             </ul>
         </div>
@@ -84,57 +84,36 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;">
                         <label>Origin<i style="color:red" title="Required">*</i></label>
                         <select class="form-select form-control-lg mb-5" id="sourceSelect">
-                            <option selected>Origin</option>
-                            <option value="Singapore">Singapore</option>
-                            <option value="Argentina">Argentina</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Austria">Austria</option>
-                            <option value="Belgium">Belgium</option>
-                            <option value="Bolivia">Bolivia</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Canada">Canada</option>
-                            <option value="Chile">Chile</option>
-
+                            <option value="">Please Select a Country</option>
                         </select>
                     </div>
 
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
                         <label>Destination<i style="color:red" title="Required">*</i></label>
                         <select class="form-select form-control-lg mb-5" id="destinationSelect">
-                            <option selected>Destination</option>
-                            <option value="Singapore">Singapore</option>
-                            <option value="Argentina">Argentina</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Austria">Austria</option>
-                            <option value="Belgium">Belgium</option>
-                            <option value="Bolivia">Bolivia</option>
-                            <option value="Brazil">Brazil</option>
-                            <option value="Canada">Canada</option>
-                            <option value="Chile">Chile</option>
+                            <option value="">Please Select a Country</option>
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
                         <label>Carrier</label>
                         <select class="form-select form-control-lg mb-5" id="carrierSelect">
-                            <option selected value="0">Carrier</option>
-                            <option value="1">Fedex</option>
-                            <option value="2">DHL</option>
+                            <option value="">Please Select a Carrier</option>
                         </select>
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="col-xs-6 col-md-4">
-                        <label id="lableService">Service type</label>
+                        <label id="lableService">Service Type</label>
                         <select class="form-select form-control-lg mb-5" id="servicesSelect">
-                            <option selected>Services Type</option>
+                            <option selected value="">Please select carrier firstly</option>
                         </select>
                     </div>
 
                     <div class="col-xs-6 col-md-4">
-                        <label id="lablePackaging">Packaging type</label>
+                        <label id="lablePackaging">Packaging Type</label>
                         <select class="form-select form-control-lg mb-5" id="packagingSelect">
-                            <option selected value="0">Packaging Type</option>
+                            <option selected value="">Please select carrier firstly</option>
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4">
@@ -152,7 +131,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="lengthGroup">
                         <label for="exampleInputEmail1">Length</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Length" class="form-control" aria-label="Weight" style="max-width: 395px">
+                            <input type="text" id="txtLength" placeholder="Length" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -162,7 +141,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px" id="widthGroup">
                         <label for="exampleInputEmail1">Width</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Width" class="form-control" aria-label="Weight" style="max-width: 395px">
+                            <input type="text" id="txtWidth" placeholder="Width" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -171,7 +150,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="heightGroup">
                         <label for="exampleInputEmail1">Height</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="weightSelect" placeholder="Height" class="form-control" aria-label="Weight" style="max-width: 395px">
+                            <input type="text" id="txtHeight" placeholder="Height" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -192,7 +171,7 @@
                     <label class="col-md-12 row">Search:</label>
                     <input type="text" id="myInput" onkeyup="search()" style="max-width: 395px" class="form-control" placeholder="Search for carrier..">
                 </div>
-                <table class="table" id="example">
+                <table class="table" id="tbResult">
                     <thead>
                         <tr>
                             <th scope="col">Carrier</th>
@@ -214,7 +193,7 @@
                 ·       Customs duties, taxes, service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.<br />
                 ·       Freight rates effective for the current calendar year.
             </p>
-            <button onclick="location.href='~/shipping-cost1.xlsx'" class="btn btn-primary btn-lg" role="button" type="button">Export</button>
+            <a href="#" id="btnExport" class="btn btn-primary btn-lg">Export</a>
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -225,11 +204,126 @@
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
     $(document).ready(function () {
+
+        function exportTableToCSV($table, filename) {
+
+            var $rows = $table.find('tbody tr:has(td)'),
+
+                // Temporary delimiter characters unlikely to be typed by keyboard
+                // This is to avoid accidentally splitting the actual contents
+                tmpColDelim = String.fromCharCode(11), // vertical tab character
+                tmpRowDelim = String.fromCharCode(0), // null character
+
+                // actual delimiter characters for CSV format
+                colDelim = ',',
+                rowDelim = '\r\n',
+
+                // Grab text from table into CSV formatted string
+                csv = $rows.map(function (i, row) {
+                    var $row = $(row),
+                        $cols = $row.find('td');
+
+                    return $cols.map(function (j, col) {
+                        var $col = $(col),
+                            text = $col.text();
+
+                        return text;//.replace(/"/g, '""'); // escape double quotes
+
+                    }).get().join(tmpColDelim);
+
+                }).get().join(tmpRowDelim)
+                    .split(tmpRowDelim).join(rowDelim)
+                    .split(tmpColDelim).join(colDelim);// + '"';
+            csv = "Carrier,Service Type,Packaging Type,Weight Range(kg),Current FSC	Working days(day),Rate Before Surcharge (SGD),Rate After Surcharge (SGD)" + rowDelim + csv;
+            csv += rowDelim + "Disclaimers:";
+            csv += rowDelim + "Customs duties; taxes; service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.";
+            csv += rowDelim + "Freight rates effective for the current calendar year.";
+
+            // Deliberate 'false', see comment below
+            if (false && window.navigator.msSaveBlob) {
+
+                var blob = new Blob([decodeURIComponent(csv)], {
+                    type: 'text/csv;charset=utf8'
+                });
+
+                // Crashes in IE 10, IE 11 and Microsoft Edge
+                // See MS Edge Issue #10396033
+                // Hence, the deliberate 'false'
+                // This is here just for completeness
+                // Remove the 'false' at your own risk
+                window.navigator.msSaveBlob(blob, filename);
+
+            } else if (window.Blob && window.URL) {
+                // HTML5 Blob        
+                var blob = new Blob([csv], {
+                    type: 'text/csv;charset=utf-8'
+                });
+                var csvUrl = URL.createObjectURL(blob);
+
+                $(this)
+                    .attr({
+                        'download': filename,
+                        'href': csvUrl
+                    });
+            } else {
+                // Data URI
+                var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+                $(this)
+                    .attr({
+                        'download': filename,
+                        'href': csvData,
+                        'target': '_blank'
+                    });
+            }
+        }
+
+        // This must be a hyperlink
+
+        $("#btnExport").click(function () {
+            // CSV
+            var args = [$('#tbResult'), 'export.csv'];
+
+            exportTableToCSV.apply(this, args);
+
+            // If CSV, don't do event.preventDefault() or return false
+            // We actually need this to be a typical hyperlink
+        });
+   
         var arr = [];
 
         var serviceOptionDefault = " <option selected value='0'>Services Type</option>";
         var pakagingOptionDefault = "<option selected value='0'>Packaging Type</option>";
         var weightOptionDefault = "<option selected value='0'>Weight</option>";
+        $.ajax({
+            type: "GET",
+            url: "/Utility/GetListCountry",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                var s = '<option value="">Please Select a Country</option>';
+                for (var i = 0; i < data.data.length; i++) {
+                    s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
+                }
+                $("#sourceSelect").html(s);
+                $("#destinationSelect").html(s);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "/Utility/GetListCarriers",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                var s = '<option value="">Please Select a Carrier</option>';
+                for (var i = 0; i < data.data.length; i++) {
+                    s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                }
+                $("#carrierSelect").html(s);
+            }
+        });
+
+
         // Event choose carrier
         $("#carrierSelect").change(function () {
             var valueOfCarrier = $("#carrierSelect").val();
@@ -245,7 +339,39 @@
                 var lablePackaging = '<label id="lablePackaging">Packaging Type</label>';
                 $("#lablePackaging").html(lablePackaging);
             }
-            $("#packagingSelect").html(pakagingOptionDefault);
+
+            $.ajax({
+                type: "GET",
+                url: "/Utility/GetListPackageTypeByCarrier?carrier=" + valueOfCarrier,
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    var s = '<option value="">Please Select a Packing Type</option>';
+                    for (var i = 0; i < data.data.length; i++) {
+                        s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                    }
+                    $("#packagingSelect").html(s);
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Utility/GetListServices",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+
+                    var carrier = $("#carrierSelect").val();
+                    var s = '<option value="">Please Select a Service Type</option>';
+                    for (var i = 0; i < data.data.length; i++) {
+                        if (carrier == '' || carrier == data.data[i].extend) {
+                            s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                        }
+                    }
+                    $("#servicesSelect").html(s);
+                }
+            });
+
             $("#weightSelect").html(weightOptionDefault);
             var servicesForFedex = serviceOptionDefault + "<option value='1'>Priority (IP)</option>"
                 + "<option value='2'>Economy (IE)</option>"
@@ -288,7 +414,7 @@
 
             var packagingValue = $(this).val();
             var weightElement = $("#weightSelect");
-     
+
             if (packagingValue == '0' || packagingValue == '5') {
                 $('#heightGroup').attr('hidden', false);
                 $('#widthGroup').attr('hidden', false);
@@ -316,167 +442,77 @@
                 weightElement.html(option3);
             }
 
-         
+
 
 
         })
+        
         $("#searchButton").click(function () {
             var source = $("#sourceSelect").val();
             var desination = $("#destinationSelect").val();
-            console.log("Source:", source)
-            console.log("desination:", desination)
-            console.log("search button")
-            var serviceValue = $("#servicesSelect").val()
-            var packagingSelect = $("#packagingSelect").val()
-            var weightSelect = $("#weightSelect").val()
-            var priorityEnvelope = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000,"AfterSC":1100 }
-            var priorityPak = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "11.2%", "Workingdays": "2-4", "BeforeSC": 2000,"AfterSC": 2200 }
-            var priorityPackage = { "Carrier": "Fedex", "Service": "Priority", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
-            var economyEnvelope = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 4000, "AfterSC": 4400 }
-            var economyPak = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Pak", "Weight": "0.5-2.5", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 5000, "AfterSC": 5500 }
-            var economyPackage = { "Carrier": "Fedex", "Service": "Economy", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "3-6", "BeforeSC": 6000, "AfterSC": 6600 }
-            var priorityFreightNIL = { "Carrier": "Fedex", "Service": "Priority Freight", "Packaging": "NIL", "Weight": "68-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 7000, "AfterSC": 7700 }
-            var economyFreightEnvelope = { "Carrier": "Fedex", "Service": "Economy Freight", "Packaging": "NIL", "Weight": "68.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 8000, "AfterSC": 8800 }
+            var carrier = $("#carrierSelect").val();
+            var serviceValue = $("#servicesSelect").val();
+            var packagingSelect = $("#packagingSelect").val();
+            var weightSelect = $("#weightSelect").val();
+            var height = $("#txtHeight").val();
+            var length = $("#txtLength").val();
+            var width = $("#txtWidth").val();
 
-            var expressEnvelope = { "Carrier": "DHL", "Service": "Express", "Packaging": "Envelope", "Weight": "0-2.5", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 1000, "AfterSC": 1100}
-            var expressPackage = { "Carrier": "DHL", "Service": "Express", "Packaging": "Package", "Weight": "0.5-99,999", "Surcharge": "10%", "Workingdays": "2-4", "BeforeSC": 3000, "AfterSC": 3300 }
-
-
-            var data = [];
-            console.log("Service:", serviceValue);
-            console.log("packaging:", packagingSelect);
-            var carrier = $("#carrierSelect").val()
-            console.log(carrier)
-            if (carrier == '0') {
-                data.push(priorityEnvelope,
-                    priorityPak,
-                    priorityPackage,
-                    economyEnvelope,
-                    economyPak,
-                    economyPackage,
-                    priorityFreightNIL,
-                    economyFreightEnvelope,
-                    expressEnvelope,
-                    expressPackage
-                )
-            }
-            if (carrier == '1') {
-                if (serviceValue == '0') {
-                    data.push(priorityEnvelope,
-                        priorityPak,
-                        priorityPackage,
-                        economyEnvelope,
-                        economyPak,
-                        economyPackage,
-                        priorityFreightNIL,
-                        economyFreightEnvelope
-                    )
-                }
-                if (serviceValue == '1') {
-                    if (packagingSelect == '0') {
-                        data.push(priorityPak, priorityEnvelope, priorityPackage)
-                    }
-                    if (packagingSelect == '1') {
-                        data.push(priorityEnvelope)
-                    }
-                    if (packagingSelect == '2') {
-                        data.push(priorityPak)
-                    }
-                    if (packagingSelect == '3') {
-                        data.push(priorityPackage)
-                    }
-                }
-                if (serviceValue == '2') {
-                    if (packagingSelect == '0') {
-                        data.push(economyEnvelope, economyPak, economyPackage)
-                    }
-                    if (packagingSelect == '1') {
-                        data.push(economyEnvelope)
-                    }
-                    if (packagingSelect == '2') {
-                        data.push(economyPak)
-                    }
-                    if (packagingSelect == '3') {
-                        data.push(economyPackage)
-                    }
-                }
-                if (serviceValue == '3') {
-                    data.push(priorityFreightNIL)
-                }
-                if (serviceValue == '4') {
-                    data.push(economyFreightEnvelope)
-                }
-            }
-            if (carrier == "2") {
-                if (serviceValue == "0") {
-                    data.push(expressEnvelope, expressPackage)
-                }
-                if (serviceValue == '5') {
-                    if (packagingSelect == '0') {
-                        data.push(expressEnvelope, expressPackage)
-                    }
-                    if (packagingSelect == '5') {
-                        data.push(expressEnvelope)
-                    }
-                    if (packagingSelect == '6') {
-                        data.push(expressPackage)
-                    }
-                }
-            }
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
-            if (source == "Origin" || desination == "Destination") {
+            if (source == "" || desination == "") {
                 alert('Source, destination are not empty');
+                return false;
             }
-            else {
-                if ($("#carrierSelect").val() !== "0") {
-                    if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-                        alert('Service, Packaging are not empty');
-                    }
-                    else {
-                        for (i = 0; i < data.length; i++) {
-                            var cost = data[i].BeforeSC * parseFloat(weightSelect);
-                            var string = Number(cost).toLocaleString();
-                            var cost1 = Number(cost) + (Number(cost) * 0.2);
-                            var string1 = Number(cost1).toLocaleString();
-                            console.log(string)
+            if ($("#carrierSelect").val() !== "0") {
+                if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                    alert('Service, Packaging are not empty');
+                    return false;
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Calculator/GetPriceAdvance",
+                data: JSON.stringify({
+                    "Length": length,
+                    "Height": height,
+                    "Width": width,
+                    "From": source,
+                    "To": desination,
+                    "ServiceType": serviceValue,
+                    "PackageType": packagingSelect,
+                    "Region": "",
+                    "Weight": weightSelect
+                }),
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    var count = 0;
+
+                    for (var i = 0; i < response.data.Data.length; i++) {
+                        var item = response.data.Data[i];
+                        if (carrier == '' || carrier == item.CARRIER_NAME) {
+                            count++;
                             $('<tr id="tr-id">')
-                                .append($('<td>').append(data[i].Carrier))
-                                .append($('<td>').append(data[i].Service))
-                                .append($('<td>').append(data[i].Packaging))
-                                .append($('<td>').append(data[i].Weight))
-                                .append($('<td>').append(data[i].Surcharge))
-                                .append($('<td>').append(data[i].Workingdays))
-                                .append($('<td>').append(string))
-                                .append($('<td>').append(string1))
-                                //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
+                                .append($('<td>').append(item.CARRIER_NAME))
+                                .append($('<td>').append(item.SERVICE_TYPE))
+                                .append($('<td>').append(item.PACKAGE_TYPE))
+                                .append($('<td>').append(item.WEIGHT_RANGE))
+                                .append($('<td>').append(item.SURCHARGE))
+                                .append($('<td>').append(item.WORKING_DAYS))
+                                .append($('<td>').append(item.COST))
+                                .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
                                 .appendTo('table tbody');
                         }
                     }
-                }
-                //var month = [2, 3, 6, 5, 4];
-                else {
-                    for (i = 0; i < data.length; i++) {
-                        debugger
-                        var cost = data[i].BeforeSC * parseFloat(weightSelect);
-                        var string = Number(cost).toLocaleString();
-                        var cost1 = Number(cost) + (Number(cost) * 0.2);
-                        var string1 = Number(cost1).toLocaleString();
-                        console.log(string)
-                        $('<tr id="tr-id">')
-                            .append($('<td>').append(data[i].Carrier))
-                            .append($('<td>').append(data[i].Service))
-                            .append($('<td>').append(data[i].Packaging))
-                            .append($('<td>').append(data[i].Weight))
-                            .append($('<td>').append(data[i].Surcharge))
-                            .append($('<td>').append(data[i].Workingdays))
-                            .append($('<td>').append(string))
-                            .append($('<td>').append(string1))
-                            //.append($('<td>').append([data[i].Cost * parseInt(weightSelect))
+
+                    if (count == 0) {
+                        $('<tr id="tr-id" colspan="8">')
+                            .append($('<td>').append("Can not found"))
                             .appendTo('table tbody');
                     }
                 }
-            }
+            });
         })
     })
     $(document).ready(function () {
@@ -497,7 +533,7 @@
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
-        table = document.getElementById("example");
+        table = document.getElementById("tbResult");
         tr = table.getElementsByTagName("tr");
 
         // Loop through all table rows, and hide those who don't match the search query

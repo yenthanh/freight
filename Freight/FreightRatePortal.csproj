@@ -284,6 +284,10 @@
     <Content Include="Style\login.css" />
     <Content Include="Style\navbar.css" />
     <Content Include="Style\sidebar.css" />
+    <Content Include="UploadFolder\DHL_Ratecard_200000.xlsx" />
+    <Content Include="UploadFolder\DHL_Ratecard_Template_09022021.xlsx" />
+    <Content Include="UploadFolder\FedEx_Ratecard_2100000.xlsx" />
+    <Content Include="UploadFolder\FedEx_Ratecard_Template_09022021.xlsx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -315,10 +319,6 @@
     <Content Include="Views\Home\SignUp.cshtml" />
     <Content Include="Views\SurchargeRate\Index.cshtml" />
     <Content Include="shipping-cost1.xlsx" />
-    <Content Include="UploadFolder\DHL_Ratecard_010121.xlsx" />
-    <Content Include="UploadFolder\DHL_Ratecard_Template_09022021.xlsx" />
-    <Content Include="UploadFolder\FedEx_Ratecard_010121.xlsx" />
-    <Content Include="UploadFolder\FedEx_Ratecard_Template_09022021.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
