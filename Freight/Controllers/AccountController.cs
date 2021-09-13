@@ -1,4 +1,5 @@
 ﻿using Core;
+using MM.AlertEmail;
 using MM_Freight_Rate_API_Backend;
 using MM_Freight_Rate_API_Backend.Models;
 using Newtonsoft.Json;
@@ -166,6 +167,11 @@ namespace Freught1.Controllers
             var returnItem = sv.UpdateLogger(model.username, tokenKey, roleID);
             UserService userService = new UserService();
             var modules = userService.GetModuleByUser(model.username);
+            //update path
+            foreach(var m in modules)
+            {
+                m.URL = Hepler.URL + m.URL;
+            }
             if (returnItem.ERR_NO == 0)
             {
                 MM_Freight_Rate_API_Backend.Hepler.AddSession(model.username, tokenKey,modules);
@@ -380,7 +386,20 @@ namespace Freught1.Controllers
                 var result= sv.UpdateUser("UPDATE", new MS_USER() { USER_EMAIL = model.Email,USER_NAME=model.Name, SITE_ID = model.Site,GROUP_ID=model.Group,
                 USER_STATUS=model.Status}, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
                 if(result.ERR_NO==0)
-                    return Json(new JsonObject(0, "SUCCESS",result.MSG), JsonRequestBehavior.AllowGet);
+                {
+                    //Once admin Approve user, email sent out to user
+                    if (model.Status== "APPROVED")
+                    {
+                        SendAlertEmail sendAlertEmail = new SendAlertEmail();
+                        var sendEmail = sendAlertEmail.SendActiveEmail(model.Email, model.Name);
+                        if(sendEmail.error.code==0)
+                            return Json(new JsonObject(0, "SUCCESS", result.MSG), JsonRequestBehavior.AllowGet);
+                        else
+                            return Json(new JsonObject(0, "SUCCESS", "Actived the email but the system cannot send email to this email."), JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new JsonObject(0, "SUCCESS", result.MSG), JsonRequestBehavior.AllowGet);
+                }
+                    
                 else
                     return Json(new JsonObject(result.ERR_NO, result.CODE, result.MSG), JsonRequestBehavior.AllowGet);
             }
@@ -400,11 +419,12 @@ namespace Freught1.Controllers
                     return Json(new JsonObject(999, "INVALID", "Invalid parameter"), JsonRequestBehavior.AllowGet);
                 if (model.Email.ToLower().IndexOf("@mentormedia.com")<0)
                     return Json(new JsonObject(998, "INVALID_EMAIL", "The email must have a valid Mentor Media email"), JsonRequestBehavior.AllowGet);
-                var result = sv.UpdateUser("SIGN_UP", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Name, SITE_ID = model.Site }, MM_Freight_Rate_API_Backend.Hepler.GetLogged.UserEmail);
+                var result = sv.UpdateUser("SIGN_UP", new MS_USER() { USER_EMAIL = model.Email, USER_NAME = model.Name, SITE_ID = model.Site }, "SYSTEM");
                 if (result.ERR_NO == 0)
                 {
                     MM.AlertEmail.SendAlertEmail sendAlert = new MM.AlertEmail.SendAlertEmail();
-                    var sendEmailResult = sendAlert.SendSignUpEmail(model.Email);
+                    //Upon sign up successful, send email to user and admin
+                    var sendEmailResult = sendAlert.SendSignUpEmail(model.Email,model.Name);
                     if(sendEmailResult.error.code==0)
                     //Send email
                         return Json(new JsonObject(0, "SUCCESS", "Added and sent email successfull"), JsonRequestBehavior.AllowGet);

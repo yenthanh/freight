@@ -126,7 +126,7 @@ namespace MM.AlertEmail
             }
             return new JsonObject(erroCode, errorCode, errorCodeMsg);
         }
-        public JsonObject SendSignUpEmail(string account)
+        public JsonObject SendSignUpEmail(string accountEmail,string accountName)
         {
             this.InitEmailSetting();
              
@@ -140,7 +140,7 @@ namespace MM.AlertEmail
                 File.AppendAllText(logFile, strLog);
                 return new JsonObject(erroCode, errorCode, errorCodeMsg);
             }
-            body = MakeData(account);
+            body = MakeData(emailBody, accountEmail, accountName);
             if (string.IsNullOrEmpty(body))
             {
                 strLog += "STATUS: FALSE" + Environment.NewLine;
@@ -154,16 +154,57 @@ namespace MM.AlertEmail
             //body = emailBody+  body;
 
             body = body.Replace("@DATE", DateTime.Now.ToString("dd/MM/yyyy"));
+            string tittleAdmin = "", emailToADmin="", emailCCAdmin = "", emailBCCAdmin = "",  emailBodyAdmin = "";            
             try
             {
+                
+                ConfigService configService = new ConfigService();
+                DataTable tblEmailConfig = configService.GetEmailConfigByParameter("ADMIN_SIGNUP");
+                if (tblEmailConfig == null || tblEmailConfig.Rows.Count == 0)
+                {
+                    erroCode = 80;
+                    errorCode = "MISS_EMAIL_ADMIN_CONFIG";
+                    errorCodeMsg = "Doest not have email for admin. Please contact system support team to add ADMIN_SIGNUP into the system.";
+                }
+                else
+                {
+                    tittleAdmin = tblEmailConfig.Rows[0]["EMAIL_SUBJECT"] != null ? tblEmailConfig.Rows[0]["EMAIL_SUBJECT"].ToString() : "";
+                    emailToADmin = GetAllAdmin();// tblEmailConfig.Rows[0]["EMAIL_TO"] != null ? tblEmailConfig.Rows[0]["EMAIL_TO"].ToString() : "";
+                    emailCCAdmin = tblEmailConfig.Rows[0]["EMAIL_CC"] != null ? tblEmailConfig.Rows[0]["EMAIL_CC"].ToString() : "";
+                    emailBCCAdmin = tblEmailConfig.Rows[0]["EMAIL_BCC"] != null ? tblEmailConfig.Rows[0]["EMAIL_BCC"].ToString() : "";
+                    emailBodyAdmin = tblEmailConfig.Rows[0]["EMAIL_BODY"] != null ? tblEmailConfig.Rows[0]["EMAIL_BODY"].ToString() : "";
+                    
+                    if (string.IsNullOrEmpty(emailToADmin)||string.IsNullOrEmpty(tittleAdmin) || string.IsNullOrEmpty(emailBodyAdmin))
+                    {
+                        erroCode = 41;
+                        errorCode = "MISS_EMAIL_ADMIN_CONFIG";
+                        errorCodeMsg = "The email's title does not setup correct. Please contact system support team.";
+                    }
+                }
+                int resultAdmin = 0;
                 strLog += "Start to sent email.... ";
-                int result = SendMailBySendGrid(authenticate==1,emailFrom, senderAddress, emailPwd, smtpServer, smtpPort, isSSL == 1, account, tittle, body, emailCC, emailBCC, null, out errorCodeMsg);
+                int result = SendMailBySendGrid(authenticate==1,emailFrom, senderAddress, emailPwd, smtpServer, smtpPort, isSSL == 1, accountEmail, tittle, body, emailCC, emailBCC, null, out errorCodeMsg);
+                
                 if (result == 1)//ok
                 {
-                    erroCode = 0;
-                    errorCodeMsg = "Sent email successfull";
-                    strLog += "STATUS: OK" + Environment.NewLine;
-                    strLog += "Message: " + errorCodeMsg + Environment.NewLine;
+                    string outMsgAdmin = "";
+                    emailBodyAdmin = MakeData(emailBodyAdmin,accountEmail, accountName);
+                    resultAdmin = SendMailBySendGrid(authenticate == 1, emailFrom, senderAddress, emailPwd, smtpServer, smtpPort, isSSL == 1, emailToADmin, tittleAdmin, emailBodyAdmin, emailCCAdmin, emailBCCAdmin, null, out outMsgAdmin);
+                    if (resultAdmin == 1)
+                    {
+                        erroCode = 0;
+                        errorCodeMsg = "Sent email successfull";
+                        strLog += "STATUS: OK" + Environment.NewLine;
+                        strLog += "Message: " + errorCodeMsg + Environment.NewLine;
+                    }
+                    else
+                    {
+                        erroCode = 0;
+                        errorCodeMsg = "Sent email to admin unsuccessfull. Please check email admin in Configuration table.";
+                        strLog += "STATUS: NO OK" + Environment.NewLine;
+                        strLog += "Message: " + outMsgAdmin + Environment.NewLine;
+                    }
+                    
                 }
                 else
                 {
@@ -184,9 +225,97 @@ namespace MM.AlertEmail
             return new JsonObject(erroCode, errorCode, errorCodeMsg);
         }
 
-        private string MakeData(string account)
+        private string GetAllAdmin()
         {
-            return string.Format(emailBody,account);
+            UserService userService = new UserService();
+            return userService.GetAllAdmin();
+        }
+
+        public JsonObject SendActiveEmail(string accountEmail, string accountName)
+        {
+            this.InitEmailSetting();
+
+            string strLog = Environment.NewLine + "Send alert email for active email at " + DateTime.Now.ToString() + Environment.NewLine;
+            if (erroCode != 0)
+            {
+                strLog += "STATUS: FALSE" + Environment.NewLine;
+                strLog += "Error Code :" + erroCode.ToString() + Environment.NewLine;
+                strLog += "Error Message:" + errorCodeMsg + Environment.NewLine;
+                strLog += "-----------END----------";
+                File.AppendAllText(logFile, strLog);
+                return new JsonObject(erroCode, errorCode, errorCodeMsg);
+            }
+            ConfigService configService = new ConfigService();
+            DataTable tblEmailConfig = configService.GetEmailConfigByParameter("ACTIVE_SIGNUP");
+            if (tblEmailConfig == null || tblEmailConfig.Rows.Count == 0)
+            {
+                erroCode = 80;
+                errorCode = "MISS_EMAIL_ACTIVE_CONFIG";
+                errorCodeMsg = "Doest not have email for active email. Please contact system support team to add ACTIVE_SIGNUP into the system.";
+            }
+            else
+            {
+                tittle = tblEmailConfig.Rows[0]["EMAIL_SUBJECT"] != null ? tblEmailConfig.Rows[0]["EMAIL_SUBJECT"].ToString() : "";
+                emailTo = accountEmail;
+                emailCC = tblEmailConfig.Rows[0]["EMAIL_CC"] != null ? tblEmailConfig.Rows[0]["EMAIL_CC"].ToString() : "";
+                emailBCC = tblEmailConfig.Rows[0]["EMAIL_BCC"] != null ? tblEmailConfig.Rows[0]["EMAIL_BCC"].ToString() : "";
+                body = tblEmailConfig.Rows[0]["EMAIL_BODY"] != null ? tblEmailConfig.Rows[0]["EMAIL_BODY"].ToString() : "";
+
+                if (string.IsNullOrEmpty(tittle) || string.IsNullOrEmpty(body))
+                {
+                    erroCode = 41;
+                    errorCode = "MISS_EMAIL_ADMIN_CONFIG";
+                    errorCodeMsg = "The email's title does not setup correct. Please contact system support team.";
+                }
+            }
+            body = MakeData(body,accountEmail, accountName);
+            if (string.IsNullOrEmpty(body))
+            {
+                strLog += "STATUS: FALSE" + Environment.NewLine;
+                strLog += "Error Code :1" + Environment.NewLine;
+                strLog += "Error Message: No data to send" + Environment.NewLine;
+                strLog += "-----------END----------";
+                File.AppendAllText(logFile, strLog);
+                return new JsonObject(erroCode, errorCode, errorCodeMsg);
+            }
+            //body= emailBody in db+new line+ all part id
+            //body = emailBody+  body;
+            body = body.Replace("@DATE", DateTime.Now.ToString("dd/MM/yyyy"));            
+            try
+            {
+                strLog += "Start to sent email.... ";
+                int result = SendMailBySendGrid(authenticate == 1, emailFrom, senderAddress, emailPwd, smtpServer, smtpPort, isSSL == 1, accountEmail, tittle, body, emailCC, emailBCC, null, out errorCodeMsg);
+
+                if (result == 1)//ok
+                {
+                    erroCode = 0;
+                    errorCodeMsg = "Sent email successfull";
+                    strLog += "STATUS: OK" + Environment.NewLine;
+                    strLog += "Message: " + errorCodeMsg + Environment.NewLine;
+
+                }
+                else
+                {
+                    erroCode = 15;
+                    strLog += "STATUS: FALSE" + Environment.NewLine;
+                    strLog += "Error Code: " + erroCode.ToString() + Environment.NewLine;
+                    strLog += "Error Message: " + errorCodeMsg + Environment.NewLine;
+                    errorCodeMsg = "Email cannot be sent out. Please contact system support team.";
+                }
+                strLog += "-----------END----------";
+                File.AppendAllText(logFile, strLog);
+            }
+            catch (Exception ex)
+            {
+                erroCode = 16;
+                errorCodeMsg = ex.Message;
+            }
+            return new JsonObject(erroCode, errorCode, errorCodeMsg);
+        }
+
+        private string MakeData(string emailSentBody,string account,string name)
+        {
+            return string.Format(emailSentBody, account, name);
         }
 
         private int SendMailBySendGrid(bool isAuthentice, string username, string sFrom, string pass, string provider, int port, bool isSSL, string sTo, string sSubject, string sContent, string email_CC, string email_BCC, string fileName, out string error)

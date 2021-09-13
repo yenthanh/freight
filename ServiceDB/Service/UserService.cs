@@ -97,15 +97,14 @@ namespace ServiceDB.Service
             total = int.Parse(totalParameter.Value.ToString());
             return CollectionHelper.ConvertTo<MS_USER>(table).ToList();
         }
-        //public int CheckAccess(string username, string module)
-        //{
-        //    List<SqlParameter> sqlParameters = new List<SqlParameter>();
-
-        //    sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_EMAIL", Value = username, DbType = System.Data.DbType.String });
-        //    sqlParameters.Add(new SqlParameter() { ParameterName = "@MODULE_ID", Value = module, DbType = System.Data.DbType.String });
-        //    object obj = dbObject.ExcuteFunctionCommand("[FN_CHECK_IS_ACCESS_MODULE]", sqlParameters.ToArray());
-        //    return int.Parse(obj.ToString());
-        //}
+        public string GetAllAdmin()
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            //sqlParameters.Add(new SqlParameter() { ParameterName = "@USER_NAME", Value = "abc", DbType = System.Data.DbType.String });
+            object obj = dbObject.ExcuteFunctionCommand("[FN_GET_EMAIL_ADMIN]()", sqlParameters.ToArray());
+            if (obj == null) return string.Empty;
+            return obj.ToString();
+        }
 
     }
 
