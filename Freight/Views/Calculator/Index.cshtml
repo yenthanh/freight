@@ -45,7 +45,7 @@
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
-                @foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
+                @*@foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
                 {
                     <a href="@m.URL" style="text-decoration:none">
                         <li data-toggle="collapse" class="collapsed" data-target="#products">
@@ -53,7 +53,8 @@
                             @m.MODULE_NAME
                         </li>
                     </a>
-                }
+                }*@
+                </ul>
         </div>
     </div>
 }
@@ -67,20 +68,20 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;">
                         <label>Origin<i style="color:red" title="Required">*</i></label>
                         <select class="form-select form-control-lg mb-5" id="sourceSelect">
-                            <option value="">Please Select a Country</option>
+                            <option value="">Please Select Source!</option>
                         </select>
                     </div>
 
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
                         <label>Destination<i style="color:red" title="Required">*</i></label>
                         <select class="form-select form-control-lg mb-5" id="destinationSelect">
-                            <option value="">Please Select a Country</option>
+                            <option value="">Please Select Destination!</option>
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4" style="margin-top: 15px; ">
                         <label>Carrier</label>
                         <select class="form-select form-control-lg mb-5" id="carrierSelect">
-                            <option value="">Please Select a Carrier</option>
+                            <option value="">Please Select Carrier</option>
                         </select>
                     </div>
 
@@ -102,7 +103,7 @@
                     <div class="col-xs-6 col-md-4">
                         <label for="exampleInputEmail1">Weight</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex;">
-                            <input type="text" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight" style="max-width:395px">
+                            <input type="number" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight" style="max-width:395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">Kg</span>
                             </div>
@@ -114,7 +115,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="lengthGroup">
                         <label for="exampleInputEmail1">Length</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="txtLength" placeholder="Length" class="form-control" aria-label="Weight" style="max-width: 395px">
+                            <input type="number" id="txtLength" placeholder="Length" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -124,7 +125,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px" id="widthGroup">
                         <label for="exampleInputEmail1">Width</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="txtWidth" placeholder="Width" class="form-control" aria-label="Weight" style="max-width: 395px">
+                            <input type="number" id="txtWidth" placeholder="Width" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -133,7 +134,7 @@
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="heightGroup">
                         <label for="exampleInputEmail1">Height</label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
-                            <input type="text" id="txtHeight" placeholder="Height" class="form-control" aria-label="Weight" style="max-width: 395px">
+                            <input type="number" id="txtHeight" placeholder="Height" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
                                 <span class="input-group-text">CM</span>
                             </div>
@@ -298,7 +299,7 @@
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (data) {
-                var s = '<option value="">Please Select a Carrier</option>';
+                var s = '<option value="">Please Select Carrier</option>';
                 for (var i = 0; i < data.data.length; i++) {
                     s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
                 }
@@ -329,7 +330,7 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
-                    var s = '<option value="">Please Select a Packing Type</option>';
+                    var s = '<option value="">Please Select Packing Type</option>';
                     for (var i = 0; i < data.data.length; i++) {
                         s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
                     }
@@ -345,7 +346,7 @@
                 success: function (data) {
 
                     var carrier = $("#carrierSelect").val();
-                    var s = '<option value="">Please Select a Service Type</option>';
+                    var s = '<option value="">Please Select Service Type</option>';
                     for (var i = 0; i < data.data.length; i++) {
                         if (carrier == '' || carrier == data.data[i].extend) {
                             s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
@@ -444,7 +445,7 @@
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
             if (source == "" || desination == "") {
-                alert('Source, destination are not empty');
+                alert('Please select source and destination!');
                 return false;
             }
             if ($("#carrierSelect").val() !== "0") {
@@ -491,7 +492,7 @@
 
                     if (count == 0) {
                         $('<tr id="tr-id">')
-                            .append($('<td colspan="8">').append("Can not found"))
+                            .append($('<td colspan="8">').append("No records found!"))
                             .appendTo('table tbody');
                     }
                 }
