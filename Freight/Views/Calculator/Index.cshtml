@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Caculator";
     var role = ViewBag.role;
+    var message = ViewBag.Result;
+    var listSearch = ViewBag.List ;
 }
 <style>
     .input-group-lg > .form-control:not(textarea), .input-group-lg > .custom-select {
@@ -177,7 +179,11 @@
                 ·       Customs duties, taxes, service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.<br />
                 ·       Freight rates effective for the current calendar year.
             </p>
-            <a href="#" id="btnExport" class="btn btn-primary btn-lg">Export</a>
+
+
+            <a href="/Calculator/Export/" class="btn btn-primary btn-lg"> Export </a> 
+
+
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -189,91 +195,8 @@
 <script>
     $(document).ready(function () {
 
-        function exportTableToCSV($table, filename) {
 
-            var $rows = $table.find('tbody tr:has(td)'),
 
-                // Temporary delimiter characters unlikely to be typed by keyboard
-                // This is to avoid accidentally splitting the actual contents
-                tmpColDelim = String.fromCharCode(11), // vertical tab character
-                tmpRowDelim = String.fromCharCode(0), // null character
-
-                // actual delimiter characters for CSV format
-                colDelim = ',',
-                rowDelim = '\r\n',
-
-                // Grab text from table into CSV formatted string
-                csv = $rows.map(function (i, row) {
-                    var $row = $(row),
-                        $cols = $row.find('td');
-
-                    return $cols.map(function (j, col) {
-                        var $col = $(col),
-                            text = $col.text();
-
-                        return text;//.replace(/"/g, '""'); // escape double quotes
-
-                    }).get().join(tmpColDelim);
-
-                }).get().join(tmpRowDelim)
-                    .split(tmpRowDelim).join(rowDelim)
-                    .split(tmpColDelim).join(colDelim);// + '"';
-            csv = "Carrier,Service Type,Packaging Type,Weight Range(kg),Current FSC	Working days(day),Rate Before Surcharge (SGD),Rate After Surcharge (SGD)" + rowDelim + csv;
-            csv += rowDelim + "Disclaimers:";
-            csv += rowDelim + "Customs duties; taxes; service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.";
-            csv += rowDelim + "Freight rates effective for the current calendar year.";
-
-            // Deliberate 'false', see comment below
-            if (false && window.navigator.msSaveBlob) {
-
-                var blob = new Blob([decodeURIComponent(csv)], {
-                    type: 'text/csv;charset=utf8'
-                });
-
-                // Crashes in IE 10, IE 11 and Microsoft Edge
-                // See MS Edge Issue #10396033
-                // Hence, the deliberate 'false'
-                // This is here just for completeness
-                // Remove the 'false' at your own risk
-                window.navigator.msSaveBlob(blob, filename);
-
-            } else if (window.Blob && window.URL) {
-                // HTML5 Blob        
-                var blob = new Blob([csv], {
-                    type: 'text/csv;charset=utf-8'
-                });
-                var csvUrl = URL.createObjectURL(blob);
-
-                $(this)
-                    .attr({
-                        'download': filename,
-                        'href': csvUrl
-                    });
-            } else {
-                // Data URI
-                var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
-
-                $(this)
-                    .attr({
-                        'download': filename,
-                        'href': csvData,
-                        'target': '_blank'
-                    });
-            }
-        }
-
-        // This must be a hyperlink
-
-        $("#btnExport").click(function () {
-            // CSV
-            var args = [$('#tbResult'), 'export.csv'];
-
-            exportTableToCSV.apply(this, args);
-
-            // If CSV, don't do event.preventDefault() or return false
-            // We actually need this to be a typical hyperlink
-        });
-   
         var arr = [];
 
         var serviceOptionDefault = " <option selected value='0'>Services Type</option>";
@@ -430,7 +353,7 @@
 
 
         })
-        
+
         $("#searchButton").click(function () {
             var source = $("#sourceSelect").val();
             var desination = $("#destinationSelect").val();
@@ -472,7 +395,6 @@
                 contentType: "application/json;charset=utf-8",
                 success: function (response) {
                     var count = 0;
-
                     for (var i = 0; i < response.data.Data.length; i++) {
                         var item = response.data.Data[i];
                         if (carrier == '' || carrier == item.CARRIER_NAME) {
@@ -498,39 +420,71 @@
                 }
             });
         })
-    })
-    $(document).ready(function () {
-        var role = $("#role").val();
-        if (role == "sa") {
-            $("#uprate").css("display", "block");
-            $("#surrate").css("display", "block");
-            $("#asrole").css("display", "block");
-        }
-        else {
-            $("#uprate").css("display", "none");
-            $("#surrate").css("display", "none");
-            $("#asrole").css("display", "none");
-        }
-    });
-    function search() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("tbResult");
-        tr = table.getElementsByTagName("tr");
 
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
+        $("#btnExport").click(function () {
+
+            var contentToRemove = document.querySelectorAll("#tr-id");
+            $(contentToRemove).remove();
+            if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
+                alert('Please select source and destination!');
+                return false;
+            }
+            if ($("#carrierSelect").val() !== "0") {
+                if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                    alert('Service, Packaging are not empty');
+                    return false;
+                }
+            }
+            var model = {
+                Length: $("#txtLength").val(),
+                Height: $("#txtHeight").val(),
+                Width: $("#srcLogounit").val(),
+                 From: $("#sourceSelect").val(),
+                To: $("#destinationSelect").val(),
+                Region: "",
+                ServiceType: $("#servicesSelect").val(),
+                PackageType: $("#packagingSelect").val(),
+                Weight: $("#weightSelect").val(),
+
+            };
+            $.post('@Url.Action("Export", "Calculator")', { model: model }, function (data) {
+                console.log(data);
+        });
+    })
+
+        $(document).ready(function () {
+            var role = $("#role").val();
+            if (role == "sa") {
+                $("#uprate").css("display", "block");
+                $("#surrate").css("display", "block");
+                $("#asrole").css("display", "block");
+            }
+            else {
+                $("#uprate").css("display", "none");
+                $("#surrate").css("display", "none");
+                $("#asrole").css("display", "none");
+            }
+        });
+        function search() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tbResult");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
             }
         }
-    }
+    })
 </script>
