@@ -91,9 +91,14 @@
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (response) {
+                var currentYear = new Date().getFullYear();
+                var currentMonth = new Date().getMonth();
                 for (var i = 0; i < response.data.length; i++) {
                     var item = response.data[i];
                     var btnEdit = $('<input value="Edit" class="edit-record" type="button" editId="' + i + '"  />');
+                    if (currentYear > item.YEAR || (currentYear == item.YEAR && currentMonth >= item.MONTH)) {
+                        btnEdit = '';
+                    }
                     $('<tr id="tr-id">')
                         .append($('<td>').append(item.MONTH_NAME))
                         .append($('<td>').append(item.DHL))
