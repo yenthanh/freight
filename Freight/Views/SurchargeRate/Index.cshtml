@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-xs-6 col-md-6" style="margin-top: 15px; ">
                     <label class="col-md-12 row">Year</label>
-                    <select class="form-select form-control-lg mb-5 col-md-9" id="carrierSelect">
+                    <select class="form-select form-control-lg col-md-9" id="carrierSelect">
                         <option value="2019">2019</option>
                         <option value="2020">2020</option>
                         <option selected value="2021">2021</option>
@@ -47,7 +47,7 @@
             <div class="row" hidden id="divMonth">
                 <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
                     <label class="col-md-12 row">Month</label>
-                    <input class="form-select form-control-lg mb-5 col-md-12" type="text" readonly id="month" placeholder="Month" value="" />
+                    <input class="form-select form-control-lg mb-5 col-md-12" type="text" disabled id="month" placeholder="Month" value="" />
                 </div>
                 <div class="col-xs-4 col-md-4" style="margin-top: 15px; ">
                     <label class="col-md-12 row">DHL (%)</label>
@@ -60,7 +60,7 @@
                     <input class="form-select form-control-lg mb-5 col-md-12" type="text" id="fedex" value="" />
                 </div>
             </div>
-            <div class="row ml-0" style="margin-top:20px">
+            <div class="row ml-0">
                 <button type="button" class="btn btn-primary btn-lg" id="saveButton" hidden>Save Change</button>
             </div>
             <div class="row" style="margin-left:0px">
@@ -76,6 +76,7 @@
                     <tbody>
                     </tbody>
                 </table>
+                <input type="hidden" id="editDataId" />
             </div>
         </div>
     </section>
@@ -84,6 +85,7 @@
     </footer>
 </div>
 <script>
+    var dataList;
     $(document).ready(function () {
         function LoadData(year) {
             var contentToRemove = document.querySelectorAll("#tr-id");
@@ -94,6 +96,7 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (response) {
+                    dataList = response.data;
                     var currentYear = new Date().getFullYear();
                     var currentMonth = new Date().getMonth();
                     for (var i = 0; i < response.data.length; i++) {
@@ -118,74 +121,55 @@
                 }
             });
         }
+
         LoadData(new Date().getFullYear());
+
         $("#carrierSelect").change(function () {
             LoadData($("#carrierSelect").val());
         });
-    });
-    function Edit(month) {
-        let monthEng;
-        if (month === 1) {
-            monthEng = "January";
+
+        $(document).on('click', ".edit-record", function () {
+            var index = $(this).attr("editId");
+            $("#editDataId").val(index);
+            $("#month").val(dataList[index].MONTH_NAME);
+            $("#dhl").val(dataList[index].DHL);
+            $("#fedex").val(dataList[index].FedEx);
+            $("#saveButton").removeAttr("hidden");
+            $("#divMonth").removeAttr("hidden");
+        });
+
+        $("#saveButton").click(function () {
+            var index = $("#editDataId").val();
+            $.ajax({
+                type: "POST",
+                url: baseURL + "/SurchargeRate/UpdateSurcharge",
+                data: JSON.stringify({
+                    "YEAR": dataList[index].YEAR,
+                    "MONTH": dataList[index].MONTH,
+                    "DHL": $("#dhl").val(),
+                    "FedEx": $("#fedex").val(),
+                    "CARRIER_EX_1": '',
+                    "CARRIER_EX_2": '',
+                    "CARRIER_EX_3": '',
+                    "MONTH_NAME": dataList[index].MONTH_NAME,
+                }),
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    toggleEdit(false);
+                    LoadData($("#carrierSelect").val());
+                }
+            })
+        });
+
+        function toggleEdit(isEdit) {
+            if (isEdit == true) {
+                $("#divMonth").removeAttr("hidden");
+            }
+            else {
+                $("#divMonth").attr("hidden", "true");
+                $("#saveButton").attr("hidden", "true");
+            }
         }
-        else if (month === 2) {
-            monthEng = "February";
-        }
-        else if (month === 3) {
-            monthEng = "March";
-        }
-        else if (month === 4) {
-            monthEng = "April";
-        }
-        else if (month === 5) {
-            monthEng = "May";
-        }
-        else if (month === 6) {
-            monthEng = "June";
-        }
-        else if (month === 7) {
-            monthEng = "July";
-        }
-        else if (month === 8) {
-            monthEng = "August";
-        }
-        else if (month === 9) {
-            monthEng = "September";
-        }
-        else if (month === 10) {
-            monthEng = "October";
-        }
-        else if (month === 11) {
-            monthEng = "November";
-        }
-        else if (month === 12) {
-            monthEng = "December";
-        }
-        $("#month").val(monthEng);
-        var id = "#DHL_" + month;
-        var s = $(id).text();
-        var id1 = "#FedEx_" + month;
-        var s1 = $(id1).text();
-        $("#dhl").val(s);
-        $("#fedex").val(s1);
-        $("#tdSelectdhl").val(id);
-        $("#tdSelectfedex").val(id1);
-        $("#saveButton").removeAttr("hidden");
-        $("#divMonth").removeAttr("hidden");
-    }
-    $("#saveButton").click(function () {
-        var s = $("#tdSelectdhl").val();
-        var s1 = $("#tdSelectfedex").val();
-        var val = $("#dhl").val();
-        var val1 = $("#fedex").val();
-        var html = '<td class="tdSurchargeRate" id="' + s + '">' + val + '</td>';
-        $(s).replaceWith(html);
-        var html1 = '<td class="tdSurchargeRate" id="' + s1 + '">' + val1 + '</td>';
-        $(s1).replaceWith(html1);
-        $("#dhl").val("");
-        $("#fedex").val("");
-        $("#month").val("");
-        $("#saveButton").attr("hidden", true);
-        $("#divMonth").attr("hidden", true);
+
     });
 </script>
