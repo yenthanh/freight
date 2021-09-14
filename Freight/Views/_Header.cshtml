@@ -24,7 +24,7 @@
     $("#btnLogout").click(function () {
         //check year        
         $.ajax({
-            url: '/Account/Logout',
+            url: baseURL+'/Account/Logout',
             type: 'GET',
             success: function (data) {
                  location.href = '@Url.Action("Index","Home")';

@@ -61,11 +61,11 @@ namespace MM.AlertEmail
                 errorCodeMsg = "The email's system does not setup correct. Please contact system support team.";
             }
 
-            if (string.IsNullOrEmpty(emailLog)) emailLog =Hepler.ServerPath+"/Logs";
-            if (string.IsNullOrEmpty(emailFolder)) emailFolder = Hepler.ServerPath + "/EmailFolder";            
-            if (!System.IO.Directory.Exists(emailLog))
+            if (string.IsNullOrEmpty(emailLog)) emailLog =Hepler.LogFolder+"/Log_Email";
+            if (string.IsNullOrEmpty(emailFolder)) emailFolder = Hepler.LogFolder + "/EmailFolder";            
+            if (System.IO.Directory.Exists(emailLog)==false)
                 System.IO.Directory.CreateDirectory(emailLog);
-            if (!System.IO.Directory.Exists(emailFolder))
+            if (System.IO.Directory.Exists(emailFolder)==false)
                 System.IO.Directory.CreateDirectory(emailFolder);
             //get title and body            
             tblEmailConfig = configService.GetEmailConfigByParameter(titleParameter);
@@ -151,13 +151,13 @@ namespace MM.AlertEmail
                 return new JsonObject(erroCode, errorCode, errorCodeMsg);
             }
             //body= emailBody in db+new line+ all part id
-            body = emailBody+  body;
+            //body = emailBody+  body;
 
             body = body.Replace("@DATE", DateTime.Now.ToString("dd/MM/yyyy"));
             try
             {
                 strLog += "Start to sent email.... ";
-                int result = SendMailBySendGrid(authenticate==1,emailFrom, senderAddress, emailPwd, smtpServer, smtpPort, isSSL == 1, emailTo, tittle, body, emailCC, emailBCC, null, out errorCodeMsg);
+                int result = SendMailBySendGrid(authenticate==1,emailFrom, senderAddress, emailPwd, smtpServer, smtpPort, isSSL == 1, account, tittle, body, emailCC, emailBCC, null, out errorCodeMsg);
                 if (result == 1)//ok
                 {
                     erroCode = 0;

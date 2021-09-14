@@ -86,7 +86,7 @@
         formData.set('Email', email);
         $("#signup").attr("disabled", true);
         $.ajax({
-            url: '/Account/AddUser',
+            url: baseURL+'/Account/AddUser',
             type: 'POST',
             data: formData,
             contentType: false,

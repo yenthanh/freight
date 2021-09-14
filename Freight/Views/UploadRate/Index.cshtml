@@ -145,7 +145,7 @@
         fileData.set('Carrier', carrier);
         $("#upload").attr("disabled", true);
         $.ajax({
-            url: '/UploadRate/UploadFile',
+            url: baseURL+'/UploadRate/UploadFile',
             type: 'POST',
             data: fileData,
             contentType: false,
