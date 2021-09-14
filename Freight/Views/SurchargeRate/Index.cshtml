@@ -85,34 +85,42 @@
 </div>
 <script>
     $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "/SurchargeRate/GetSurcharge?year=" + new Date().getFullYear(),
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-                var currentYear = new Date().getFullYear();
-                var currentMonth = new Date().getMonth();
-                for (var i = 0; i < response.data.length; i++) {
-                    var item = response.data[i];
-                    var btnEdit = $('<input value="Edit" class="edit-record" type="button" editId="' + i + '"  />');
-                    if (currentYear > item.YEAR || (currentYear == item.YEAR && currentMonth >= item.MONTH)) {
-                        btnEdit = '';
+        function LoadData(year) {
+            var contentToRemove = document.querySelectorAll("#tr-id");
+            $(contentToRemove).remove();
+            $.ajax({
+                type: "GET",
+                url: "/SurchargeRate/GetSurcharge?year=" + year,
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    var currentYear = new Date().getFullYear();
+                    var currentMonth = new Date().getMonth();
+                    for (var i = 0; i < response.data.length; i++) {
+                        var item = response.data[i];
+                        var btnEdit = $('<input value="Edit" class="edit-record" type="button" editId="' + i + '"  />');
+                        if (currentYear > item.YEAR || (currentYear == item.YEAR && currentMonth >= item.MONTH)) {
+                            btnEdit = '';
+                        }
+                        $('<tr id="tr-id">')
+                            .append($('<td>').append(item.MONTH_NAME))
+                            .append($('<td>').append(item.DHL))
+                            .append($('<td>').append(item.FedEx))
+                            .append($('<td>').append(btnEdit))
+                            .appendTo('table tbody');
                     }
-                    $('<tr id="tr-id">')
-                        .append($('<td>').append(item.MONTH_NAME))
-                        .append($('<td>').append(item.DHL))
-                        .append($('<td>').append(item.FedEx))
-                        .append($('<td>').append(btnEdit))
-                        .appendTo('table tbody');
-                }
 
-                if (response.data.length == 0) {
-                    $('<tr id="tr-id">')
-                        .append($('<td colspan="8">').append("No records found!"))
-                        .appendTo('table tbody');
+                    if (response.data.length == 0) {
+                        $('<tr id="tr-id">')
+                            .append($('<td colspan="8">').append("No records found!"))
+                            .appendTo('table tbody');
+                    }
                 }
-            }
+            });
+        }
+        LoadData(new Date().getFullYear());
+        $("#carrierSelect").change(function () {
+            LoadData($("#carrierSelect").val());
         });
     });
     function Edit(month) {
@@ -179,13 +187,5 @@
         $("#month").val("");
         $("#saveButton").attr("hidden", true);
         $("#divMonth").attr("hidden", true);
-    });
-    $("#carrierSelect").change(function () {
-        if ($("#carrierSelect").val() != 2021) {
-            $(".record").css("display", "none");
-        }
-        else {
-            $(".record").css("display", "block");
-        }
     });
 </script>
