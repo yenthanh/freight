@@ -2,7 +2,6 @@
     ViewBag.Title = "Caculator";
     var role = ViewBag.role;
     var message = ViewBag.Result;
-    var listSearch = ViewBag.List ;
 }
 <style>
     .input-group-lg > .form-control:not(textarea), .input-group-lg > .custom-select {
@@ -181,8 +180,8 @@
             </p>
 
 
-            <a href="/Calculator/Export/" class="btn btn-primary btn-lg"> Export </a> 
-
+            <a id="handleExport" class="btn btn-primary btn-lg"> Export </a>
+            @*<input id="btnExport" type="submit" value="Export" class="btn btn-primary btn-lg" />*@
 
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
@@ -208,7 +207,7 @@
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (data) {
-                var s = '<option value="">Please Select a Country</option>';
+                var s = '<option value="">Please Select Country</option>';
                 for (var i = 0; i < data.data.length; i++) {
                     s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
                 }
@@ -420,7 +419,25 @@
                 }
             });
         })
-
+        $('#handleExport').click(function () {
+            if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
+                alert('Please select source and destination!');
+                return false;
+            }
+            if ($("#carrierSelect").val() !== "0") {
+                if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                    alert('Service, Packaging are not empty');
+                    return false;
+                }
+            }
+            var from = $("#sourceSelect").val();
+            var to = $("#destinationSelect").val();
+            var service = $("#servicesSelect").val();
+            var packageType = $("#packagingSelect").val();
+            var weight = $("#weightSelect").val();
+            var region = null;
+            window.location.href = "/Calculator/Export?from=" + from + "&to=" + to + "&service=" + service + "&packageType=" + packageType + "&weight=" + weight + "&region=" + region;
+        });
         $("#btnExport").click(function () {
 
             var contentToRemove = document.querySelectorAll("#tr-id");
