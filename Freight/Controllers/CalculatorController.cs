@@ -133,8 +133,10 @@ namespace Freught1.Controllers
                     worksheet.Cells[row, 7].LoadFromText(index.COST);
                     worksheet.Cells[row, 8].LoadFromText((float.Parse(index.COST) * (1 + index.SURCHARGE / 100)).ToString());
                     row++;
-                } 
-
+                }
+                worksheet.Cells[row++, 1].LoadFromText("Disclaimers:");
+                worksheet.Cells[row++, 1].LoadFromText("· Customs duties; taxes; service charges and clearance related charges and any other fees(where applicable) are not included in the tariffs.");
+                worksheet.Cells[row++, 1].LoadFromText("· Freight rates effective for the current calendar year.");
                 package.Save();
             }
             stream.Position = 0;
