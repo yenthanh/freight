@@ -76,11 +76,40 @@ namespace Freught1.Controllers
 
         }
       
-        public ActionResult Export(string from, string to, string service, string packageType, string weight, string region)
+        public ActionResult Export(string from, string to, string service, string packageType, float weight, string region,float height, float length, float width, string carrier)
         {
-            string[] title = new string[] { "Carrier", "Service Type", "Packaging Type", "Weight Range(kg)", "Current FSC", "Working Days(day)", "Rate Before Surcharge (SGD)", "Rate After Surcharge (SGD)" };
+            if (length > 0 && height > 0 && width > 0)
+            {
+                float divisorValue = 5000;
+                //Length * width * height/5000 
+                UtilityService utilityService = new UtilityService();
+                var para = utilityService.GetByCode("*", "VOLUME_DIVISOR");
+                if (para != null && string.IsNullOrEmpty(para.PARA_VALUE))
+                {
+                    float.TryParse(para.PARA_VALUE, out divisorValue);
+                }
+                //Compare Volumetric weight vs Weight of the goods, use whichever is higher 
+                //to calculate the shipment rate
+                float volumeWeight = (length * width * height) / divisorValue;
+                weight = volumeWeight > weight ? volumeWeight : weight;
+            }
+            var result = CarrierManager.Instance.GetCalculatorPrice(from, to, service, packageType, weight, region);
+            var tempData = new List<PriceResultItem>();
+            if (!string.IsNullOrEmpty(carrier))
+            {
+                foreach(var i in result)
+                {
+                    if(i.CARRIER_NAME == carrier)
+                    {
+                        tempData.Add(i);
+                    }
+                }
+            }
+            else
+            {
+                tempData = result;
+            }  
             var stream = new MemoryStream();
-            var result = CarrierManager.Instance.GetCalculatorPrice( from,to,service,packageType, weight == "" ? 0 : float.Parse(weight),  region);
             using (var package = new ExcelPackage(stream))
             {
                 var worksheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -93,7 +122,7 @@ namespace Freught1.Controllers
                 worksheet.Cells[1, 7].LoadFromText("Rate Before Surcharge (SGD)");
                 worksheet.Cells[1, 8].LoadFromText("Rate After Surcharge (SGD)");
                 int row = 2;
-                foreach(var index in result)
+                foreach(var index in tempData)
                 {
                     worksheet.Cells[row, 1].LoadFromText(index.CARRIER_NAME);
                     worksheet.Cells[row, 2].LoadFromText(index.SERVICE_TYPE);

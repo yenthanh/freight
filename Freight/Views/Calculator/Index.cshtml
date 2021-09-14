@@ -47,15 +47,15 @@
 
             <ul id="menu-content" class="menu-content collapse out">
                 @*@foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
-                {
-                    <a href="@m.URL" style="text-decoration:none">
-                        <li data-toggle="collapse" class="collapsed" data-target="#products">
-                            <i class="fa fa-lg @m.ICON_IMAGE" style="padding-right:10px"></i>
-                            @m.MODULE_NAME
-                        </li>
-                    </a>
-                }*@
-                </ul>
+                    {
+                        <a href="@m.URL" style="text-decoration:none">
+                            <li data-toggle="collapse" class="collapsed" data-target="#products">
+                                <i class="fa fa-lg @m.ICON_IMAGE" style="padding-right:10px"></i>
+                                @m.MODULE_NAME
+                            </li>
+                        </a>
+                    }*@
+            </ul>
         </div>
     </div>
 }
@@ -430,13 +430,17 @@
                     return false;
                 }
             }
+            var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
+            var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
+            var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();
+            var carrier = $("#carrierSelect").val();
             var from = $("#sourceSelect").val();
             var to = $("#destinationSelect").val();
             var service = $("#servicesSelect").val();
             var packageType = $("#packagingSelect").val();
-            var weight = $("#weightSelect").val();
+            var weight = $("#weightSelect").val()=== "" ? 0 : $("#txtWidth").val();
             var region = null;
-            window.location.href = "/Calculator/Export?from=" + from + "&to=" + to + "&service=" + service + "&packageType=" + packageType + "&weight=" + weight + "&region=" + region;
+            window.location.href = "/Calculator/Export?from=" + from + "&to=" + to + "&service=" + service + "&packageType=" + packageType + "&weight=" + weight + "&region=" + region + "&height=" + height + "&length=" + length + "&width=" + width + "&carrier=" + carrier ;
         });
         $("#btnExport").click(function () {
 
