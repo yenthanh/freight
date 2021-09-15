@@ -14,14 +14,14 @@
 
             <ul id="menu-content" class="menu-content collapse out">
                 @foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
-                    {
-                        <a href="@m.URL" style="text-decoration:none">
-                            <li data-toggle="collapse" class="collapsed" data-target="#products">
-                                <i class="fa fa-lg @m.ICON_IMAGE" style="padding-right:10px"></i>
-                                @m.MODULE_NAME
-                            </li>
-                        </a>
-                    }
+                {
+                    <a href="@m.URL" style="text-decoration:none">
+                        <li data-toggle="collapse" class="collapsed" data-target="#products">
+                            <i class="fa fa-lg @m.ICON_IMAGE" style="padding-right:10px"></i>
+                            @m.MODULE_NAME
+                        </li>
+                    </a>
+                }
             </ul>
         </div>
     </div>
@@ -92,7 +92,7 @@
             $(contentToRemove).remove();
             $.ajax({
                 type: "GET",
-                url: "/SurchargeRate/GetSurcharge?year=" + year,
+                url: baseURL + "/SurchargeRate/GetSurcharge?year=" + year,
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (response) {
@@ -102,7 +102,8 @@
                     for (var i = 0; i < response.data.length; i++) {
                         var item = response.data[i];
                         var btnEdit = $('<input value="Edit" class="edit-record" type="button" editId="' + i + '"  />');
-                        if (currentYear > item.YEAR || (currentYear == item.YEAR && currentMonth >= item.MONTH)) {
+                        //if (currentYear > item.YEAR || (currentYear == item.YEAR && currentMonth >= item.MONTH)) {
+                        if (currentYear > item.YEAR) {
                             btnEdit = '';
                         }
                         $('<tr id="tr-id">')
