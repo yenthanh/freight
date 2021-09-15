@@ -140,133 +140,150 @@
 <script>
 
     //$(document).ready(function () {
-        var userList;
+    var userList;
 
-        $.ajax({
-            type: "GET",
-            url: baseURL + "/Account/GetUserStatus",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-                var s = '';
-                for (var i = 0; i < response.data.length; i++) {
-                    if (response.data[i].text != "Active") {
-                        s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
-                    }
-                }
-                $("#editStatus").html(s);
-            }
-        });
-
-        $.ajax({
-            type: "GET",
-            url: baseURL +"/Account/GetListSites",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-                var s = '';
-                for (var i = 0; i < response.data.length; i++) {
+    $.ajax({
+        type: "GET",
+        url: baseURL + "/Account/GetUserStatus",
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (response) {
+            var s = '';
+            for (var i = 0; i < response.data.length; i++) {
+                if (response.data[i].text != "Active") {
                     s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
                 }
-                $("#editSite").html(s);
             }
-        });
-
-        $.ajax({
-            type: "GET",
-            url: baseURL +"/Account/GetListGroup",
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-                var s = '';
-                for (var i = 0; i < response.data.length; i++) {
-                    s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
-                }
-                $("#editProfile").html(s);
-            }
-        });
-
-        function toggleEdit(isEdit) {
-            if (isEdit == true) {
-                $("#divMonth").removeAttr("hidden");
-            }
-            else {
-                $("#divMonth").attr("hidden", "true");
-                $("#saveButton").attr("hidden", "true");
-            }
+            $("#editStatus").html(s);
         }
+    });
 
-        $(document).on('click', ".edit-record", function () {
-            var index = $(this).attr("editId");
-            $("#editEmail").val(userList[index].USER_EMAIL);
-            $("#editName").val(userList[index].USER_NAME);
-            $("#editSite").val(userList[index].SITE_ID).change();
-            $("#editProfile").val(userList[index].GROUP_ID).change();
-            $("#editStatus").val(userList[index].USER_STATUS).change();
+    $.ajax({
+        type: "GET",
+        url: baseURL + "/Account/GetListSites",
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (response) {
+            var s = '';
+            for (var i = 0; i < response.data.length; i++) {
+                s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
+            }
+            $("#editSite").html(s);
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: baseURL + "/Account/GetListGroup",
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (response) {
+            var s = '';
+            for (var i = 0; i < response.data.length; i++) {
+                s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
+            }
+            $("#editProfile").html(s);
+        }
+    });
+
+    function toggleEdit(isEdit) {
+        if (isEdit == true) {
             $("#divMonth").removeAttr("hidden");
-            $("#saveButton").removeAttr("hidden");
-        });
+        }
+        else {
+            $("#divMonth").attr("hidden", "true");
+            $("#saveButton").attr("hidden", "true");
+        }
+    }
 
-        $("#saveButton").click(function () {
-            $.ajax({
-                type: "POST",
-                url: baseURL +"/account/UpdateUser",
-                data: JSON.stringify({
-                    "Name": $("#editName").val(),
-                    "email": $("#editEmail").val(),
-                    "Site": $("#editSite").val(),
-                    "Group": $("#editProfile").val(),
-                    "Status": $("#editStatus").val()
-                }),
-                contentType: "application/json;charset=utf-8",
-                success: function (response) {
-                    toggleEdit(false);
-                    search();
+    function setDropdownStatus(status) {
+        var s = '';
+        if (status == "PENDING") {
+            s += '<option value="PENDING">Pending</option>';
+            s += '<option value="APPROVED">Approve</option>';
+            s += '<option value="INACTIVE">Inactive</option>';
+            $("#editStatus").html(s);
+        }
+        else {
+            s += '<option value="ACTIVE">Active</option>';
+            s += '<option value="INACTIVE">Inactive</option>';
+            $("#editStatus").html(s);
+
+        }
+    };
+
+    $(document).on('click', ".edit-record", function () {
+        var index = $(this).attr("editId");
+        setDropdownStatus(userList[index].USER_STATUS);
+        $("#editEmail").val(userList[index].USER_EMAIL);
+        $("#editName").val(userList[index].USER_NAME);
+        $("#editSite").val(userList[index].SITE_ID).change();
+        $("#editProfile").val(userList[index].GROUP_ID).change();
+        $("#editStatus").val(userList[index].USER_STATUS).change();
+        $("#divMonth").removeAttr("hidden");
+        $("#saveButton").removeAttr("hidden");
+    });
+
+    $("#saveButton").click(function () {
+        $.ajax({
+            type: "POST",
+            url: baseURL + "/account/UpdateUser",
+            data: JSON.stringify({
+                "Name": $("#editName").val(),
+                "email": $("#editEmail").val(),
+                "Site": $("#editSite").val(),
+                "Group": $("#editProfile").val(),
+                "Status": $("#editStatus").val()
+            }),
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                toggleEdit(false);
+                search();
+            }
+        })
+    });
+
+    function search(status) {
+        var contentToRemove = document.querySelectorAll("#tr-id");
+        $(contentToRemove).remove();
+        $.ajax({
+            type: "POST",
+            url: baseURL + "/account/GetListUsers",
+            data: JSON.stringify({
+                "name": $("#myInput").val(),
+                "id": "",
+                "category": "",
+                "code": "",
+                "status": status == undefined ? "" : status,
+                "order_by": "",
+                "pageIndex": 1,
+                "pageSize": 2000
+            }),
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                userList = response.data.Items;
+                for (var i = 0; i < response.data.Items.length; i++) {
+                    var item = response.data.Items[i];
+                    //var btnEdit = $('<input value="Edit" class="record" type="button" onclick="Edit(' + item.USER_EMAIL + '","' + item.USER_NAME + '","' + item.SITE_ID + '","' + item.GROUP_ID + '","' + item.USER_STATUS + '")" />');
+
+                    var btnEdit = $('<input value="Edit" class="edit-record" type="button" editId="' + i + '"  />');
+                    $('<tr id="tr-id">')
+                        .append($('<td>').append(item.USER_EMAIL))
+                        .append($('<td>').append(item.USER_NAME))
+                        .append($('<td>').append(item.SITE_ID))
+                        .append($('<td>').append(item.GROUP_ID))
+                        .append($('<td>').append(item.USER_STATUS))
+                        .append($('<td>').append(btnEdit))
+                        .appendTo('table tbody');
                 }
-            })
-        });
-
-        function search(status) {
-            var contentToRemove = document.querySelectorAll("#tr-id");
-            $(contentToRemove).remove();
-            $.ajax({
-                type: "POST",
-                url: baseURL +"/account/GetListUsers",
-                data: JSON.stringify({
-                    "name": $("#myInput").val(),
-                    "id": "",
-                    "category": "",
-                    "code": "",
-                    "status": status == undefined ? "" : status,
-                    "order_by": "",
-                    "pageIndex": 1,
-                    "pageSize": 2000
-                }),
-                contentType: "application/json;charset=utf-8",
-                success: function (response) {
-                    userList = response.data.Items;
-                    for (var i = 0; i < response.data.Items.length; i++) {
-                        var item = response.data.Items[i];
-                        //var btnEdit = $('<input value="Edit" class="record" type="button" onclick="Edit(' + item.USER_EMAIL + '","' + item.USER_NAME + '","' + item.SITE_ID + '","' + item.GROUP_ID + '","' + item.USER_STATUS + '")" />');
-
-                        var btnEdit = $('<input value="Edit" class="edit-record" type="button" editId="' + i + '"  />');
-                        $('<tr id="tr-id">')
-                            .append($('<td>').append(item.USER_EMAIL))
-                            .append($('<td>').append(item.USER_NAME))
-                            .append($('<td>').append(item.SITE_ID))
-                            .append($('<td>').append(item.GROUP_ID))
-                            .append($('<td>').append(item.USER_STATUS))
-                            .append($('<td>').append(btnEdit))
-                            .appendTo('table tbody');
-                    }
-                    if (response.data.Items.length == 0) {
-                        $('<tr id="tr-id">')
-                            .append($('<td colspan="6">').append("No records found!"))
-                            .appendTo('table tbody');
-                    }
+                if (response.data.Items.length == 0) {
+                    $('<tr id="tr-id">')
+                        .append($('<td colspan="6">').append("No records found!"))
+                        .appendTo('table tbody');
                 }
-            })
-        };
-        search('');
+            }
+        })
+    };
+    search('');
     //});
 </script>
