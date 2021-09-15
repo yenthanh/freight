@@ -74,7 +74,7 @@ namespace Freught1.Controllers
                 if (model.file == null)
                 {
                     return Json(new JsonObject(1, "NO_FILE", "You must select an excel file."), JsonRequestBehavior.AllowGet);
-                }
+                }                
                 HttpPostedFileBase file = model.file;// Request.Files[0];
                 int fileSize = file.ContentLength;
                 string fileName = file.FileName;
@@ -91,9 +91,16 @@ namespace Freught1.Controllers
                     return Json(new JsonObject(2, "FILE_INVALID", checkFile), JsonRequestBehavior.AllowGet);
                 }
                 //If ok, delete it -> rename the file into fileName=> update the current rate care if year= current year            
+                //will save in year's folder
+                string yearFolder = serverPath + model.Year.ToString();
+                if (!System.IO.Directory.Exists(yearFolder))
+                {
+                    System.IO.Directory.CreateDirectory(yearFolder);
+                }
+                string saveFilePath = yearFolder + "/" + fileName;
                 var resultUpload = new UtilityService().UploadFile("ADD",model.Carrier, model.Year, fileName,Hepler.GetLogged.UserEmail);
                 if(resultUpload.ERR_NO==0)
-                    System.IO.File.Move(tempFileName, serverPath + fileName);
+                    System.IO.File.Move(tempFileName, saveFilePath);
                 return Json(new JsonObject(resultUpload.ERR_NO,resultUpload.CODE,resultUpload.MSG));
             }
             catch (Exception ex)

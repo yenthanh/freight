@@ -24,7 +24,7 @@ namespace MM_Freight_Rate_API_Backend
             if (HttpContext.Current.Session["token_key"] ==null || string.IsNullOrEmpty(HttpContext.Current.Session["token_key"].ToString()))
             {
                 //filterContext.HttpContext.Response.Redirect(LoginPage + "?returnUrl=" + filterContext.HttpContext.Request.Url.PathAndQuery);
-                filterContext.HttpContext.Response.Redirect(LoginPage);
+                filterContext.HttpContext.Response.Redirect(Hepler.URL+LoginPage);
             }
             //base.OnAuthorization(filterContext);
             //if (!filterContext.HttpContext.User.Identity.IsAuthenticated)

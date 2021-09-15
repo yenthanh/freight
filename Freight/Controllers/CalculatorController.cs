@@ -7,12 +7,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
 using OfficeOpenXml;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
+
 
 namespace Freught1.Controllers
 {
-    //[CustomAuthorization(LoginPage = "/Home/Index")]
+    [CustomAuthorization(LoginPage = "/Home/Index")]
     public class CalculatorController : BaseController
     {
         

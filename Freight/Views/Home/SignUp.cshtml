@@ -16,12 +16,12 @@
         {
 
             <div class="form-group">
-                <label style="width:100%">Your Name</label>
+                <label style="width:100%">Your Name<i style="color:red" title="Required">*</i></label>
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-group", @placeholder = "Your Name" })
                 @*<input type="text" class="form-group" id="exampleInputName1" placeholder="Your Name" />*@
             </div>
             <div class="form-group">
-                <label style="width:100%">Email</label>
+                <label style="width:100%">Email<i style="color:red" title="Required">*</i></label>
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-group", @placeholder = "Email" })
                 @*<input type="text" class="form-group" id="exampleInputEmail1" placeholder="Email" />*@
                 <span id="ReferenceDomain" style="        position: relative;
@@ -31,22 +31,9 @@
 ">&#64;mentormedia.com</span>
             </div>
             <div class="form-group">
-                <label style="width: 100%;">Site Id</label>
+                <label style="width: 100%;">Site Id<i style="color:red" title="Required">*</i></label>
                 @Html.DropDownList("filter-cate", Model.ListSites, new { @class = "form-select form-control-lg", @id = "selectSiteID", @style = "width: 100%;" })
-                @*<select id="selectSiteID" class="form-select form-control-lg" style="width:100%">
-                    <option>MMCA</option>
-                    <option>MMCD</option>
-                    <option>MMCN</option>
-                    <option>MMCQ</option>
-                    <option>MMCQCBZ</option>
-                    <option>MMCZ</option>
-                    <option>MMJZ</option>
-                    <option>MMKS</option>
-                    <option>MMSG</option>
-                    <option>MMSH</option>
-                    <option>MMSZ</option>
-                    <option>MMXM</option>
-                </select>*@
+               
             </div>
             <div class="form-group form-check">
                 <button class="btn btn-primary btn-lg" id="signup" type="button">Sign Up</button>
@@ -62,7 +49,7 @@
         var name = $('#Name').val();
         //console.log(name, 'name');
         if (name == '' || name.length == 0) {
-            showMsg("You have entered your name.");
+            showMsg("Please enter your name.");
             return;
         }
         var email = $('#Email').val() + '@@mentormedia.com';
@@ -76,7 +63,7 @@
         var site = $('#selectSiteID').val();
         //console.log(site, 'site');
         if (site == '' || site.length == 0) {
-            showMsg("You have choose an site.");
+            showMsg("Please select site id.");
             return;
         }
 
