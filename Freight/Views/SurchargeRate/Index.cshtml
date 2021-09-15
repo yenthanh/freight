@@ -137,6 +137,7 @@
             $("#fedex").val(dataList[index].FedEx);
             $("#saveButton").removeAttr("hidden");
             $("#divMonth").removeAttr("hidden");
+            $("#carrierSelect").attr("disabled", true);
         });
 
         $("#saveButton").click(function () {
@@ -165,8 +166,10 @@
         function toggleEdit(isEdit) {
             if (isEdit == true) {
                 $("#divMonth").removeAttr("hidden");
+                $("#carrierSelect").attr("disabled", true);
             }
             else {
+                $("#carrierSelect").removeAttr("disabled");
                 $("#divMonth").attr("hidden", "true");
                 $("#saveButton").attr("hidden", "true");
             }
