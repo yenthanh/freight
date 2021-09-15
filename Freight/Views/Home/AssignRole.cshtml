@@ -150,7 +150,9 @@
             success: function (response) {
                 var s = '';
                 for (var i = 0; i < response.data.length; i++) {
-                    s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
+                    if (response.data[i].text != "Approved") {
+                        s += '<option value="' + response.data[i].value + '">' + response.data[i].text + '</option>';
+                    }
                 }
                 $("#editStatus").html(s);
             }
