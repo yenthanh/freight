@@ -53,6 +53,12 @@
     <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="EPPlus, Version=5.7.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.5.7.4\lib\net45\EPPlus.dll</HintPath>
     </Reference>
@@ -86,6 +92,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -183,6 +190,84 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DHL_IMPORT_EXPORT_ZONE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DHL_THIRD_ZONE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FedEx_IMPORT_EXPORT_ZONE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FedEx_THIRD_ZONE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Freight_Db.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Freight_Db.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Freight_Db.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Freight_Db.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Freight_Db.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MS_CARRIER.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MS_CARRIER_PACKAGE_TYPE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MS_CONFIGURATION.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MS_EXCEL_WEIGHT_RATE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MS_GROUP_ACCESS.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MS_SERVICE_TYPE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MS_USER.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_COUNTRY.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_EMAIL_LIST.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_GROUP_USER.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_MATRIX.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_MODULE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_PACKAGE_TYPE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_STATUS_TYPE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_SURCHARGE.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_WEIGHT_RATE1.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TR_UPLOAD_HISTORY.cs">
+      <DependentUpon>Freight_Db.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UploadModel.cs" />
     <Compile Include="Models\LoginerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -202,6 +287,16 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\Freight_Db.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Freight_Db.Context.cs</LastGenOutput>
+      <DependentUpon>Freight_Db.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Freight_Db.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Freight_Db.edmx</DependentUpon>
+      <LastGenOutput>Freight_Db.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -226,6 +321,13 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="libman.json" />
+    <EntityDeploy Include="Models\Freight_Db.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Freight_Db.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Freight_Db.edmx.diagram">
+      <DependentUpon>Freight_Db.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -363,6 +465,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

@@ -38,6 +38,15 @@ namespace MM_Freight_Rate_API_Backend.Models
         public float Height { get; set; }
         public float Width { get; set; }
     }
+    public class CheckDataObject
+    {
+        public string From { get; set; }
+        public string To { get; set; }
+        public string Carrier { get; set; }
+        public string ServiceType { get; set; }
+        public string PackageType { get; set; }
+        public float Weight { get; set; }
+    }
     public class UserModel
     {
         public string Email { get; set; }

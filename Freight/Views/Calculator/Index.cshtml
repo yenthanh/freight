@@ -46,7 +46,7 @@
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
-                @foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
+                @*@foreach (var m in MM_Freight_Rate_API_Backend.Hepler.ListModules)
                 {
                     <a href="@m.URL" style="text-decoration:none">
                         <li data-toggle="collapse" class="collapsed" data-target="#products">
@@ -54,7 +54,7 @@
                             @m.MODULE_NAME
                         </li>
                     </a>
-                }
+                }*@
             </ul>
         </div>
     </div>
@@ -182,7 +182,8 @@
 
             <a id="handleExport" class="btn btn-primary btn-lg"> Export </a>
             @*<input id="btnExport" type="submit" value="Export" class="btn btn-primary btn-lg" />*@
-
+            <a id="btnExport" class="btn btn-primary btn-lg"> Calculator </a>
+            <input id="valueCalculator" type="text" value="" class="form-control" />
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -444,32 +445,30 @@
         });
         $("#btnExport").click(function () {
 
-            var contentToRemove = document.querySelectorAll("#tr-id");
-            $(contentToRemove).remove();
-            if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
-                alert('Please select source and destination!');
-                return false;
-            }
-            if ($("#carrierSelect").val() !== "0") {
-                if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-                    alert('Service, Packaging are not empty');
-                    return false;
-                }
-            }
+            //var contentToRemove = document.querySelectorAll("#tr-id");
+            //$(contentToRemove).remove();
+            //if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
+            //    alert('Please select source and destination!');
+            //    return false;
+            //}
+            //if ($("#carrierSelect").val() !== "0") {
+            //    if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+            //        alert('Service, Packaging are not empty');
+            //        return false;
+            //    }
+            //}
             var model = {
-                Length: $("#txtLength").val(),
-                Height: $("#txtHeight").val(),
-                Width: $("#srcLogounit").val(),
-                 From: $("#sourceSelect").val(),
-                To: $("#destinationSelect").val(),
-                Region: "",
-                ServiceType: $("#servicesSelect").val(),
-                PackageType: $("#packagingSelect").val(),
-                Weight: $("#weightSelect").val(),
+                From: "MALAYSIA",
+                To: "SINGAPORE",
+                Carrier: "FedEx",
+                ServiceType: "IP",
+                PackageType: "ENVELOPE",
+                Weight: 0.75,
 
             };
-            $.post('@Url.Action("Export", "Calculator")', { model: model }, function (data) {
+            $.post('@Url.Action("CalculatorPrice", "Calculator")', { model: model }, function (data) {
                 console.log(data);
+                $("#valueCalculator").val(data);
         });
     })
 
