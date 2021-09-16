@@ -76,20 +76,50 @@ namespace Freught1.Controllers
             }
 
         }
-        [HttpPost]
-        public float CalculatorPrice(CheckDataObject model)
+        [HttpGet]
+        public JsonResult GetListCountry()
         {
+            var listCountry = db.REF_COUNTRY.Where(x => x.COUNTRY_NAME != null).ToList();
+            return Json(new JsonObject(listCountry), JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetListCarriers()
+        {
+            var listCarriers = db.MS_CARRIER.Where(x => x.CARRIER_NAME != null).ToList();
+            return Json(new JsonObject(listCarriers), JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetListPackageTypeByCarrier(string carrier)
+        {
+            var listCarriers = db.MS_CARRIER_PACKAGE_TYPE.Where(x => x.CARRIER_ID == carrier).ToList();
+            return Json(new JsonObject(listCarriers), JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetListServices(string carrier)
+        {
+            var listCarriers = db.MS_SERVICE_TYPE.Where(x => x.CARRIER_ID == carrier).ToList();
+            return Json(new JsonObject(listCarriers), JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult CalculatorPrice(CheckDataObject model)
+        {
+            var year = DateTime.Now.Year;
+            var mouth = DateTime.Now.ToString("MMMM");
             if (model.Carrier.ToUpper() == "DHL")
             {
                 var result = CalculatorPriceDHL(model.From, model.To, model.ServiceType, model.PackageType, model.Weight);
-                return result;
+                var rate = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == "DHL" && x.YEAR == year && x.MONTH == mouth);
+                var afterValue = result * (1 + rate.RATE / 100);
+                return Json(new { result = result, afterValue = afterValue, JsonRequestBehavior.AllowGet });
             }
             else if (model.Carrier.ToUpper() == "FEDEX")
             {
                 var result = CalculatorPriceFedEx(model.From, model.To, model.ServiceType, model.PackageType, model.Weight);
-                return result;
+                var rate = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == "FedEx" && x.YEAR == year && x.MONTH == mouth);
+                var afterValue = result * (1 + rate.RATE / 100);
+                return Json(new { result = result, afterValue = afterValue, JsonRequestBehavior.AllowGet });
             }
-            return 0;
+            return null;
         }
         public ActionResult Export(string from, string to, string service, string packageType, float weight, string region, float height, float length, float width, string carrier)
         {
@@ -364,6 +394,71 @@ namespace Freught1.Controllers
                         return price;
                 }
             }
+            else if (from != "SINGAPORE" && to != "SINGAPORE")
+            {
+                var from_zone = db.FedEx_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
+                var to_zone = db.FedEx_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
+                var queryZone = db.REF_MATRIX.FirstOrDefault(x => x.CARRIER_ID == "FedEx" && x.ROW_NAME == from_zone.ZONE_NAME && x.COL_NAME == to_zone.ZONE_NAME);
+                zone = queryZone.VALUE;
+                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "FedEx" && x.DELIVER_TYPE == "3RD_PARTY" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
+                if (queryPrice == null)
+                {
+                    return price;
+                }
+                switch (zone.ToUpper())
+                {
+                    case "A":
+                        price = (float)queryPrice.ZONE_1;
+                        return price;
+                    case "B":
+                        price = (float)queryPrice.ZONE_2;
+                        return price;
+                    case "C":
+                        price = (float)queryPrice.ZONE_3;
+                        return price;
+                    case "D":
+                        price = (float)queryPrice.ZONE_4;
+                        return price;
+                    case "E":
+                        price = (float)queryPrice.ZONE_5;
+                        return price;
+                    case "F":
+                        price = (float)queryPrice.ZONE_6;
+                        return price;
+                    case "G":
+                        price = (float)queryPrice.ZONE_7;
+                        return price;
+                    case "H":
+                        price = (float)queryPrice.ZONE_8;
+                        return price;
+                    case "I":
+                        price = (float)queryPrice.ZONE_9;
+                        return price;
+                    case "J":
+                        price = (float)queryPrice.ZONE_10;
+                        return price;
+                    case "K":
+                        price = (float)queryPrice.ZONE_11;
+                        return price;
+                    case "L":
+                        price = (float)queryPrice.ZONE_12;
+                        return price;
+                    case "M":
+                        price = (float)queryPrice.ZONE_13;
+                        return price;
+                    case "N":
+                        price = (float)queryPrice.ZONE_14;
+                        return price;
+                    case "O":
+                        price = (float)queryPrice.ZONE_15;
+                        return price;
+                    case "P":
+                        price = (float)queryPrice.ZONE_16;
+                        return price;
+                    default:
+                        return price;
+                }
+            }
             return 0;
         }
         public float CalculatorPriceDHL(string from, string to, string serviceType, string packageType, float weight)
@@ -536,6 +631,50 @@ namespace Freught1.Controllers
                         return price;
                     case "22":
                         price = (float)queryPrice.ZONE_22;
+                        return price;
+                    default:
+                        return price;
+                }
+            }
+            else if (from != "SINGAPORE" && to != "SINGAPORE")
+            {
+                var from_zone = db.DHL_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
+                var to_zone = db.DHL_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
+                var queryZone = db.REF_MATRIX.FirstOrDefault(x => x.CARRIER_ID == "DHL" && x.ROW_NAME == from_zone.ZONE_NAME && x.COL_NAME == to_zone.ZONE_NAME);
+                zone = queryZone.VALUE;
+                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "DHL" && x.DELIVER_TYPE == "3RD_PARTY" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
+                if (queryPrice == null)
+                {
+                    return price;
+                }
+                switch (zone.ToUpper())
+                {
+                    case "A":
+                        price = (float)queryPrice.ZONE_1;
+                        return price;
+                    case "B":
+                        price = (float)queryPrice.ZONE_2;
+                        return price;
+                    case "C":
+                        price = (float)queryPrice.ZONE_3;
+                        return price;
+                    case "D":
+                        price = (float)queryPrice.ZONE_4;
+                        return price;
+                    case "E":
+                        price = (float)queryPrice.ZONE_5;
+                        return price;
+                    case "F":
+                        price = (float)queryPrice.ZONE_6;
+                        return price;
+                    case "G":
+                        price = (float)queryPrice.ZONE_7;
+                        return price;
+                    case "H":
+                        price = (float)queryPrice.ZONE_8;
+                        return price;
+                    case "I":
+                        price = (float)queryPrice.ZONE_9;
                         return price;
                     default:
                         return price;

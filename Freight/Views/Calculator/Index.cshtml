@@ -183,7 +183,10 @@
             <a id="handleExport" class="btn btn-primary btn-lg"> Export </a>
             @*<input id="btnExport" type="submit" value="Export" class="btn btn-primary btn-lg" />*@
             <a id="btnExport" class="btn btn-primary btn-lg"> Calculator </a>
-            <input id="valueCalculator" type="text" value="" class="form-control" />
+            <p>Value Price Before</p>
+            <input id="valueCalculatorBefore" disabled type="number" value="" class="text-dark form-control" />
+            <p>Value Price After</p>
+            <input id="valueCalculatorAfter" disabled type="number" value="" class="text-dark form-control" />
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -202,29 +205,45 @@
         var serviceOptionDefault = " <option selected value='0'>Services Type</option>";
         var pakagingOptionDefault = "<option selected value='0'>Packaging Type</option>";
         var weightOptionDefault = "<option selected value='0'>Weight</option>";
+        //$.ajax({
+        //    type: "GET",
+        //    url: baseURL +"/Utility/GetListCountry",
+        //    dataType: "json",
+        //    contentType: "application/json;charset=utf-8",
+        //    success: function (data) {
+        //        var s = '<option value="">Please Select Country</option>';
+        //        for (var i = 0; i < data.data.length; i++) {
+        //            s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
+        //        }
+        //        $("#sourceSelect").html(s);
+        //        $("#destinationSelect").html(s);
+        //    }
+        //});
         $.ajax({
             type: "GET",
-            url: baseURL +"/Utility/GetListCountry",
+            url: baseURL + "/Calculator/GetListCountry",
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (data) {
-                var s = '<option value="">Please Select Country</option>';
-                for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].text + '">' + data.data[i].text + '</option>';
-                }
-                $("#sourceSelect").html(s);
-                $("#destinationSelect").html(s);
+                if (data.error.message === "SUCCESS"){
+                    var s = '<option value="">Please Select Country</option>';
+                    for (var i = 0; i < data.data.length; i++) {
+                        s += '<option value="' + data.data[i].COUNTRY_NAME + '">' + data.data[i].COUNTRY_NAME + '</option>';
+                    }
+                    $("#sourceSelect").html(s);
+                    $("#destinationSelect").html(s);
+        }
             }
         });
         $.ajax({
             type: "GET",
-            url: baseURL +"/Utility/GetListCarriers",
+            url: baseURL +"/Calculator/GetListCarriers",
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (data) {
                 var s = '<option value="">Please Select Carrier</option>';
                 for (var i = 0; i < data.data.length; i++) {
-                    s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                    s += '<option value="' + data.data[i].CARRIER_NAME + '">' + data.data[i].CARRIER_NAME + '</option>';
                 }
                 $("#carrierSelect").html(s);
             }
@@ -249,13 +268,14 @@
 
             $.ajax({
                 type: "GET",
-                url: baseURL +"/Utility/GetListPackageTypeByCarrier?carrier=" + valueOfCarrier,
+                url: baseURL +"/Calculator/GetListPackageTypeByCarrier?carrier=" + valueOfCarrier,
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
+                    console.log(data);
                     var s = '<option value="">Please Select Packaging Type</option>';
                     for (var i = 0; i < data.data.length; i++) {
-                        s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
+                        s += '<option value="' + data.data[i].PACKAGE_ID + '">' + data.data[i].PACKAGE_ID + '</option>';
                     }
                     $("#packagingSelect").html(s);
                 }
@@ -263,17 +283,13 @@
 
             $.ajax({
                 type: "GET",
-                url: baseURL +"/Utility/GetListServices",
+                url: baseURL + "/Calculator/GetListServices?carrier=" + valueOfCarrier,
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
-
-                    var carrier = $("#carrierSelect").val();
                     var s = '<option value="">Please Select Service Type</option>';
                     for (var i = 0; i < data.data.length; i++) {
-                        if (carrier == '' || carrier == data.data[i].extend) {
-                            s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
-                        }
+                            s += '<option value="' + data.data[i].SERVICE_ID + '">' + data.data[i].SERVICE_ID + '</option>';
                     }
                     $("#servicesSelect").html(s);
                 }
@@ -439,36 +455,37 @@
             var to = $("#destinationSelect").val();
             var service = $("#servicesSelect").val();
             var packageType = $("#packagingSelect").val();
-            var weight = $("#weightSelect").val()=== "" ? 0 : $("#txtWidth").val();
+            var weight = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
             var region = null;
             window.location.href = baseURL + "/Calculator/Export?from=" + from + "&to=" + to + "&service=" + service + "&packageType=" + packageType + "&weight=" + weight + "&region=" + region + "&height=" + height + "&length=" + length + "&width=" + width + "&carrier=" + carrier ;
         });
         $("#btnExport").click(function () {
 
-            //var contentToRemove = document.querySelectorAll("#tr-id");
-            //$(contentToRemove).remove();
-            //if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
-            //    alert('Please select source and destination!');
-            //    return false;
-            //}
-            //if ($("#carrierSelect").val() !== "0") {
-            //    if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-            //        alert('Service, Packaging are not empty');
-            //        return false;
-            //    }
-            //}
+            var contentToRemove = document.querySelectorAll("#tr-id");
+            $(contentToRemove).remove();
+            if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
+                alert('Please select source and destination!');
+                return false;
+            }
+            if ($("#carrierSelect").val() !== "0") {
+                if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                    alert('Service, Packaging are not empty');
+                    return false;
+                }
+            }
             var model = {
-                From: "MALAYSIA",
-                To: "SINGAPORE",
-                Carrier: "FedEx",
-                ServiceType: "IP",
-                PackageType: "ENVELOPE",
-                Weight: 0.75,
+                From: $("#sourceSelect").val(),
+                To: $("#destinationSelect").val(),
+                Carrier: $("#carrierSelect").val(),
+                ServiceType: $("#servicesSelect").val(),
+                PackageType: $("#packagingSelect").val(),
+                Weight: $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val(),
 
             };
             $.post('@Url.Action("CalculatorPrice", "Calculator")', { model: model }, function (data) {
                 console.log(data);
-                $("#valueCalculator").val(data);
+                $("#valueCalculatorBefore").val(data.result);
+                $("#valueCalculatorAfter").val(data.afterValue);
         });
     })
 
