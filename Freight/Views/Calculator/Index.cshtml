@@ -182,11 +182,7 @@
 
             <a id="handleExport" class="btn btn-primary btn-lg"> Export </a>
             @*<input id="btnExport" type="submit" value="Export" class="btn btn-primary btn-lg" />*@
-            <a id="btnExport" class="btn btn-primary btn-lg"> Calculator </a>
-            <p>Value Price Before</p>
-            <input id="valueCalculatorBefore" disabled type="number" value="" class="text-dark form-control" />
-            <p>Value Price After</p>
-            <input id="valueCalculatorAfter" disabled type="number" value="" class="text-dark form-control" />
+
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -364,22 +360,19 @@
                 $('#lengthGroup').attr('hidden', false);
                 weightElement.html(option3);
             }
-
-
-
-
         })
 
         $("#searchButton").click(function () {
+            
             var source = $("#sourceSelect").val();
             var desination = $("#destinationSelect").val();
             var carrier = $("#carrierSelect").val();
             var serviceValue = $("#servicesSelect").val();
             var packagingSelect = $("#packagingSelect").val();
-            var weightSelect = $("#weightSelect").val();
-            var height = $("#txtHeight").val();
-            var length = $("#txtLength").val();
-            var width = $("#txtWidth").val();
+            var weightSelect = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
+            var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
+            var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
+            var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();
 
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
@@ -395,7 +388,7 @@
             }
             $.ajax({
                 type: "POST",
-                url: baseURL +"/Calculator/GetPriceAdvance",
+                url: baseURL +"/Calculator/GetSearchAdvance",
                 data: JSON.stringify({
                     "Length": length,
                     "Height": height,
@@ -404,15 +397,16 @@
                     "To": desination,
                     "ServiceType": serviceValue,
                     "PackageType": packagingSelect,
-                    "Region": "",
+                    "Carrier": carrier,
                     "Weight": weightSelect
                 }),
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (response) {
+                    console.log(response)
                     var count = 0;
-                    for (var i = 0; i < response.data.Data.length; i++) {
-                        var item = response.data.Data[i];
+                    for (var i = 0; i < response.data.length; i++) {
+                        var item = response.data[i];
                         if (carrier == '' || carrier == item.CARRIER_NAME) {
                             count++;
                             $('<tr id="tr-id">')
@@ -459,36 +453,7 @@
             var region = null;
             window.location.href = baseURL + "/Calculator/Export?from=" + from + "&to=" + to + "&service=" + service + "&packageType=" + packageType + "&weight=" + weight + "&region=" + region + "&height=" + height + "&length=" + length + "&width=" + width + "&carrier=" + carrier ;
         });
-        $("#btnExport").click(function () {
-
-            var contentToRemove = document.querySelectorAll("#tr-id");
-            $(contentToRemove).remove();
-            if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
-                alert('Please select source and destination!');
-                return false;
-            }
-            if ($("#carrierSelect").val() !== "0") {
-                if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-                    alert('Service, Packaging are not empty');
-                    return false;
-                }
-            }
-            var model = {
-                From: $("#sourceSelect").val(),
-                To: $("#destinationSelect").val(),
-                Carrier: $("#carrierSelect").val(),
-                ServiceType: $("#servicesSelect").val(),
-                PackageType: $("#packagingSelect").val(),
-                Weight: $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val(),
-
-            };
-            $.post('@Url.Action("CalculatorPrice", "Calculator")', { model: model }, function (data) {
-                console.log(data);
-                $("#valueCalculatorBefore").val(data.result);
-                $("#valueCalculatorAfter").val(data.afterValue);
-        });
-    })
-
+       
         $(document).ready(function () {
             var role = $("#role").val();
             if (role == "sa") {

@@ -16,35 +16,33 @@ namespace Freught1.Controllers
     //[CustomAuthorization(LoginPage = "/Home/Index")]
     public class CalculatorController : BaseController
     {
-        public ftestEntities db = new ftestEntities();
+        public WEB_FREIGHT_RATE_DEVEntities db = new WEB_FREIGHT_RATE_DEVEntities();
         public ActionResult Index()
         {
             return View();
         }
-        [HttpPost]
-        [Route("calculator/get_price")]
-        [CustomExceptionFilter]
-        public JsonResult GetPrice(CheckPriceObject model)
-        {
-            try
-            {
-                string serviceType = string.IsNullOrEmpty(model.ServiceType) ? "" : model.ServiceType;
-                var result = CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
-                string logMsg = CarrierManager.Instance.Log;
-                var x = new { LogMsg = logMsg, Data = result };
-                //label6.Text = CarrierManager.Instance.Log;                
-                return Json(new JsonObject(0, "SUCCESS", x), JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
-            }
+        //[HttpPost]
+        //[Route("calculator/get_price")]
+        //[CustomExceptionFilter]
+        //public JsonResult GetPrice(CheckPriceObject model)
+        //{
+        //    try
+        //    {
+        //        string serviceType = string.IsNullOrEmpty(model.ServiceType) ? "" : model.ServiceType;
+        //        var result = CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
+        //        string logMsg = CarrierManager.Instance.Log;
+        //        var x = new { LogMsg = logMsg, Data = result };
+        //        //label6.Text = CarrierManager.Instance.Log;                
+        //        return Json(new JsonObject(0, "SUCCESS", x), JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+        //    }
 
-        }
+        //}
         [HttpPost]
-        [Route("calculator/get_price_advance")]
-        [CustomExceptionFilter]
-        public JsonResult GetPriceAdvance(CheckAdvePriceByWeight model)
+        public JsonResult GetSearchAdvance(CheckAdvePriceByWeight model)
         {
             try
             {
@@ -64,11 +62,30 @@ namespace Freught1.Controllers
                     float volumeWeight = (model.Length * model.Width * model.Height) / divisorValue;
                     model.Weight = volumeWeight > model.Weight ? volumeWeight : model.Weight;
                 }
-                var result = CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
-                string logMsg = CarrierManager.Instance.Log;
-                var x = new { LogMsg = logMsg, Data = result };
-                //label6.Text = CarrierManager.Instance.Log;
-                return Json(new JsonObject(0, "SUCCESS", x), JsonRequestBehavior.AllowGet);
+                var typeTransfer = "";
+                if (model.To.ToUpper() == "SINGAPORE")
+                {
+                    typeTransfer = "IMPORT";
+                }
+                else if (model.From.ToUpper() == "SINGAPORE")
+                {
+                    typeTransfer = "EXPORT";
+                }
+                else typeTransfer = "3RD_PARTY";
+
+                switch (typeTransfer)
+                {
+                    case "IMPORT":
+                        var res = getListImport(model.From, model.To, model.Carrier, model.ServiceType, model.PackageType, model.Weight);
+                        return Json(new JsonObject(0, "SUCCESS", res), JsonRequestBehavior.AllowGet);
+                    case "EXPORT":
+                        var res_export = getListExport(model.From, model.To, model.Carrier, model.ServiceType, model.PackageType, model.Weight);
+                        return Json(new JsonObject(0, "SUCCESS", res_export), JsonRequestBehavior.AllowGet);
+                    case "3RD_PARTY":
+                        var res_3rd = getListThirdParty(model.From, model.To, model.Carrier, model.ServiceType, model.PackageType, model.Weight);
+                        return Json(new JsonObject(0, "SUCCESS", res_3rd), JsonRequestBehavior.AllowGet);
+                }
+                return null;
             }
             catch (Exception ex)
             {
@@ -76,10 +93,43 @@ namespace Freught1.Controllers
             }
 
         }
+        //[HttpPost]
+        //public JsonResult GetSearchAdvance(CheckAdvePriceByWeight model)
+        //{
+        //    try
+        //    {
+        //        string serviceType = string.IsNullOrEmpty(model.ServiceType) ? "" : model.ServiceType;
+        //        if (model.Length > 0 && model.Height > 0 && model.Width > 0)
+        //        {
+        //            float divisorValue = 5000;
+        //            //Length * width * height/5000 
+        //            UtilityService utilityService = new UtilityService();
+        //            var para = utilityService.GetByCode("*", "VOLUME_DIVISOR");
+        //            if (para != null && string.IsNullOrEmpty(para.PARA_VALUE))
+        //            {
+        //                float.TryParse(para.PARA_VALUE, out divisorValue);
+        //            }
+        //            //Compare Volumetric weight vs Weight of the goods, use whichever is higher 
+        //            //to calculate the shipment rate
+        //            float volumeWeight = (model.Length * model.Width * model.Height) / divisorValue;
+        //            model.Weight = volumeWeight > model.Weight ? volumeWeight : model.Weight;
+        //        }
+        //        var result = CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
+        //        string logMsg = CarrierManager.Instance.Log;
+        //        var x = new { LogMsg = logMsg, Data = result };
+        //        //label6.Text = CarrierManager.Instance.Log;
+        //        return Json(new JsonObject(0, "SUCCESS", x), JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
+        //    }
+
+        //}
         [HttpGet]
         public JsonResult GetListCountry()
         {
-            var listCountry = db.REF_COUNTRY.Where(x => x.COUNTRY_NAME != null).ToList();
+            var listCountry = db.REF_COUNTRY.Where(x => x.COUNTRY_NAME != null).OrderBy(x=>x.COUNTRY_NAME).ToList();
             return Json(new JsonObject(listCountry), JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
@@ -93,34 +143,7 @@ namespace Freught1.Controllers
         {
             var listCarriers = db.MS_CARRIER_PACKAGE_TYPE.Where(x => x.CARRIER_ID == carrier).ToList();
             return Json(new JsonObject(listCarriers), JsonRequestBehavior.AllowGet);
-        }
-        [HttpGet]
-        public JsonResult GetListServices(string carrier)
-        {
-            var listCarriers = db.MS_SERVICE_TYPE.Where(x => x.CARRIER_ID == carrier).ToList();
-            return Json(new JsonObject(listCarriers), JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult CalculatorPrice(CheckDataObject model)
-        {
-            var year = DateTime.Now.Year;
-            var mouth = DateTime.Now.ToString("MMMM");
-            if (model.Carrier.ToUpper() == "DHL")
-            {
-                var result = CalculatorPriceDHL(model.From, model.To, model.ServiceType, model.PackageType, model.Weight);
-                var rate = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == "DHL" && x.YEAR == year && x.MONTH == mouth);
-                var afterValue = result * (1 + rate.RATE / 100);
-                return Json(new { result = result, afterValue = afterValue, JsonRequestBehavior.AllowGet });
-            }
-            else if (model.Carrier.ToUpper() == "FEDEX")
-            {
-                var result = CalculatorPriceFedEx(model.From, model.To, model.ServiceType, model.PackageType, model.Weight);
-                var rate = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == "FedEx" && x.YEAR == year && x.MONTH == mouth);
-                var afterValue = result * (1 + rate.RATE / 100);
-                return Json(new { result = result, afterValue = afterValue, JsonRequestBehavior.AllowGet });
-            }
-            return null;
-        }
+        }  
         public ActionResult Export(string from, string to, string service, string packageType, float weight, string region, float height, float length, float width, string carrier)
         {
             if (length > 0 && height > 0 && width > 0)
@@ -138,21 +161,27 @@ namespace Freught1.Controllers
                 float volumeWeight = (length * width * height) / divisorValue;
                 weight = volumeWeight > weight ? volumeWeight : weight;
             }
-            var result = CarrierManager.Instance.GetCalculatorPrice(from, to, service, packageType, weight, region);
-            var tempData = new List<PriceResultItem>();
-            if (!string.IsNullOrEmpty(carrier))
+            var typeTransfer = "";
+            if (to.ToUpper() == "SINGAPORE")
             {
-                foreach (var i in result)
-                {
-                    if (i.CARRIER_NAME == carrier)
-                    {
-                        tempData.Add(i);
-                    }
-                }
+                typeTransfer = "IMPORT";
+            }
+            else if (from.ToUpper() == "SINGAPORE")
+            {
+                typeTransfer = "EXPORT";
+            }
+            else typeTransfer = "3RD_PARTY";
+            var result = new List<PriceResultItem>();
+            if(typeTransfer == "IMPORT")
+            {
+                result = getListImport(from, to, carrier, service, packageType, weight);
+            } else if(typeTransfer == "EXPORT")
+            {
+                result = getListExport(from, to, carrier, service, packageType, weight);
             }
             else
             {
-                tempData = result;
+                result = getListThirdParty(from, to, carrier, service, packageType, weight);
             }
             var stream = new MemoryStream();
             using (var package = new ExcelPackage(stream))
@@ -167,7 +196,7 @@ namespace Freught1.Controllers
                 worksheet.Cells[1, 7].LoadFromText("Rate Before Surcharge (SGD)");
                 worksheet.Cells[1, 8].LoadFromText("Rate After Surcharge (SGD)");
                 int row = 2;
-                foreach (var index in tempData)
+                foreach (var index in result)
                 {
                     worksheet.Cells[row, 1].LoadFromText(index.CARRIER_NAME);
                     worksheet.Cells[row, 2].LoadFromText(index.SERVICE_TYPE);
@@ -189,521 +218,1041 @@ namespace Freught1.Controllers
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
-        public float CalculatorPriceFedEx(string from, string to, string serviceType, string packageType, float weight)
-        {        
-            var zone = "";
-            float price = 0;
-            REF_WEIGHT_RATE1 queryPrice = new REF_WEIGHT_RATE1();
-            if (from == "SINGAPORE")
-            {
-                var query = db.FedEx_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
-                if (query == null)
-                {
-                    return 0;
-                }
-                if (serviceType == "IEF")
-                {
-                    zone = query.E_IEF;
-                }
-                else if (serviceType == "IP")
-                {
-                    zone = query.E_IP;
-                }
-                else if (serviceType == "IE")
-                {
-                    zone = query.E_IE;
-                }
-                else if (serviceType == "IPF")
-                {
-                    zone = query.E_IPF;
-                }
-                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "FedEx" && x.DELIVER_TYPE == "EXPORT" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
-                if (queryPrice == null)
-                {
-                    return price;
-                }
-                switch (zone.ToUpper())
-                {
-                    case "B":
-                        price = (float)queryPrice.ZONE_1;
-                        return price;
-                    case "C":
-                        price = (float)queryPrice.ZONE_2;
-                        return price;
-                    case "D":
-                        price = (float)queryPrice.ZONE_3;
-                        return price;
-                    case "E":
-                        price = (float)queryPrice.ZONE_4;
-                        return price;
-                    case "F":
-                        price = (float)queryPrice.ZONE_5;
-                        return price;
-                    case "G":
-                        price = (float)queryPrice.ZONE_6;
-                        return price;
-                    case "H":
-                        price = (float)queryPrice.ZONE_7;
-                        return price;
-                    case "I":
-                        price = (float)queryPrice.ZONE_8;
-                        return price;
-                    case "K":
-                        price = (float)queryPrice.ZONE_9;
-                        return price;
-                    case "M":
-                        price = (float)queryPrice.ZONE_10;
-                        return price;
-                    case "N":
-                        price = (float)queryPrice.ZONE_11;
-                        return price;
-                    case "O":
-                        price = (float)queryPrice.ZONE_12;
-                        return price;
-                    case "P":
-                        price = (float)queryPrice.ZONE_13;
-                        return price;
-                    case "Q":
-                        price = (float)queryPrice.ZONE_14;
-                        return price;
-                    case "R":
-                        price = (float)queryPrice.ZONE_15;
-                        return price;
-                    case "S":
-                        price = (float)queryPrice.ZONE_16;
-                        return price;
-                    case "T":
-                        price = (float)queryPrice.ZONE_17;
-                        return price;
-                    case "U":
-                        price = (float)queryPrice.ZONE_18;
-                        return price;
-                    case "V":
-                        price = (float)queryPrice.ZONE_19;
-                        return price;
-                    case "W":
-                        price = (float)queryPrice.ZONE_20;
-                        return price;
-                    case "X":
-                        price = (float)queryPrice.ZONE_21;
-                        return price;
-                    case "Z":
-                        price = (float)queryPrice.ZONE_22;
-                        return price;
-                    default:
-                        return price;
-                }
-            }
-            else if (to == "SINGAPORE")
-            {
-                var query = db.FedEx_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
-                if (query == null)
-                {
-                    return 0;
-                }
-                if (serviceType == "IEF")
-                {
-                    zone = query.I_IEF;
-                }
-                else if (serviceType == "IP")
-                {
-                    zone = query.I_IP;
-                }
-                else if (serviceType == "IE")
-                {
-                    zone = query.I_IE;
-                }
-                else if (serviceType == "IPF")
-                {
-                    zone = query.I_IPF;
-                }
-                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "FedEx" && x.DELIVER_TYPE == "IMPORT" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
-                if(queryPrice == null)
-                {
-                    return price;
-                }               
-                switch (zone)
-                {
-                    case "B":
-                        price = (float)queryPrice.ZONE_1;
-                        return price;
-                    case "C":
-                        price = (float)queryPrice.ZONE_2;
-                        return price;
-                    case "D":
-                        price = (float)queryPrice.ZONE_3;
-                        return price;
-                    case "E":
-                        price = (float)queryPrice.ZONE_4;
-                        return price;
-                    case "F":
-                        price = (float)queryPrice.ZONE_5;
-                        return price;
-                    case "G":
-                        price = (float)queryPrice.ZONE_6;
-                        return price;
-                    case "H":
-                        price = (float)queryPrice.ZONE_7;
-                        return price;
-                    case "I":
-                        price = (float)queryPrice.ZONE_8;
-                        return price;
-                    case "K":
-                        price = (float)queryPrice.ZONE_9;
-                        return price;
-                    case "M":
-                        price = (float)queryPrice.ZONE_10;
-                        return price;
-                    case "N":
-                        price = (float)queryPrice.ZONE_11;
-                        return price;
-                    case "O":
-                        price = (float)queryPrice.ZONE_12;
-                        return price;
-                    case "P":
-                        price = (float)queryPrice.ZONE_13;
-                        return price;
-                    case "Q":
-                        price = (float)queryPrice.ZONE_14;
-                        return price;
-                    case "R":
-                        price = (float)queryPrice.ZONE_15;
-                        return price;
-                    case "S":
-                        price = (float)queryPrice.ZONE_16;
-                        return price;
-                    case "T":
-                        price = (float)queryPrice.ZONE_17;
-                        return price;
-                    case "U":
-                        price = (float)queryPrice.ZONE_18;
-                        return price;
-                    case "V":
-                        price = (float)queryPrice.ZONE_19;
-                        return price;
-                    case "W":
-                        price = (float)queryPrice.ZONE_20;
-                        return price;
-                    case "X":
-                        price = (float)queryPrice.ZONE_21;
-                        return price;
-                    case "Z":
-                        price = (float)queryPrice.ZONE_22;
-                        return price;
-                    default:
-                        return price;
-                }
-            }
-            else if (from != "SINGAPORE" && to != "SINGAPORE")
-            {
-                var from_zone = db.FedEx_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
-                var to_zone = db.FedEx_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
-                var queryZone = db.REF_MATRIX.FirstOrDefault(x => x.CARRIER_ID == "FedEx" && x.ROW_NAME == from_zone.ZONE_NAME && x.COL_NAME == to_zone.ZONE_NAME);
-                zone = queryZone.VALUE;
-                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "FedEx" && x.DELIVER_TYPE == "3RD_PARTY" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
-                if (queryPrice == null)
-                {
-                    return price;
-                }
-                switch (zone.ToUpper())
-                {
-                    case "A":
-                        price = (float)queryPrice.ZONE_1;
-                        return price;
-                    case "B":
-                        price = (float)queryPrice.ZONE_2;
-                        return price;
-                    case "C":
-                        price = (float)queryPrice.ZONE_3;
-                        return price;
-                    case "D":
-                        price = (float)queryPrice.ZONE_4;
-                        return price;
-                    case "E":
-                        price = (float)queryPrice.ZONE_5;
-                        return price;
-                    case "F":
-                        price = (float)queryPrice.ZONE_6;
-                        return price;
-                    case "G":
-                        price = (float)queryPrice.ZONE_7;
-                        return price;
-                    case "H":
-                        price = (float)queryPrice.ZONE_8;
-                        return price;
-                    case "I":
-                        price = (float)queryPrice.ZONE_9;
-                        return price;
-                    case "J":
-                        price = (float)queryPrice.ZONE_10;
-                        return price;
-                    case "K":
-                        price = (float)queryPrice.ZONE_11;
-                        return price;
-                    case "L":
-                        price = (float)queryPrice.ZONE_12;
-                        return price;
-                    case "M":
-                        price = (float)queryPrice.ZONE_13;
-                        return price;
-                    case "N":
-                        price = (float)queryPrice.ZONE_14;
-                        return price;
-                    case "O":
-                        price = (float)queryPrice.ZONE_15;
-                        return price;
-                    case "P":
-                        price = (float)queryPrice.ZONE_16;
-                        return price;
-                    default:
-                        return price;
-                }
-            }
-            return 0;
-        }
-        public float CalculatorPriceDHL(string from, string to, string serviceType, string packageType, float weight)
+      
+        public List<PriceResultItem> getListExport(string from, string to, string carrier, string serviceType, string packageType, float weight)
         {
-            var zone = "";
-            float price = 0;
-            REF_WEIGHT_RATE1 queryPrice = new REF_WEIGHT_RATE1();
-            if (from == "SINGAPORE")
+            var result = new List<PriceResultItem>();
+            var queryDHL = db.DHL_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
+            var DHL_E_Zone = queryDHL.EXPORT_ZONE;
+            var queryFed = db.FedEx_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
+            var Fed_E_Zone = "";
+            var queryListExport = db.MS_EXCEL_WEIGHT_RATE.Where(x => x.DELIVER_TYPE == "EXPORT").ToList();
+            if (!String.IsNullOrEmpty(carrier))
             {
-                var query = db.DHL_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
-                if (query == null)
+                queryListExport = queryListExport.Where(x => x.CARRIER_ID == carrier).ToList();
+            }
+            if (!String.IsNullOrEmpty(serviceType))
+            {
+                queryListExport = queryListExport.Where(x => x.SERVICE_ID == serviceType.ToUpper()).ToList();
+            }
+            if (!String.IsNullOrEmpty(packageType))
+            {
+                queryListExport = queryListExport.Where(x => x.PACKAGE_ID == packageType.ToUpper()).ToList();
+            }
+            if (weight != 0)
+            {
+                queryListExport = queryListExport.Where(x => x.MIN <= weight && x.MAX >= weight).ToList();
+            }
+            var queryFedList = db.REF_WEIGHT_RATE_1.Where(x => x.CARRIER_ID == "FedEx" && x.DELIVER_TYPE == "EXPORT").ToList();    
+            var year = DateTime.Now.Year;
+            var month = DateTime.Now.ToString("MMMM");
+            foreach (var i in queryListExport)
+            {
+                float price = 0;
+                if (weight <= 0)
                 {
-                    return 0;
+                    if (i.CARRIER_ID == "DHL")
+                    {
+                        var getdata = db.REF_WEIGHT_RATE_1.Where(x => x.DELIVER_TYPE == "EXPORT" && x.CARRIER_ID == "DHL" && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN >= i.MIN && x.MAX <= i.MAX && x.SERVICE_ID == i.SERVICE_ID).ToList();
+                        if (getdata.Count > 0)
+                        {
+                            switch (DHL_E_Zone)
+                            {
+                                case "1":
+                                    price = (float)getdata[0].ZONE_1;
+                                    break;
+                                case "2":
+                                    price = (float)getdata[0].ZONE_2;
+                                    break;
+                                case "3":
+                                    price = (float)getdata[0].ZONE_3;
+                                    break;
+                                case "4":
+                                    price = (float)getdata[0].ZONE_4;
+                                    break;
+                                case "5":
+                                    price = (float)getdata[0].ZONE_5;
+                                    break;
+                                case "6":
+                                    price = (float)getdata[0].ZONE_6;
+                                    break;
+                                case "7":
+                                    price = (float)getdata[0].ZONE_7;
+                                    break;
+                                case "8":
+                                    price = (float)getdata[0].ZONE_8;
+                                    break;
+                                case "9":
+                                    price = (float)getdata[0].ZONE_9;
+                                    break;
+                                case "10":
+                                    price = (float)getdata[0].ZONE_10;
+                                    break;
+                                case "11":
+                                    price = (float)getdata[0].ZONE_11;
+                                    break;
+                                case "12":
+                                    price = (float)getdata[0].ZONE_12;
+                                    break;
+                                case "13":
+                                    price = (float)getdata[0].ZONE_13;
+                                    break;
+                                case "14":
+                                    price = (float)getdata[0].ZONE_14;
+                                    break;
+                                case "15":
+                                    price = (float)getdata[0].ZONE_15;
+                                    break;
+                                case "16":
+                                    price = (float)getdata[0].ZONE_16;
+                                    break;
+                                case "17":
+                                    price = (float)getdata[0].ZONE_17;
+                                    break;
+                                case "18":
+                                    price = (float)getdata[0].ZONE_18;
+                                    break;
+                                case "19":
+                                    price = (float)getdata[0].ZONE_19;
+                                    break;
+                                case "20":
+                                    price = (float)getdata[0].ZONE_20;
+                                    break;
+                                case "21":
+                                    price = (float)getdata[0].ZONE_21;
+                                    break;
+                                case "22":
+                                    price = (float)getdata[0].ZONE_22;
+                                    break;
+                                case "23":
+                                    price = (float)getdata[0].ZONE_23;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
+                    else if (i.CARRIER_ID == "FedEx")
+                    {
+                        var getdataFed = queryFedList.Where(x => x.PACKAGE_ID.Contains(i.PACKAGE_ID) && x.SERVICE_ID.Contains(i.SERVICE_ID)).ToList();
+                        if (getdataFed.Count > 0)
+                        {
+                            if (i.SERVICE_ID == "IP")
+                            {
+                                Fed_E_Zone = queryFed.E_IP;
+                            }
+                            else if (i.SERVICE_ID == "IE")
+                            {
+                                Fed_E_Zone = queryFed.E_IE;
+                            }
+                            else if (i.SERVICE_ID == "IEF")
+                            {
+                                Fed_E_Zone = queryFed.E_IEF;
+                            }
+                            else if (i.SERVICE_ID == "IPF")
+                            {
+                                Fed_E_Zone = queryFed.E_IPF;
+                            }
+                            switch (Fed_E_Zone.ToUpper())
+                            {
+                                case "B":
+                                    price = (float)getdataFed[0].ZONE_1;
+                                    break;
+                                case "C":
+                                    price = (float)getdataFed[0].ZONE_2;
+                                    break;
+                                case "D":
+                                    price = (float)getdataFed[0].ZONE_3;
+                                    break;
+                                case "E":
+                                    price = (float)getdataFed[0].ZONE_4;
+                                    break;
+                                case "F":
+                                    price = (float)getdataFed[0].ZONE_5;
+                                    break;
+                                case "G":
+                                    price = (float)getdataFed[0].ZONE_6;
+                                    break;
+                                case "H":
+                                    price = (float)getdataFed[0].ZONE_7;
+                                    break;
+                                case "I":
+                                    price = (float)getdataFed[0].ZONE_8;
+                                    break;
+                                case "K":
+                                    price = (float)getdataFed[0].ZONE_9;
+                                    break;
+                                case "M":
+                                    price = (float)getdataFed[0].ZONE_10;
+                                    break;
+                                case "N":
+                                    price = (float)getdataFed[0].ZONE_11;
+                                    break;
+                                case "0":
+                                    price = (float)getdataFed[0].ZONE_12;
+                                    break;
+                                case "P":
+                                    price = (float)getdataFed[0].ZONE_13;
+                                    break;
+                                case "Q":
+                                    price = (float)getdataFed[0].ZONE_14;
+                                    break;
+                                case "R":
+                                    price = (float)getdataFed[0].ZONE_15;
+                                    break;
+                                case "S":
+                                    price = (float)getdataFed[0].ZONE_16;
+                                    break;
+                                case "T":
+                                    price = (float)getdataFed[0].ZONE_17;
+                                    break;
+                                case "U":
+                                    price = (float)getdataFed[0].ZONE_18;
+                                    break;
+                                case "V":
+                                    price = (float)getdataFed[0].ZONE_19;
+                                    break;
+                                case "W":
+                                    price = (float)getdataFed[0].ZONE_20;
+                                    break;
+                                case "X":
+                                    price = (float)getdataFed[0].ZONE_21;
+                                    break;
+                                case "Z":
+                                    price = (float)getdataFed[0].ZONE_22;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
                 }
-                zone = query.EXPORT_ZONE;
-                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "DHL" && x.DELIVER_TYPE == "EXPORT" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
-                if (queryPrice == null)
+                else if(weight > 0)
                 {
-                    return price;
-                }
-                switch (zone)
-                {
-                    case "1":
-                        price = (float)queryPrice.ZONE_1;
-                        return price;
-                    case "2":
-                        price = (float)queryPrice.ZONE_2;
-                        return price;
-                    case "3":
-                        price = (float)queryPrice.ZONE_3;
-                        return price;
-                    case "4":
-                        price = (float)queryPrice.ZONE_4;
-                        return price;
-                    case "5":
-                        price = (float)queryPrice.ZONE_5;
-                        return price;
-                    case "6":
-                        price = (float)queryPrice.ZONE_6;
-                        return price;
-                    case "7":
-                        price = (float)queryPrice.ZONE_7;
-                        return price;
-                    case "8":
-                        price = (float)queryPrice.ZONE_8;
-                        return price;
-                    case "9":
-                        price = (float)queryPrice.ZONE_9;
-                        return price;
-                    case "10":
-                        price = (float)queryPrice.ZONE_10;
-                        return price;
-                    case "11":
-                        price = (float)queryPrice.ZONE_11;
-                        return price;
-                    case "12":
-                        price = (float)queryPrice.ZONE_12;
-                        return price;
-                    case "13":
-                        price = (float)queryPrice.ZONE_13;
-                        return price;
-                    case "14":
-                        price = (float)queryPrice.ZONE_14;
-                        return price;
-                    case "15":
-                        price = (float)queryPrice.ZONE_15;
-                        return price;
-                    case "16":
-                        price = (float)queryPrice.ZONE_16;
-                        return price;
-                    case "17":
-                        price = (float)queryPrice.ZONE_17;
-                        return price;
-                    case "18":
-                        price = (float)queryPrice.ZONE_18;
-                        return price;
-                    case "19":
-                        price = (float)queryPrice.ZONE_19;
-                        return price;
-                    case "20":
-                        price = (float)queryPrice.ZONE_20;
-                        return price;
-                    case "21":
-                        price = (float)queryPrice.ZONE_21;
-                        return price;
-                    case "22":
-                        price = (float)queryPrice.ZONE_22;
-                        return price;
-                    default:
-                        return price;
+                    if (i.CARRIER_ID == "DHL")
+                    {
+                        var getdata = db.REF_WEIGHT_RATE_1.Where(x => x.DELIVER_TYPE == "EXPORT" && x.CARRIER_ID == "DHL" && x.SERVICE_ID == i.SERVICE_ID && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN <= weight && x.MAX >= weight).ToList();
+                        if (getdata.Count > 0)
+                        {
+                            switch (DHL_E_Zone)
+                            {
+                                case "1":
+                                    price = (float)getdata[0].ZONE_1;
+                                    break;
+                                case "2":
+                                    price = (float)getdata[0].ZONE_2;
+                                    break;
+                                case "3":
+                                    price = (float)getdata[0].ZONE_3;
+                                    break;
+                                case "4":
+                                    price = (float)getdata[0].ZONE_4;
+                                    break;
+                                case "5":
+                                    price = (float)getdata[0].ZONE_5;
+                                    break;
+                                case "6":
+                                    price = (float)getdata[0].ZONE_6;
+                                    break;
+                                case "7":
+                                    price = (float)getdata[0].ZONE_7;
+                                    break;
+                                case "8":
+                                    price = (float)getdata[0].ZONE_8;
+                                    break;
+                                case "9":
+                                    price = (float)getdata[0].ZONE_9;
+                                    break;
+                                case "10":
+                                    price = (float)getdata[0].ZONE_10;
+                                    break;
+                                case "11":
+                                    price = (float)getdata[0].ZONE_11;
+                                    break;
+                                case "12":
+                                    price = (float)getdata[0].ZONE_12;
+                                    break;
+                                case "13":
+                                    price = (float)getdata[0].ZONE_13;
+                                    break;
+                                case "14":
+                                    price = (float)getdata[0].ZONE_14;
+                                    break;
+                                case "15":
+                                    price = (float)getdata[0].ZONE_15;
+                                    break;
+                                case "16":
+                                    price = (float)getdata[0].ZONE_16;
+                                    break;
+                                case "17":
+                                    price = (float)getdata[0].ZONE_17;
+                                    break;
+                                case "18":
+                                    price = (float)getdata[0].ZONE_18;
+                                    break;
+                                case "19":
+                                    price = (float)getdata[0].ZONE_19;
+                                    break;
+                                case "20":
+                                    price = (float)getdata[0].ZONE_20;
+                                    break;
+                                case "21":
+                                    price = (float)getdata[0].ZONE_21;
+                                    break;
+                                case "22":
+                                    price = (float)getdata[0].ZONE_22;
+                                    break;
+                                case "23":
+                                    price = (float)getdata[0].ZONE_23;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
+                    else if (i.CARRIER_ID == "FedEx")
+                    {
+                        var getdataFed = queryFedList.Where(x => x.SERVICE_ID == i.SERVICE_ID && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN <= weight && x.MAX >= weight).ToList();
+                        if (getdataFed.Count > 0)
+                        {
+                            if (i.SERVICE_ID == "IP")
+                            {
+                                Fed_E_Zone = queryFed.E_IP;
+                            }
+                            else if (i.SERVICE_ID == "IE")
+                            {
+                                Fed_E_Zone = queryFed.E_IE;
+                            }
+                            else if (i.SERVICE_ID == "IEF")
+                            {
+                                Fed_E_Zone = queryFed.E_IEF;
+                            }
+                            else if (i.SERVICE_ID == "IPF")
+                            {
+                                Fed_E_Zone = queryFed.E_IPF;
+                            }
+                            switch (Fed_E_Zone.ToUpper())
+                            {
+                                case "B":
+                                    price = (float)getdataFed[0].ZONE_1;
+                                    break;
+                                case "C":
+                                    price = (float)getdataFed[0].ZONE_2;
+                                    break;
+                                case "D":
+                                    price = (float)getdataFed[0].ZONE_3;
+                                    break;
+                                case "E":
+                                    price = (float)getdataFed[0].ZONE_4;
+                                    break;
+                                case "F":
+                                    price = (float)getdataFed[0].ZONE_5;
+                                    break;
+                                case "G":
+                                    price = (float)getdataFed[0].ZONE_6;
+                                    break;
+                                case "H":
+                                    price = (float)getdataFed[0].ZONE_7;
+                                    break;
+                                case "I":
+                                    price = (float)getdataFed[0].ZONE_8;
+                                    break;
+                                case "K":
+                                    price = (float)getdataFed[0].ZONE_9;
+                                    break;
+                                case "M":
+                                    price = (float)getdataFed[0].ZONE_10;
+                                    break;
+                                case "N":
+                                    price = (float)getdataFed[0].ZONE_11;
+                                    break;
+                                case "0":
+                                    price = (float)getdataFed[0].ZONE_12;
+                                    break;
+                                case "P":
+                                    price = (float)getdataFed[0].ZONE_13;
+                                    break;
+                                case "Q":
+                                    price = (float)getdataFed[0].ZONE_14;
+                                    break;
+                                case "R":
+                                    price = (float)getdataFed[0].ZONE_15;
+                                    break;
+                                case "S":
+                                    price = (float)getdataFed[0].ZONE_16;
+                                    break;
+                                case "T":
+                                    price = (float)getdataFed[0].ZONE_17;
+                                    break;
+                                case "U":
+                                    price = (float)getdataFed[0].ZONE_18;
+                                    break;
+                                case "V":
+                                    price = (float)getdataFed[0].ZONE_19;
+                                    break;
+                                case "W":
+                                    price = (float)getdataFed[0].ZONE_20;
+                                    break;
+                                case "X":
+                                    price = (float)getdataFed[0].ZONE_21;
+                                    break;
+                                case "Z":
+                                    price = (float)getdataFed[0].ZONE_22;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
                 }
             }
-            else if (to == "SINGAPORE")
-            {
-                var query = db.DHL_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
-                if (query == null)
-                {
-                    return 0;
-                }
-                zone = query.IMPORT_ZONE;
-                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "DHL" && x.DELIVER_TYPE == "IMPORT" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
-                if (queryPrice == null)
-                {
-                    return price;
-                }
-                switch (zone)
-                {
-                    case "1":
-                        price = (float)queryPrice.ZONE_1;
-                        return price;
-                    case "2":
-                        price = (float)queryPrice.ZONE_2;
-                        return price;
-                    case "3":
-                        price = (float)queryPrice.ZONE_3;
-                        return price;
-                    case "4":
-                        price = (float)queryPrice.ZONE_4;
-                        return price;
-                    case "5":
-                        price = (float)queryPrice.ZONE_5;
-                        return price;
-                    case "6":
-                        price = (float)queryPrice.ZONE_6;
-                        return price;
-                    case "7":
-                        price = (float)queryPrice.ZONE_7;
-                        return price;
-                    case "8":
-                        price = (float)queryPrice.ZONE_8;
-                        return price;
-                    case "9":
-                        price = (float)queryPrice.ZONE_9;
-                        return price;
-                    case "10":
-                        price = (float)queryPrice.ZONE_10;
-                        return price;
-                    case "11":
-                        price = (float)queryPrice.ZONE_11;
-                        return price;
-                    case "12":
-                        price = (float)queryPrice.ZONE_12;
-                        return price;
-                    case "13":
-                        price = (float)queryPrice.ZONE_13;
-                        return price;
-                    case "14":
-                        price = (float)queryPrice.ZONE_14;
-                        return price;
-                    case "15":
-                        price = (float)queryPrice.ZONE_15;
-                        return price;
-                    case "16":
-                        price = (float)queryPrice.ZONE_16;
-                        return price;
-                    case "17":
-                        price = (float)queryPrice.ZONE_17;
-                        return price;
-                    case "18":
-                        price = (float)queryPrice.ZONE_18;
-                        return price;
-                    case "19":
-                        price = (float)queryPrice.ZONE_19;
-                        return price;
-                    case "20":
-                        price = (float)queryPrice.ZONE_20;
-                        return price;
-                    case "21":
-                        price = (float)queryPrice.ZONE_21;
-                        return price;
-                    case "22":
-                        price = (float)queryPrice.ZONE_22;
-                        return price;
-                    default:
-                        return price;
-                }
-            }
-            else if (from != "SINGAPORE" && to != "SINGAPORE")
-            {
-                var from_zone = db.DHL_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
-                var to_zone = db.DHL_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
-                var queryZone = db.REF_MATRIX.FirstOrDefault(x => x.CARRIER_ID == "DHL" && x.ROW_NAME == from_zone.ZONE_NAME && x.COL_NAME == to_zone.ZONE_NAME);
-                zone = queryZone.VALUE;
-                queryPrice = db.REF_WEIGHT_RATE1.Where(x => x.MAX >= weight && x.MIN <= weight && x.CARRIER_ID == "DHL" && x.DELIVER_TYPE == "3RD_PARTY" && x.PACKAGE_ID == packageType.ToUpper()).FirstOrDefault();
-                if (queryPrice == null)
-                {
-                    return price;
-                }
-                switch (zone.ToUpper())
-                {
-                    case "A":
-                        price = (float)queryPrice.ZONE_1;
-                        return price;
-                    case "B":
-                        price = (float)queryPrice.ZONE_2;
-                        return price;
-                    case "C":
-                        price = (float)queryPrice.ZONE_3;
-                        return price;
-                    case "D":
-                        price = (float)queryPrice.ZONE_4;
-                        return price;
-                    case "E":
-                        price = (float)queryPrice.ZONE_5;
-                        return price;
-                    case "F":
-                        price = (float)queryPrice.ZONE_6;
-                        return price;
-                    case "G":
-                        price = (float)queryPrice.ZONE_7;
-                        return price;
-                    case "H":
-                        price = (float)queryPrice.ZONE_8;
-                        return price;
-                    case "I":
-                        price = (float)queryPrice.ZONE_9;
-                        return price;
-                    default:
-                        return price;
-                }
-            }
-            return 0;
-        }
-        public IList<PriceResultItem> GetPriceAdvanceList(CheckAdvePriceByWeight model)
-        {
-            string serviceType = string.IsNullOrEmpty(model.ServiceType) ? "" : model.ServiceType;
-            if (model.Length > 0 && model.Height > 0 && model.Width > 0)
-            {
-                float divisorValue = 5000;
-                //Length * width * height/5000 
-                UtilityService utilityService = new UtilityService();
-                var para = utilityService.GetByCode("*", "VOLUME_DIVISOR");
-                if (para != null && string.IsNullOrEmpty(para.PARA_VALUE))
-                {
-                    float.TryParse(para.PARA_VALUE, out divisorValue);
-                }
-                //Compare Volumetric weight vs Weight of the goods, use whichever is higher 
-                //to calculate the shipment rate
-                float volumeWeight = (model.Length * model.Width * model.Height) / divisorValue;
-                model.Weight = volumeWeight > model.Weight ? volumeWeight : model.Weight;
-            }
-            var result = CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
-
             return result;
+        }
 
+        public List<PriceResultItem> getListThirdParty(string from, string to, string carrier, string serviceType, string packageType, float weight)
+        {
+            var result = new List<PriceResultItem>();
+            var queryDHLFrom = db.DHL_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
+            var queryDHLTo = db.DHL_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
+            var querFedFrom = db.FedEx_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
+            var queryFedTo = db.FedEx_THIRD_ZONE.Where(x => x.COUNTRY_NAME.Contains(to.ToLower())).FirstOrDefault();
+
+            var DHL_From_3rd_Zone = queryDHLFrom.ZONE_NAME;
+            var DHL_To_3rd_Zone = queryDHLTo.ZONE_NAME;
+            var queryDHLZone = db.REF_MATRIX.Where(x => x.CARRIER_ID == "DHL" && x.ROW_NAME == DHL_From_3rd_Zone && x.COL_NAME == DHL_To_3rd_Zone).FirstOrDefault();
+            var Fed_From_3rd_Zone = querFedFrom.ZONE_NAME;
+            var Fed_To_3rd_Zone = queryFedTo.ZONE_NAME;
+            var queryFedZone = db.REF_MATRIX.Where(x => x.CARRIER_ID == "FedEx" && x.ROW_NAME == Fed_From_3rd_Zone && x.COL_NAME == Fed_To_3rd_Zone).FirstOrDefault();
+
+            var queryList3Party = db.MS_EXCEL_WEIGHT_RATE.Where(x => x.DELIVER_TYPE == "3RD_PARTY").ToList();
+            if (!String.IsNullOrEmpty(carrier))
+            {
+                queryList3Party = queryList3Party.Where(x => x.CARRIER_ID == carrier.ToUpper()).ToList();
+            }
+            if (!String.IsNullOrEmpty(serviceType))
+            {
+                queryList3Party = queryList3Party.Where(x => x.SERVICE_ID == serviceType.ToUpper()).ToList();
+            }
+            if (!String.IsNullOrEmpty(packageType))
+            {
+                queryList3Party = queryList3Party.Where(x => x.PACKAGE_ID == packageType.ToUpper()).ToList();
+            }
+            if (weight != 0)
+            {
+                queryList3Party = queryList3Party.Where(x => x.MIN <= weight && x.MAX >= weight).ToList();
+            }
+            var queryData = db.REF_WEIGHT_RATE_1.Where(x => x.DELIVER_TYPE == "3RD_PARTY").ToList();
+            var year = DateTime.Now.Year;
+            var month = DateTime.Now.ToString("MMMM");
+            foreach (var i in queryList3Party)
+            {
+                var getdata = new List<REF_WEIGHT_RATE_1>();
+                if (weight <= 0)
+                {
+                    getdata = queryData.Where(x => x.CARRIER_ID == i.CARRIER_ID && x.SERVICE_ID == i.SERVICE_ID && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN >= i.MIN && x.MAX <= i.MAX).ToList();
+                }
+                else
+                {
+                    getdata = queryData.Where(x => x.CARRIER_ID == i.CARRIER_ID && x.SERVICE_ID == i.SERVICE_ID && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN <= weight && x.MAX >= weight).ToList();
+                }
+                float price = 0;
+                if(getdata.Count() > 0)
+                {
+                    if (i.CARRIER_ID == "DHL")
+                    {
+                        switch (queryDHLZone.VALUE)
+                        {
+                            case "A":
+                                price = (float)getdata[0].ZONE_1;
+                                break;
+                            case "B":
+                                price = (float)getdata[0].ZONE_2;
+                                break;
+                            case "C":
+                                price = (float)getdata[0].ZONE_3;
+                                break;
+                            case "D":
+                                price = (float)getdata[0].ZONE_4;
+                                break;
+                            case "E":
+                                price = (float)getdata[0].ZONE_5;
+                                break;
+                            case "F":
+                                price = (float)getdata[0].ZONE_6;
+                                break;
+                            case "G":
+                                price = (float)getdata[0].ZONE_7;
+                                break;
+                            case "H":
+                                price = (float)getdata[0].ZONE_8;
+                                break;
+                            case "I":
+                                price = (float)getdata[0].ZONE_9;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else if (i.CARRIER_ID == "FedEx")
+                    {
+                        if (queryFedZone != null)
+                        {
+                            switch (queryFedZone.VALUE)
+                            {
+                                case "A":
+                                    price = (float)getdata[0].ZONE_1;
+                                    break;
+                                case "B":
+                                    price = (float)getdata[0].ZONE_2;
+                                    break;
+                                case "C":
+                                    price = (float)getdata[0].ZONE_3;
+                                    break;
+                                case "D":
+                                    price = (float)getdata[0].ZONE_4;
+                                    break;
+                                case "E":
+                                    price = (float)getdata[0].ZONE_5;
+                                    break;
+                                case "F":
+                                    price = (float)getdata[0].ZONE_6;
+                                    break;
+                                case "G":
+                                    price = (float)getdata[0].ZONE_7;
+                                    break;
+                                case "H":
+                                    price = (float)getdata[0].ZONE_8;
+                                    break;
+                                case "I":
+                                    price = (float)getdata[0].ZONE_9;
+                                    break;
+                                case "J":
+                                    price = (float)getdata[0].ZONE_10;
+                                    break;
+                                case "K":
+                                    price = (float)getdata[0].ZONE_11;
+                                    break;
+                                case "L":
+                                    price = (float)getdata[0].ZONE_12;
+                                    break;
+                                case "M":
+                                    price = (float)getdata[0].ZONE_13;
+                                    break;
+                                case "N":
+                                    price = (float)getdata[0].ZONE_14;
+                                    break;
+                                case "O":
+                                    price = (float)getdata[0].ZONE_15;
+                                    break;
+                                case "P":
+                                    price = (float)getdata[0].ZONE_16;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                    var data_import = new PriceResultItem()
+                    {
+                        CARRIER_NAME = i.CARRIER_ID,
+                        SERVICE_TYPE = i.SERVICE_NAME,
+                        PACKAGE_TYPE = i.PACKAGE_ID,
+                        WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                        WORKING_DAYS = "",
+                        SURCHARGE = (float)surcharge.RATE,
+                        COST = price.ToString(),
+                    };
+                    result.Add(data_import);
+                }               
+            }
+            return result;
+        }
+        public List<PriceResultItem> getListImport(string from, string to, string carrier, string serviceType, string packageType, float weight)
+        {
+            var result = new List<PriceResultItem>();
+            var queryDHL = db.DHL_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
+            var DHL_I_Zone = queryDHL.IMPORT_ZONE;
+            var queryFed = db.FedEx_IMPORT_EXPORT_ZONE.Where(x => x.COUNTRY_NAME.Contains(from.ToLower())).FirstOrDefault();
+            var Fed_I_Zone = "";
+            var queryListImport = db.MS_EXCEL_WEIGHT_RATE.Where(x => x.DELIVER_TYPE == "IMPORT").ToList();
+            if (!String.IsNullOrEmpty(carrier))
+            {
+                queryListImport = queryListImport.Where(x => x.CARRIER_ID == carrier).ToList();
+            }
+            if (!String.IsNullOrEmpty(serviceType))
+            {
+                queryListImport = queryListImport.Where(x => x.SERVICE_ID == serviceType.ToUpper()).ToList();
+            }
+            if (!String.IsNullOrEmpty(packageType))
+            {
+                queryListImport = queryListImport.Where(x => x.PACKAGE_ID == packageType.ToUpper()).ToList();
+            }
+            if (weight != 0)
+            {
+                queryListImport = queryListImport.Where(x => x.MIN <= weight && x.MAX >= weight).ToList();
+            }
+            var queryData = db.REF_WEIGHT_RATE_1.Where(x => x.DELIVER_TYPE == "IMPORT").ToList();
+            var queryFedList = db.REF_WEIGHT_RATE_1.Where(x => x.CARRIER_ID == "FedEx" && x.DELIVER_TYPE == "IMPORT").ToList();
+            var year = DateTime.Now.Year;
+            var month = DateTime.Now.ToString("MMMM");
+            foreach (var i in queryListImport)
+            {
+                float price = 0;
+                if (weight <= 0)
+                {
+                    if (i.CARRIER_ID == "DHL")
+                    {
+                        var getdata = db.REF_WEIGHT_RATE_1.Where(x => x.DELIVER_TYPE == "IMPORT" && x.CARRIER_ID == "DHL" && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN >= i.MIN && x.MAX <= i.MAX && x.SERVICE_ID == i.SERVICE_ID).ToList();
+                        if (getdata.Count > 0)
+                        {
+                            switch (DHL_I_Zone)
+                            {
+                                case "1":
+                                    price = (float)getdata[0].ZONE_1;
+                                    break;
+                                case "2":
+                                    price = (float)getdata[0].ZONE_2;
+                                    break;
+                                case "3":
+                                    price = (float)getdata[0].ZONE_3;
+                                    break;
+                                case "4":
+                                    price = (float)getdata[0].ZONE_4;
+                                    break;
+                                case "5":
+                                    price = (float)getdata[0].ZONE_5;
+                                    break;
+                                case "6":
+                                    price = (float)getdata[0].ZONE_6;
+                                    break;
+                                case "7":
+                                    price = (float)getdata[0].ZONE_7;
+                                    break;
+                                case "8":
+                                    price = (float)getdata[0].ZONE_8;
+                                    break;
+                                case "9":
+                                    price = (float)getdata[0].ZONE_9;
+                                    break;
+                                case "10":
+                                    price = (float)getdata[0].ZONE_10;
+                                    break;
+                                case "11":
+                                    price = (float)getdata[0].ZONE_11;
+                                    break;
+                                case "12":
+                                    price = (float)getdata[0].ZONE_12;
+                                    break;
+                                case "13":
+                                    price = (float)getdata[0].ZONE_13;
+                                    break;
+                                case "14":
+                                    price = (float)getdata[0].ZONE_14;
+                                    break;
+                                case "15":
+                                    price = (float)getdata[0].ZONE_15;
+                                    break;
+                                case "16":
+                                    price = (float)getdata[0].ZONE_16;
+                                    break;
+                                case "17":
+                                    price = (float)getdata[0].ZONE_17;
+                                    break;
+                                case "18":
+                                    price = (float)getdata[0].ZONE_18;
+                                    break;
+                                case "19":
+                                    price = (float)getdata[0].ZONE_19;
+                                    break;
+                                case "20":
+                                    price = (float)getdata[0].ZONE_20;
+                                    break;
+                                case "21":
+                                    price = (float)getdata[0].ZONE_21;
+                                    break;
+                                case "22":
+                                    price = (float)getdata[0].ZONE_22;
+                                    break;
+                                case "23":
+                                    price = (float)getdata[0].ZONE_23;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
+                    else if (i.CARRIER_ID == "FedEx")
+                    {
+                        var getdataFed = queryFedList.Where(x => x.PACKAGE_ID.Contains(i.PACKAGE_ID) && x.SERVICE_ID.Contains(i.SERVICE_ID)).ToList();
+                        if (getdataFed.Count > 0)
+                        {
+                            if (i.SERVICE_ID == "IP")
+                            {
+                                Fed_I_Zone = queryFed.I_IP;
+                            }
+                            else if (i.SERVICE_ID == "IE")
+                            {
+                                Fed_I_Zone = queryFed.I_IE;
+                            }
+                            else if (i.SERVICE_ID == "IEF")
+                            {
+                                Fed_I_Zone = queryFed.I_IEF;
+                            }
+                            else if (i.SERVICE_ID == "IPF")
+                            {
+                                Fed_I_Zone = queryFed.I_IPF;
+                            }
+                            switch (Fed_I_Zone.ToUpper())
+                            {
+                                case "B":
+                                    price = (float)getdataFed[0].ZONE_1;
+                                    break;
+                                case "C":
+                                    price = (float)getdataFed[0].ZONE_2;
+                                    break;
+                                case "D":
+                                    price = (float)getdataFed[0].ZONE_3;
+                                    break;
+                                case "E":
+                                    price = (float)getdataFed[0].ZONE_4;
+                                    break;
+                                case "F":
+                                    price = (float)getdataFed[0].ZONE_5;
+                                    break;
+                                case "G":
+                                    price = (float)getdataFed[0].ZONE_6;
+                                    break;
+                                case "H":
+                                    price = (float)getdataFed[0].ZONE_7;
+                                    break;
+                                case "I":
+                                    price = (float)getdataFed[0].ZONE_8;
+                                    break;
+                                case "K":
+                                    price = (float)getdataFed[0].ZONE_9;
+                                    break;
+                                case "M":
+                                    price = (float)getdataFed[0].ZONE_10;
+                                    break;
+                                case "N":
+                                    price = (float)getdataFed[0].ZONE_11;
+                                    break;
+                                case "0":
+                                    price = (float)getdataFed[0].ZONE_12;
+                                    break;
+                                case "P":
+                                    price = (float)getdataFed[0].ZONE_13;
+                                    break;
+                                case "Q":
+                                    price = (float)getdataFed[0].ZONE_14;
+                                    break;
+                                case "R":
+                                    price = (float)getdataFed[0].ZONE_15;
+                                    break;
+                                case "S":
+                                    price = (float)getdataFed[0].ZONE_16;
+                                    break;
+                                case "T":
+                                    price = (float)getdataFed[0].ZONE_17;
+                                    break;
+                                case "U":
+                                    price = (float)getdataFed[0].ZONE_18;
+                                    break;
+                                case "V":
+                                    price = (float)getdataFed[0].ZONE_19;
+                                    break;
+                                case "W":
+                                    price = (float)getdataFed[0].ZONE_20;
+                                    break;
+                                case "X":
+                                    price = (float)getdataFed[0].ZONE_21;
+                                    break;
+                                case "Z":
+                                    price = (float)getdataFed[0].ZONE_22;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
+                }
+                else if (weight > 0)
+                {
+                    if (i.CARRIER_ID == "DHL")
+                    {
+                        var getdata = db.REF_WEIGHT_RATE_1.Where(x => x.DELIVER_TYPE == "IMPORT" && x.CARRIER_ID == "DHL" && x.SERVICE_ID == i.SERVICE_ID && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN <= weight && x.MAX >= weight).ToList();
+                        if (getdata.Count > 0)
+                        {
+                            switch (DHL_I_Zone)
+                            {
+                                case "1":
+                                    price = (float)getdata[0].ZONE_1;
+                                    break;
+                                case "2":
+                                    price = (float)getdata[0].ZONE_2;
+                                    break;
+                                case "3":
+                                    price = (float)getdata[0].ZONE_3;
+                                    break;
+                                case "4":
+                                    price = (float)getdata[0].ZONE_4;
+                                    break;
+                                case "5":
+                                    price = (float)getdata[0].ZONE_5;
+                                    break;
+                                case "6":
+                                    price = (float)getdata[0].ZONE_6;
+                                    break;
+                                case "7":
+                                    price = (float)getdata[0].ZONE_7;
+                                    break;
+                                case "8":
+                                    price = (float)getdata[0].ZONE_8;
+                                    break;
+                                case "9":
+                                    price = (float)getdata[0].ZONE_9;
+                                    break;
+                                case "10":
+                                    price = (float)getdata[0].ZONE_10;
+                                    break;
+                                case "11":
+                                    price = (float)getdata[0].ZONE_11;
+                                    break;
+                                case "12":
+                                    price = (float)getdata[0].ZONE_12;
+                                    break;
+                                case "13":
+                                    price = (float)getdata[0].ZONE_13;
+                                    break;
+                                case "14":
+                                    price = (float)getdata[0].ZONE_14;
+                                    break;
+                                case "15":
+                                    price = (float)getdata[0].ZONE_15;
+                                    break;
+                                case "16":
+                                    price = (float)getdata[0].ZONE_16;
+                                    break;
+                                case "17":
+                                    price = (float)getdata[0].ZONE_17;
+                                    break;
+                                case "18":
+                                    price = (float)getdata[0].ZONE_18;
+                                    break;
+                                case "19":
+                                    price = (float)getdata[0].ZONE_19;
+                                    break;
+                                case "20":
+                                    price = (float)getdata[0].ZONE_20;
+                                    break;
+                                case "21":
+                                    price = (float)getdata[0].ZONE_21;
+                                    break;
+                                case "22":
+                                    price = (float)getdata[0].ZONE_22;
+                                    break;
+                                case "23":
+                                    price = (float)getdata[0].ZONE_23;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
+                    else if (i.CARRIER_ID == "FedEx")
+                    {
+                        var getdataFed = queryFedList.Where(x => x.SERVICE_ID == i.SERVICE_ID && x.PACKAGE_ID == i.PACKAGE_ID && x.MIN <= weight && x.MAX >= weight).ToList();
+                        if (getdataFed.Count > 0)
+                        {
+                            if (i.SERVICE_ID == "IP")
+                            {
+                                Fed_I_Zone = queryFed.I_IP;
+                            }
+                            else if (i.SERVICE_ID == "IE")
+                            {
+                                Fed_I_Zone = queryFed.I_IE;
+                            }
+                            else if (i.SERVICE_ID == "IEF")
+                            {
+                                Fed_I_Zone = queryFed.I_IEF;
+                            }
+                            else if (i.SERVICE_ID == "IPF")
+                            {
+                                Fed_I_Zone = queryFed.I_IPF;
+                            }
+                            switch (Fed_I_Zone.ToUpper())
+                            {
+                                case "B":
+                                    price = (float)getdataFed[0].ZONE_1;
+                                    break;
+                                case "C":
+                                    price = (float)getdataFed[0].ZONE_2;
+                                    break;
+                                case "D":
+                                    price = (float)getdataFed[0].ZONE_3;
+                                    break;
+                                case "E":
+                                    price = (float)getdataFed[0].ZONE_4;
+                                    break;
+                                case "F":
+                                    price = (float)getdataFed[0].ZONE_5;
+                                    break;
+                                case "G":
+                                    price = (float)getdataFed[0].ZONE_6;
+                                    break;
+                                case "H":
+                                    price = (float)getdataFed[0].ZONE_7;
+                                    break;
+                                case "I":
+                                    price = (float)getdataFed[0].ZONE_8;
+                                    break;
+                                case "K":
+                                    price = (float)getdataFed[0].ZONE_9;
+                                    break;
+                                case "M":
+                                    price = (float)getdataFed[0].ZONE_10;
+                                    break;
+                                case "N":
+                                    price = (float)getdataFed[0].ZONE_11;
+                                    break;
+                                case "0":
+                                    price = (float)getdataFed[0].ZONE_12;
+                                    break;
+                                case "P":
+                                    price = (float)getdataFed[0].ZONE_13;
+                                    break;
+                                case "Q":
+                                    price = (float)getdataFed[0].ZONE_14;
+                                    break;
+                                case "R":
+                                    price = (float)getdataFed[0].ZONE_15;
+                                    break;
+                                case "S":
+                                    price = (float)getdataFed[0].ZONE_16;
+                                    break;
+                                case "T":
+                                    price = (float)getdataFed[0].ZONE_17;
+                                    break;
+                                case "U":
+                                    price = (float)getdataFed[0].ZONE_18;
+                                    break;
+                                case "V":
+                                    price = (float)getdataFed[0].ZONE_19;
+                                    break;
+                                case "W":
+                                    price = (float)getdataFed[0].ZONE_20;
+                                    break;
+                                case "X":
+                                    price = (float)getdataFed[0].ZONE_21;
+                                    break;
+                                case "Z":
+                                    price = (float)getdataFed[0].ZONE_22;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var surcharge = db.REF_SURCHARGE.FirstOrDefault(x => x.CARRIER_ID == i.CARRIER_ID && x.YEAR == year && x.MONTH == month);
+                            var data_import = new PriceResultItem()
+                            {
+                                CARRIER_NAME = i.CARRIER_ID,
+                                SERVICE_TYPE = i.SERVICE_NAME,
+                                PACKAGE_TYPE = i.PACKAGE_ID,
+                                WEIGHT_RANGE = i.MIN + "-" + i.MAX,
+                                WORKING_DAYS = "",
+                                SURCHARGE = (float)surcharge.RATE,
+                                COST = price.ToString(),
+                            };
+                            result.Add(data_import);
+                        }
+                    }
+                }
+            }
+            return result;
         }
     }
 }

@@ -191,16 +191,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DHL_IMPORT_EXPORT_ZONE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DHL_THIRD_ZONE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FedEx_IMPORT_EXPORT_ZONE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FedEx_THIRD_ZONE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Freight_Db.Context.cs">
       <AutoGen>True</AutoGen>
@@ -217,56 +217,74 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Freight_Db.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Freight_DbContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Freight_DbContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Freight_DbContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Freight_DbContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Freight_DbContext.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\MS_CARRIER.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MS_CARRIER_PACKAGE_TYPE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MS_CONFIGURATION.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MS_EXCEL_WEIGHT_RATE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MS_GROUP_ACCESS.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MS_SERVICE_TYPE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MS_USER.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_COUNTRY.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_EMAIL_LIST.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_GROUP_USER.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_MATRIX.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_MODULE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_PACKAGE_TYPE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_STATUS_TYPE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_SURCHARGE.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REF_WEIGHT_RATE1.cs">
       <DependentUpon>Freight_Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\REF_WEIGHT_RATE_1.cs">
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TR_UPLOAD_HISTORY.cs">
-      <DependentUpon>Freight_Db.tt</DependentUpon>
+      <DependentUpon>Freight_DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UploadModel.cs" />
     <Compile Include="Models\LoginerModel.cs" />
@@ -296,6 +314,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Freight_Db.edmx</DependentUpon>
       <LastGenOutput>Freight_Db.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Freight_DbContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Freight_DbContext.edmx</DependentUpon>
+      <LastGenOutput>Freight_DbContext.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Freight_DbContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Freight_DbContext.edmx</DependentUpon>
+      <LastGenOutput>Freight_DbContext.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -327,6 +355,13 @@
     </EntityDeploy>
     <Content Include="Models\Freight_Db.edmx.diagram">
       <DependentUpon>Freight_Db.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\Freight_DbContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Freight_DbContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Freight_DbContext.edmx.diagram">
+      <DependentUpon>Freight_DbContext.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

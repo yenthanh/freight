@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0b39ce33374b432b8a7a3eba78fbda8a" Name="Diagram1">
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.MS_CARRIER" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.MS_CARRIER_PACKAGE_TYPE" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.MS_CONFIGURATION" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.MS_EXCEL_WEIGHT_RATE" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.MS_GROUP_ACCESS" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.MS_SERVICE_TYPE" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.MS_USER" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_COUNTRY" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_EMAIL_LIST" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_GROUP_USER" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_MATRIX" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_MODULE" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_PACKAGE_TYPE" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_STATUS_TYPE" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_SURCHARGE" Width="1.5" PointX="10.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.TR_UPLOAD_HISTORY" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.DHL_IMPORT_EXPORT_ZONE" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.DHL_THIRD_ZONE" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.FedEx_IMPORT_EXPORT_ZONE" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.FedEx_THIRD_ZONE" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WEB_FREIGHT_RATE_DEVModel.REF_WEIGHT_RATE_1" Width="1.5" PointX="9.375" PointY="13.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

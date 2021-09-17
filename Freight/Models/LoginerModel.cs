@@ -29,7 +29,7 @@ namespace MM_Freight_Rate_API_Backend.Models
         public string To { get; set; }
         public string ServiceType { get; set; }
         public string PackageType { get; set; }
-        public string Region { get; set; }
+        public string Carrier { get; set; }
         public float Weight { get; set; }
     }
     public class CheckAdvePriceByWeight: CheckPriceObject
