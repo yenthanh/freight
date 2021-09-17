@@ -37,8 +37,8 @@ namespace Freught1.Controllers
             {
                 return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
             }
-
         }
+       
         [HttpPost]
         [Route("calculator/get_price_advance")]
         [CustomExceptionFilter]
@@ -64,6 +64,7 @@ namespace Freught1.Controllers
                 }
                 var result = CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
                 string logMsg = CarrierManager.Instance.Log;
+
                 var x = new { LogMsg = logMsg, Data = result };
                 //label6.Text = CarrierManager.Instance.Log;
                 return Json(new JsonObject(0, "SUCCESS", x), JsonRequestBehavior.AllowGet);

@@ -81,7 +81,7 @@
             success: function (data) {
                 console.log(data);
                 if (data.error.code == 0) {
-                    showMsg('Thank you for registering at the Mentor Media Freight Rate Portal. We will send you an approval email upon your request is approved','success');
+                    showMsg('Thank you for your registration. We will send you an approved email once your request is approved.','success');
                     setTimeout(function () { location.href = '@Url.Action("Index","Home")'; }, 5000);
                 }
                 else {

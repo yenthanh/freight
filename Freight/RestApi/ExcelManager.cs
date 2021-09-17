@@ -94,7 +94,8 @@ namespace ExcelProcess
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             DataSet dtsData = new DataSet();
-            
+            if (!System.IO.File.Exists(path))
+            { return dtsData; }
             using (var pck = new OfficeOpenXml.ExcelPackage())
             {
                 using (var stream = File.OpenRead(path))

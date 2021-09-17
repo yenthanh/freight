@@ -1,4 +1,5 @@
-﻿using MM_Freight_Rate_API_Backend.Models;
+﻿using MM_Freight_Rate_API_Backend;
+using MM_Freight_Rate_API_Backend.Models;
 using ServiceDB.Service;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace Freught1.Controllers
             }
             return View(model);
         }
-        
+        [CustomAuthorization(LoginPage = "/Home/Index")]
         public ActionResult AssignRole()
         {
             return View();

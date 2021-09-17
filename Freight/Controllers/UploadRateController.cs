@@ -1,4 +1,5 @@
 ﻿using ExcelProcess;
+using ExcelProcess.RestApi;
 using MM_Freight_Rate_API_Backend;
 using MM_Freight_Rate_API_Backend.Models;
 using ServiceDB.Service;
@@ -87,7 +88,8 @@ namespace Freught1.Controllers
                 //Setp 3: If not ok, delete it => Insert log
                 if (checkFile != "OK")
                 {
-                    System.IO.File.Delete(tempFileName);
+                    if (System.IO.File.Exists(tempFileName))
+                        System.IO.File.Delete(tempFileName);
                     return Json(new JsonObject(2, "FILE_INVALID", checkFile), JsonRequestBehavior.AllowGet);
                 }
                 //If ok, delete it -> rename the file into fileName=> update the current rate care if year= current year            
@@ -100,7 +102,14 @@ namespace Freught1.Controllers
                 string saveFilePath = yearFolder + "/" + fileName;
                 var resultUpload = new UtilityService().UploadFile("ADD",model.Carrier, model.Year, fileName,Hepler.GetLogged.UserEmail);
                 if(resultUpload.ERR_NO==0)
+                {
+                    if (System.IO.File.Exists(saveFilePath))
+                        System.IO.File.Delete(saveFilePath);
                     System.IO.File.Move(tempFileName, saveFilePath);
+                    Thread.Sleep(500);
+                    CarrierManager.Instance.InitData();
+                }
+                    
                 return Json(new JsonObject(resultUpload.ERR_NO,resultUpload.CODE,resultUpload.MSG));
             }
             catch (Exception ex)

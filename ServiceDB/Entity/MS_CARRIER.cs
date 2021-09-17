@@ -44,4 +44,15 @@ namespace ServiceDB.Entity
         public bool IS_FORGOT_PASSWORD { get; set; }
     }
 
+    public partial class MS_CARRIER_PACKAGE_TYPE : BaseEntity
+    {
+        public string CARRIER_ID { get; set; }
+
+        public string TRANSIT_TIME { get; set; }
+
+        public string PACKAGE_ID { get; set; }
+        public string REMARK { get; set; }
+
+    }
+
 }

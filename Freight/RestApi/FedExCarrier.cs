@@ -98,6 +98,7 @@ namespace ExcelProcess.RestApi
         {
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Country/Territory";
+            if (tbl == null) return "";
             DataRow[] rows = tbl.Select("[" + this.COUNTRY_HEADER_COL + "] LIKE '" + countryTo + "%'");            
             //Ko tim thay country nao
             if (rows.Length == 0 || rows.Length>1)
@@ -159,6 +160,7 @@ namespace ExcelProcess.RestApi
                 case "EXPORT": tbl = this.DataSet.Tables[this.EXPORT_SHEET_ZONE]; break;
                 default: tbl = this.DataSet.Tables[this.THIRD_PARTY_SHEET_ZONE]; break;
             }
+            if (tbl == null) return "";
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Country/Territory";
             DataRow[] rows = tbl.Select("[" + this.COUNTRY_HEADER_COL + "] LIKE '" + countryTo + "%'");

@@ -57,6 +57,12 @@ namespace ServiceDB.Service
             DataTable table = dbObject.ExecDataTable("SELECT COUNTRY_CODE as value, COUNTRY_NAME as text from SV_REF_COUNTRY  ORDER BY COUNTRY_NAME", sqlParameters.ToArray());
             return CollectionHelper.ConvertTo<DropDownItem>(table).ToList();
         }
+        public List<MS_CARRIER_PACKAGE_TYPE> GetFullPackageType()
+        {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            DataTable table = dbObject.ExecDataTable("SELECT * from MS_CARRIER_PACKAGE_TYPE  ORDER BY PACKAGE_ID", sqlParameters.ToArray());
+            return CollectionHelper.ConvertTo<MS_CARRIER_PACKAGE_TYPE>(table).ToList();
+        }
         public List<DropDownItemExtend> GetListServiceType()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();

@@ -135,8 +135,7 @@ namespace ExcelProcess.RestApi
         {
             if (!string.IsNullOrEmpty(EXCEL_FILE))
                 this.DataSet = ExcelManager.GetDataTableFromExcel(EXCEL_FILE);
-            else
-                throw new NotImplementedException();
+            
         }
         /// <summary>
         /// Get price base on input parameters

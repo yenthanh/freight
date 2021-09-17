@@ -93,6 +93,7 @@ namespace ExcelProcess.RestApi
                 case "EXPORT": tbl = this.DataSet.Tables[this.EXPORT_SHEET_ZONE]; break;
                 default: tbl = this.DataSet.Tables[this.THIRD_PARTY_SHEET_ZONE]; break;
             }
+            if(tbl==null) return "";
             if (string.IsNullOrEmpty(this.COUNTRY_HEADER_COL))
                 this.COUNTRY_HEADER_COL = "Countries & Territories";
             DataRow[] rows = tbl.Select("[" + this.COUNTRY_HEADER_COL + "] LIKE '" + countryTo + "%'");
@@ -111,6 +112,7 @@ namespace ExcelProcess.RestApi
         private string GetPriceFromDataTable(DataTable tbl, string zoneName, float weight, out string range)
         {
             range = "";
+            if (tbl == null) return "";
             //Step 1:get row which has min<=w<=max
             DataRow row = tbl.Rows[0];
             if (tbl.Columns.Contains("Min") && tbl.Columns.Contains("Max"))
