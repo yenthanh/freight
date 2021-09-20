@@ -95,7 +95,7 @@ namespace ExcelProcess.RestApi
         public List<PriceResultItem> GetCalculatorPrice(string from, string to, string serviceType, string packageType, float weight,string region)
         {
             List<PriceResultItem> listResult = new List<PriceResultItem>();
-            string msg = "";
+            string msg = "";            
             foreach (var c in Carrier)
             {
                 var temp = c.GetPrice(from, to, serviceType, packageType, weight, "");

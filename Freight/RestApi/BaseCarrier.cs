@@ -84,6 +84,69 @@ namespace ExcelProcess.RestApi
         //    }
         //    return null;
         //}
+        public List<PriceResultItem> GetAllLinePriceByZone(DataTable tblPrice, string PACKAGE_ID, string SERVICE_ID, string SERVICE_NAME, string SHEET_NAME, float surcharge, string zoneName, float weight)
+        {
+            List<PriceResultItem> listTemp = new List<PriceResultItem>();
+
+            if (tblPrice == null) return listTemp;
+            if (tblPrice.Columns.Contains("Min") && tblPrice.Columns.Contains("Max") && tblPrice.Columns.Contains(zoneName))
+            {
+                foreach (DataRow r in tblPrice.Rows)
+                {
+                    if (string.IsNullOrEmpty(r["Min"].ToString()) || string.IsNullOrEmpty(r["Max"].ToString()))
+                        break;
+                    string rate = "";
+                    if (r[zoneName] != null && !string.IsNullOrEmpty(r[zoneName].ToString()))
+                    {
+                        rate = r[zoneName].ToString().Replace(" ","").Replace("+", "");
+                    }
+                    if (string.IsNullOrEmpty(rate)) continue;
+
+                    string range = "";
+                    float min = float.Parse(r["Min"].ToString());
+                    float max = float.Parse(r["Max"].ToString());
+                    range = r["Min"].ToString() + "-" + r["Max"].ToString();
+                    if (weight > 0 )
+                    {
+                        if (weight <= max && weight >= min && r[zoneName] != null && !string.IsNullOrEmpty(r[zoneName].ToString()))
+                        {
+                            listTemp.Add(new PriceResultItem()
+                            {
+                                CARRIER_ID = this.Code,
+                                CARRIER_NAME = this.Name,
+                                PACKAGE_TYPE = PACKAGE_ID,
+                                SERVICE_TYPE = SERVICE_ID,
+                                NOTE=SERVICE_NAME,
+                                ZONE = zoneName,                                
+                                SHEET_NAME = SHEET_NAME,
+                                SURCHARGE = surcharge,
+                                WEIGHT_RANGE = range,
+                                COST = rate
+                            });
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        listTemp.Add(new PriceResultItem()
+                        {
+                            CARRIER_ID = this.Code,
+                            CARRIER_NAME = this.Name,
+                            PACKAGE_TYPE = PACKAGE_ID,
+                            SERVICE_TYPE = SERVICE_ID,
+                            NOTE = SERVICE_NAME,
+                            ZONE = zoneName,
+                            SHEET_NAME = SHEET_NAME,
+                            SURCHARGE = surcharge,
+                            WEIGHT_RANGE = range,
+                            COST = rate
+                        });
+                    }
+                }
+            }
+
+            return listTemp;
+        }
         protected DataRow[] TryToGetZoneByAnotherName(DataTable tbl, string cOUNTRY_HEADER_COL, string anotherName)
         {            
             if (string.IsNullOrEmpty(anotherName)) return null;

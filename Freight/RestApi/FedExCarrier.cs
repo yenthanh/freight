@@ -60,30 +60,52 @@ namespace ExcelProcess.RestApi
                     this.MSG = ReturnMessage.EmptySheet(this.Code, deliverType, s.SHEET_NAME);
                     continue;
                 }
-                PriceResultItem resultItem = new PriceResultItem()
+                //because the ENVELOPE dont have min max column
+                if (s.PACKAGE_ID != "ENVELOPE")
                 {
-                    CARRIER_ID = this.Code,
-                    CARRIER_NAME = this.Name,
-                    PACKAGE_TYPE = s.PACKAGE_ID,
-                    SERVICE_TYPE = string.IsNullOrEmpty(s.SERVICE_NAME) ? s.SERVICE_ID : s.SERVICE_NAME,
-                    WEIGHT_RANGE = s.MIN.ToString() + "-" + s.MAX.ToString(),
-                    ZONE = zoneName,
-                    SHEET_NAME = s.SHEET_NAME,
-                    SURCHARGE = surcharge
-                };
-
-                string range = "";
-                resultItem.COST = GetPriceFromDataTable(tbl, zoneName, weight, out range);
-                if (string.IsNullOrEmpty(resultItem.COST))
-                {
-                    //this.MSG = resultItem.NOTE = "Cannot get price for zone " + zoneName + "in this weight " + weight.ToString();
-                    this.MSG = resultItem.NOTE = ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
+                    var lstPrice = GetAllLinePriceByZone(tbl, s.PACKAGE_ID,  s.SERVICE_ID , s.SERVICE_NAME, s.SHEET_NAME,
+                   surcharge, zoneName, weight);
+                    if (lstPrice == null || lstPrice.Count == 0)
+                        this.MSG = ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
+                    else result.AddRange(lstPrice);
                 }
-                if (!string.IsNullOrEmpty(range)) resultItem.WEIGHT_RANGE = range;
+                else
+                {
+                    PriceResultItem resultItem = new PriceResultItem()
+                    {
+                        CARRIER_ID = this.Code,
+                        CARRIER_NAME = this.Name,
+                        PACKAGE_TYPE = s.PACKAGE_ID,
+                        SERVICE_TYPE =s.SERVICE_ID ,
+                        NOTE=s.SERVICE_NAME,
+                        WEIGHT_RANGE = s.MIN.ToString() + "-" + s.MAX.ToString(),
+                        ZONE = zoneName,
+                        SHEET_NAME = s.SHEET_NAME,
+                        SURCHARGE = surcharge
+                    };
+                    resultItem.COST = GetEnvelopePriceFromDataTable(tbl, zoneName);
+                    if (string.IsNullOrEmpty(resultItem.COST))
+                    {                        
+                        this.MSG =  ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);                        
+                    }                                        
+                    else
+                        result.Add(resultItem);
+                }
 
-                result.Add(resultItem);
             }
             return result;
+        }
+
+        private string GetEnvelopePriceFromDataTable(DataTable tbl, string zoneName)
+        {   
+            //Step 1:get row which has min<=w<=max
+            DataRow row = tbl.Rows[0];
+            if (tbl.Columns.Contains(zoneName))
+            {
+                if(row[zoneName] != null && !string.IsNullOrEmpty(row[zoneName].ToString()))
+                    return row[zoneName].ToString();
+            }            
+            return "";
         }
 
         /// <summary>
@@ -231,6 +253,39 @@ namespace ExcelProcess.RestApi
                     this.MSG += ReturnMessage.EmptySheet(this.Code, deliverType, s.SHEET_NAME);
                     continue;
                 }
+                //because the ENVELOPE dont have min max column
+                if (s.PACKAGE_ID != "ENVELOPE")
+                {
+                    var lstPrice = GetAllLinePriceByZone(tbl, s.PACKAGE_ID,  s.SERVICE_ID ,s.SERVICE_NAME, s.SHEET_NAME,
+                   surcharge, zoneName, weight);
+                    if (lstPrice == null || lstPrice.Count == 0)
+                        this.MSG = ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
+                    else result.AddRange(lstPrice);
+                }
+                else
+                {
+                    PriceResultItem resultItem = new PriceResultItem()
+                    {
+                        CARRIER_ID = this.Code,
+                        CARRIER_NAME = this.Name,
+                        PACKAGE_TYPE = s.PACKAGE_ID,
+                        SERVICE_TYPE = s.SERVICE_ID ,
+                        NOTE =s.SERVICE_NAME,
+                        WEIGHT_RANGE = s.MIN.ToString() + "-" + s.MAX.ToString(),
+                        ZONE = zoneName,
+                        SHEET_NAME = s.SHEET_NAME,
+                        SURCHARGE = surcharge
+                    };
+                    resultItem.COST = GetEnvelopePriceFromDataTable(tbl, zoneName);
+                    if (string.IsNullOrEmpty(resultItem.COST))
+                    {
+                        this.MSG =  ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
+                    }
+                    else
+                        result.Add(resultItem);
+                }
+
+                /*
                 PriceResultItem resultItem = new PriceResultItem()
                 {
                     CARRIER_ID = this.Code,
@@ -255,6 +310,7 @@ namespace ExcelProcess.RestApi
                 if (!string.IsNullOrEmpty(range)) resultItem.WEIGHT_RANGE = range;
 
                 result.Add(resultItem);
+                */
             }
             return result;
         }

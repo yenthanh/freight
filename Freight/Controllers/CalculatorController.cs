@@ -3,6 +3,7 @@ using MM_Freight_Rate_API_Backend;
 using MM_Freight_Rate_API_Backend.Models;
 using ServiceDB.Service;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
@@ -24,12 +25,14 @@ namespace Freught1.Controllers
         [CustomExceptionFilter]
         public JsonResult GetPrice(CheckPriceObject model)
         {
+            if (model.PageIndex <= 0) model.PageIndex = 1;
+            if (model.PageSize <= 0) model.PageSize = 20;
             try
             {
                 string serviceType = string.IsNullOrEmpty (model.ServiceType) ? "" : model.ServiceType;
                 var result= CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
                 string logMsg = CarrierManager.Instance.Log;
-                var x = new { LogMsg = logMsg,Data = result  };
+                var x = new { LogMsg = logMsg,Data = MakePaging(result, model.PageIndex, model.PageSize, model.OrderBy), Total=result.Count  };
                 //label6.Text = CarrierManager.Instance.Log;                
                 return Json(new JsonObject(0, "SUCCESS", x), JsonRequestBehavior.AllowGet);
             }
@@ -38,12 +41,70 @@ namespace Freught1.Controllers
                 return Json(new JsonObject(ReturnError(ex)), JsonRequestBehavior.AllowGet);
             }
         }
-       
+        public List<PriceResultItem> MakePaging(List<PriceResultItem>  lst,int pageIndex,int pageSize,string orderBy)
+        {
+            var query = lst.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+           
+            if (string.IsNullOrEmpty(orderBy))
+                return query.ToList();
+            orderBy = orderBy.ToUpper();
+            if (orderBy.IndexOf("CARRIER_ID") >=0)
+            {
+                if (orderBy.IndexOf(" DESC") >= 0)
+                    query = query.OrderByDescending(c => c.CARRIER_ID);
+                else
+                    query = query.OrderBy(c => c.CARRIER_ID);
+                return query.ToList();
+            }
+            if (orderBy.IndexOf("CARRIER_NAME") >= 0)
+            {
+                if (orderBy.IndexOf(" DESC") >= 0)
+                    query = query.OrderByDescending(c => c.CARRIER_NAME);
+                else
+                    query = query.OrderBy(c => c.CARRIER_NAME);
+                return query.ToList();
+            }
+            if (orderBy.IndexOf("CARRIER_NAME") >= 0)
+            {
+                if (orderBy.IndexOf(" DESC") >= 0)
+                    query = query.OrderByDescending(c => c.CARRIER_NAME);
+                else
+                    query = query.OrderBy(c => c.CARRIER_NAME);
+                return query.ToList();
+            }
+            if (orderBy.IndexOf("PACKAGE_TYPE") >= 0)
+            {
+                if (orderBy.IndexOf(" DESC") >= 0)
+                    query = query.OrderByDescending(c => c.PACKAGE_TYPE);
+                else
+                    query = query.OrderBy(c => c.PACKAGE_TYPE);
+                return query.ToList();
+            }
+            if (orderBy.IndexOf("SERVICE_TYPE") >= 0)
+            {
+                if (orderBy.IndexOf(" DESC") >= 0)
+                    query = query.OrderByDescending(c => c.SERVICE_TYPE);
+                else
+                    query = query.OrderBy(c => c.SERVICE_TYPE);
+                return query.ToList();
+            }
+            if (orderBy.IndexOf("COST") >= 0)
+            {
+                if (orderBy.IndexOf(" DESC") >= 0)
+                    query = query.OrderByDescending(c => c.COST);
+                else
+                    query = query.OrderBy(c => c.COST);
+                return query.ToList();
+            }
+            return query.ToList();
+        }
         [HttpPost]
         [Route("calculator/get_price_advance")]
         [CustomExceptionFilter]
         public JsonResult GetPriceAdvance(CheckAdvePriceByWeight model)
         {
+            if (model.PageIndex <= 0) model.PageIndex = 1;
+            if (model.PageSize <= 0) model.PageSize = 20;
             try
             {
                 string serviceType = string.IsNullOrEmpty(model.ServiceType) ? "" : model.ServiceType;
@@ -64,8 +125,8 @@ namespace Freught1.Controllers
                 }
                 var result = CarrierManager.Instance.GetCalculatorPrice(model.From, model.To, model.ServiceType, model.PackageType, model.Weight, model.Region);
                 string logMsg = CarrierManager.Instance.Log;
-
-                var x = new { LogMsg = logMsg, Data = result };
+                
+                var x = new { LogMsg = logMsg, Data = MakePaging( result,model.PageIndex,model.PageSize,model.OrderBy), Total = result.Count };
                 //label6.Text = CarrierManager.Instance.Log;
                 return Json(new JsonObject(0, "SUCCESS", x), JsonRequestBehavior.AllowGet);
             }

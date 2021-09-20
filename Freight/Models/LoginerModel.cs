@@ -31,6 +31,9 @@ namespace MM_Freight_Rate_API_Backend.Models
         public string PackageType { get; set; }
         public string Region { get; set; }
         public float Weight { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public string OrderBy { get; set; }
     }
     public class CheckAdvePriceByWeight: CheckPriceObject
     {

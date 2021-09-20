@@ -51,6 +51,16 @@ namespace ExcelProcess.RestApi
                     this.MSG = ReturnMessage.EmptySheet(this.Code, deliverType, s.SHEET_NAME);
                     continue;
                 }
+
+                //var lstPrice = GetAllLinePriceByZone(tbl, s.PACKAGE_ID, string.IsNullOrEmpty(s.SERVICE_NAME) ? s.SERVICE_ID : s.SERVICE_NAME, s.SHEET_NAME,
+                //    surcharge, "Zone " + zoneName, weight);
+                var lstPrice = GetAllLinePriceByZone(tbl, s.PACKAGE_ID, s.SERVICE_ID,s.SERVICE_NAME, s.SHEET_NAME,
+              surcharge, "Zone " + zoneName, weight);
+                if (lstPrice==null || lstPrice.Count==0)
+                    this.MSG = ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
+                else result.AddRange(lstPrice);
+
+                /* 170920221 - old code just get top 1 price
                 PriceResultItem resultItem = new PriceResultItem()
                 {
                     CARRIER_ID = this.Code,
@@ -73,9 +83,11 @@ namespace ExcelProcess.RestApi
                 if (!string.IsNullOrEmpty(range)) resultItem.WEIGHT_RANGE = range;
 
                 result.Add(resultItem);
+                */
             }
             return result;
         }
+        
 
         /// <summary>
         /// Get zone from 3 sheet without serviceType
@@ -133,7 +145,6 @@ namespace ExcelProcess.RestApi
             }
             //ZoneName=Zone <Number>
             zoneName = "Zone " + zoneName;
-
             //Step 2: get value in zone name by column name            
             if (row[zoneName] != null && !string.IsNullOrEmpty(row[zoneName].ToString()))
                 return row[zoneName].ToString();
@@ -195,12 +206,16 @@ namespace ExcelProcess.RestApi
                 if (s.CARRIER_ID != this.Code) continue;
                 DataTable tbl = this.DataSet.Tables[s.SHEET_NAME];
                 if (tbl == null || tbl.Rows.Count == 0)
-                {
-                    //this.MSG = "Cannot read the sheet name " + s.SHEET_NAME + " to get price";
-                    //resultItem.NOTE = "Cannot get the sheet name " + s.SHEET_NAME;
+                {                   
                     this.MSG += ReturnMessage.EmptySheet(this.Code, deliverType, s.SHEET_NAME);
                     continue;
                 }
+                var lstPrice = GetAllLinePriceByZone(tbl, s.PACKAGE_ID,  s.SERVICE_ID , s.SERVICE_NAME, s.SHEET_NAME,
+                   surcharge, "Zone " + zoneName, weight);
+                if (lstPrice == null || lstPrice.Count == 0)
+                    this.MSG = ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
+                else result.AddRange(lstPrice);
+                /*
                 PriceResultItem resultItem = new PriceResultItem()
                 {
                     CARRIER_ID = this.Code,
@@ -226,6 +241,7 @@ namespace ExcelProcess.RestApi
                 if (!string.IsNullOrEmpty(range)) resultItem.WEIGHT_RANGE = range;
 
                 result.Add(resultItem);
+                */
             }
             return result;
         }
