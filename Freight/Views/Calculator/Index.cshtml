@@ -35,6 +35,9 @@
     h4 {
         font-size: 13px;
     }
+    .cursor-pointer {
+        cursor: pointer;
+    }
 </style>
 
 
@@ -158,20 +161,24 @@
                 </div>
                 <table class="table" id="tbResult">
                     <thead>
-                        <tr>
-                            <th scope="col">Carrier</th>
-                            <th scope="col">Service Type</th>
-                            <th scope="col">Packaging Type</th>
-                            <th scope="col">Weight Range(kg)</th>
-                            <th scope="col">Current FSC</th>
-                            <th scope="col">Working days(day)</th>
-                            <th scope="col">Rate Before Surcharge (SGD)</th>
+                        <tr id="table_header">
+                            <th scope="col" >Carrier</th>
+                            <th scope="col" >Service Type</th>
+                            <th scope="col" >Packaging Type</th>
+                            <th scope="col" >Weight Range(kg)</th>
+                            <th scope="col" >Current FSC</th>
+                            <th scope="col" >Working days(day)</th>
+                            <th scope="col" onclick='sortByPrice()'>Rate Before Surcharge (SGD)</th>
                             <th scope="col">Rate After Surcharge (SGD)</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
+                <div id="pagination_custom">
+                    <ul class="pagination justify-content-end">                       
+                    </ul>
+                </div>
             </div>
             <p style="margin-top:60px;margin-bottom:60px">
                 <b>Disclaimers:</b><br />
@@ -268,7 +275,6 @@
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
-                    console.log(data);
                     var s = '<option value="">Please Select Packaging Type</option>';
                     for (var i = 0; i < data.data.length; i++) {
                         s += '<option value="' + data.data[i].PACKAGE_ID + '">' + data.data[i].PACKAGE_ID + '</option>';
@@ -279,10 +285,11 @@
 
             $.ajax({
                 type: "GET",
-                url: baseURL + "/Calculator/GetListServices?carrier=" + valueOfCarrier,
+                url: baseURL +"/Calculator/GetListServices?carrier=" + valueOfCarrier,
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
+                    console.log(data);
                     var s = '<option value="">Please Select Service Type</option>';
                     for (var i = 0; i < data.data.length; i++) {
                             s += '<option value="' + data.data[i].SERVICE_ID + '">' + data.data[i].SERVICE_ID + '</option>';
@@ -373,7 +380,7 @@
             var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
             var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
             var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();
-
+            $('.pagination').remove();
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
             if (source == "" || desination == "") {
@@ -398,15 +405,16 @@
                     "ServiceType": serviceValue,
                     "PackageType": packagingSelect,
                     "Carrier": carrier,
-                    "Weight": weightSelect
+                    "Weight": weightSelect,
+                    "Page_Index": 1,
                 }),
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (response) {
                     console.log(response)
                     var count = 0;
-                    for (var i = 0; i < response.data.length; i++) {
-                        var item = response.data[i];
+                    for (var i = 0; i < response.data.Data.length; i++) {
+                        var item = response.data.Data[i];
                         if (carrier == '' || carrier == item.CARRIER_NAME) {
                             count++;
                             $('<tr id="tr-id">')
@@ -427,9 +435,25 @@
                             .append($('<td colspan="8">').append("No records found!"))
                             .appendTo('table tbody');
                     }
+
+                    var index = response.data.count / 20;
+                    if (response.data.count % 20 != 0) {
+                        index = index + 1;
+                    }
+                    $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
+                    for (var n = 1; n <= index; n++) {
+                        if (n == 1) {
+                            $('.pagination')
+                                .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                        }
+                        else {
+                            $('.pagination')
+                                .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>')) 
+                        }                             
+                    }
                 }
             });
-        })
+        })    
         $('#handleExport').click(function () {
             if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
                 alert('Please select source and destination!');
@@ -489,4 +513,269 @@
             }
         }
     })
+    function GoPageSize(page_size) {
+        var source = $("#sourceSelect").val();
+        var desination = $("#destinationSelect").val();
+        var carrier = $("#carrierSelect").val();
+        var serviceValue = $("#servicesSelect").val();
+        var packagingSelect = $("#packagingSelect").val();
+        var weightSelect = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
+        var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
+        var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
+        var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();
+        $('.pagination').remove();
+        var contentToRemove = document.querySelectorAll("#tr-id");
+        $(contentToRemove).remove();
+        if (source == "" || desination == "") {
+            alert('Please select source and destination!');
+            return false;
+        }
+        if ($("#carrierSelect").val() !== "0") {
+            if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                alert('Service, Packaging are not empty');
+                return false;
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: baseURL + "/Calculator/GetSearchAdvance",
+            data: JSON.stringify({
+                "Length": length,
+                "Height": height,
+                "Width": width,
+                "From": source,
+                "To": desination,
+                "ServiceType": serviceValue,
+                "PackageType": packagingSelect,
+                "Carrier": carrier,
+                "Weight": weightSelect,
+                "Page_Index": page_size,
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+                console.log(response)
+                var count = 0;
+                for (var i = 0; i < response.data.Data.length; i++) {
+                    var item = response.data.Data[i];
+                    if (carrier == '' || carrier == item.CARRIER_NAME) {
+                        count++;
+                        $('<tr id="tr-id">')
+                            .append($('<td>').append(item.CARRIER_NAME))
+                            .append($('<td>').append(item.SERVICE_TYPE))
+                            .append($('<td>').append(item.PACKAGE_TYPE))
+                            .append($('<td>').append(item.WEIGHT_RANGE))
+                            .append($('<td>').append(item.SURCHARGE))
+                            .append($('<td>').append(item.WORKING_DAYS))
+                            .append($('<td>').append(item.COST))
+                            .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
+                            .appendTo('table tbody');
+                    }
+                }
+
+                if (count == 0) {
+                    $('<tr id="tr-id">')
+                        .append($('<td colspan="8">').append("No records found!"))
+                        .appendTo('table tbody');
+                }
+
+                var index = response.data.count / 20;
+                if (response.data.count % 20 != 0) {
+                    index = index + 1;
+                }
+                $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
+                for (var n = 1; n <= index; n++) {
+                    if (n == page_size) {
+                        $('.pagination')
+                            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                    }
+                    else {
+                        $('.pagination')
+                            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                    }
+                }
+            }
+        });
+    }
+    function sortByPriceDesc() {
+        
+        var source = $("#sourceSelect").val();
+        var desination = $("#destinationSelect").val();
+        var carrier = $("#carrierSelect").val();
+        var serviceValue = $("#servicesSelect").val();
+        var packagingSelect = $("#packagingSelect").val();
+        var weightSelect = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
+        var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
+        var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
+        var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();        
+        var page_index = $(".pagination .active").text();
+        $('.pagination').remove();
+        var contentToRemove = document.querySelectorAll("#tr-id");
+        $(contentToRemove).remove();
+        if (source == "" || desination == "") {
+            alert('Please select source and destination!');
+            return false;
+        }
+        if ($("#carrierSelect").val() !== "0") {
+            if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                alert('Service, Packaging are not empty');
+                return false;
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: baseURL + "/Calculator/GetSearchAdvance",
+            data: JSON.stringify({
+                "Length": length,
+                "Height": height,
+                "Width": width,
+                "From": source,
+                "To": desination,
+                "ServiceType": serviceValue,
+                "PackageType": packagingSelect,
+                "Carrier": carrier,
+                "Weight": weightSelect,
+                "Page_Index": page_index,
+                "Sort_by": "price_desc"
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+
+                var newHeader = '<tr id="table_header"> <th scope="col"> Carrier </th> <th scope="col"> Service Type </th> <th scope="col"> Packaging Type </th><th scope="col"> Weight Range(kg) </th><th scope="col"> Current FSC </th><th scope="col"> Working days(day) </th><th scope="col" onclick="sortByPrice()"> Rate Before Surcharge </th><th scope="col"> Rate After Surcharge (SGD) </th> </tr> '                      
+                $("#table_header").replaceWith(newHeader);
+                var count = 0;
+                for (var i = 0; i < response.data.Data.length; i++) {
+                    var item = response.data.Data[i];
+                    if (carrier == '' || carrier == item.CARRIER_NAME) {
+                        count++;
+                        $('<tr id="tr-id">')
+                            .append($('<td>').append(item.CARRIER_NAME))
+                            .append($('<td>').append(item.SERVICE_TYPE))
+                            .append($('<td>').append(item.PACKAGE_TYPE))
+                            .append($('<td>').append(item.WEIGHT_RANGE))
+                            .append($('<td>').append(item.SURCHARGE))
+                            .append($('<td>').append(item.WORKING_DAYS))
+                            .append($('<td>').append(item.COST))
+                            .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
+                            .appendTo('table tbody');
+                    }
+                }
+
+
+                if (count == 0) {
+                    $('<tr id="tr-id">')
+                        .append($('<td colspan="8">').append("No records found!"))
+                        .appendTo('table tbody');
+                }
+
+                var index = response.data.count / 20;
+                if (response.data.count % 20 != 0) {
+                    index = index + 1;
+                }
+                $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
+                for (var n = 1; n <= index; n++) {
+                    if (n == page_index) {
+                        $('.pagination')
+                            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                    }
+                    else {
+                        $('.pagination')
+                            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                    }
+                }
+            }
+        });
+    }
+    function sortByPrice() {
+        debugger
+        var source = $("#sourceSelect").val();
+        var desination = $("#destinationSelect").val();
+        var carrier = $("#carrierSelect").val();
+        var serviceValue = $("#servicesSelect").val();
+        var packagingSelect = $("#packagingSelect").val();
+        var weightSelect = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
+        var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
+        var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
+        var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();
+        var page_index = $(".pagination .active").text();
+        $('.pagination').remove();
+        var contentToRemove = document.querySelectorAll("#tr-id");
+        $(contentToRemove).remove();
+        if (source == "" || desination == "") {
+            alert('Please select source and destination!');
+            return false;
+        }
+        if ($("#carrierSelect").val() !== "0") {
+            if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
+                alert('Service, Packaging are not empty');
+                return false;
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: baseURL + "/Calculator/GetSearchAdvance",
+            data: JSON.stringify({
+                "Length": length,
+                "Height": height,
+                "Width": width,
+                "From": source,
+                "To": desination,
+                "ServiceType": serviceValue,
+                "PackageType": packagingSelect,
+                "Carrier": carrier,
+                "Weight": weightSelect,
+                "Page_Index": page_index,
+                "Sort_by": "price"
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (response) {
+
+                var newHeader = '<tr id="table_header"> <th scope="col"> Carrier </th> <th scope="col"> Service Type </th> <th scope="col"> Packaging Type </th><th scope="col"> Weight Range(kg) </th><th scope="col"> Current FSC </th><th scope="col"> Working days(day) </th><th scope="col" onclick="sortByPriceDesc()"> Rate Before Surcharge </th><th scope="col"> Rate After Surcharge (SGD) </th> </tr> '
+                $("#table_header").replaceWith(newHeader);
+                var count = 0;
+                for (var i = 0; i < response.data.Data.length; i++) {
+                    var item = response.data.Data[i];
+                    if (carrier == '' || carrier == item.CARRIER_NAME) {
+                        count++;
+                        $('<tr id="tr-id">')
+                            .append($('<td>').append(item.CARRIER_NAME))
+                            .append($('<td>').append(item.SERVICE_TYPE))
+                            .append($('<td>').append(item.PACKAGE_TYPE))
+                            .append($('<td>').append(item.WEIGHT_RANGE))
+                            .append($('<td>').append(item.SURCHARGE))
+                            .append($('<td>').append(item.WORKING_DAYS))
+                            .append($('<td>').append(item.COST))
+                            .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
+                            .appendTo('table tbody');
+                    }
+                }
+
+
+                if (count == 0) {
+                    $('<tr id="tr-id">')
+                        .append($('<td colspan="8">').append("No records found!"))
+                        .appendTo('table tbody');
+                }
+
+                var index = response.data.count / 20;
+                if (response.data.count % 20 != 0) {
+                    index = index + 1;
+                }
+                $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
+                for (var n = 1; n <= index; n++) {
+                    if (n == page_index) {
+                        $('.pagination')
+                            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                    }
+                    else {
+                        $('.pagination')
+                            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                    }
+                }
+            }
+        });
+    }
+    
 </script>

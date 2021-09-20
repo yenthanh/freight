@@ -57,7 +57,21 @@ namespace ExcelProcess.RestApi
         public string NOTE { get; set; }
 
     }
+    public class PriceResultItemDTO
+    {
+        public string CARRIER_ID { get; set; }
+        public string CARRIER_NAME { get; set; }
+        public string WEIGHT_RANGE { get; set; }
+        public string PACKAGE_TYPE { get; set; }
+        public string SERVICE_TYPE { get; set; }
+        public float COST { get; set; }
+        public string WORKING_DAYS { get; set; }
+        public float SURCHARGE { get; set; }
+        public string ZONE { get; set; }
+        public string SHEET_NAME { get; set; }
+        public string NOTE { get; set; }
 
+    }
     public class BaseCarrier
     {        
         public string Code { get; set; }
