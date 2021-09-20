@@ -171,21 +171,13 @@
                     <tbody>
                     </tbody>
                 </table>
-                <div id="pagination_custom">
-                    <ul class="pagination justify-content-end">
-                    </ul>
-                </div>
             </div>
             <p style="margin-top:60px;margin-bottom:60px">
                 <b>Disclaimers:</b><br />
                 ·       Customs duties, taxes, service charges and clearance related charges and any other fees (where applicable) are not included in the tariffs.<br />
                 ·       Freight rates effective for the current calendar year.
             </p>
-
-
             <a id="handleExport" class="btn btn-primary btn-lg"> Export </a>
-            @*<input id="btnExport" type="submit" value="Export" class="btn btn-primary btn-lg" />*@
-
         </section>
         <footer style=" position:absolute;top:100%; font-size:15px;margin-top:10px;">
             <label style="font-weight: normal">Copyright Mentor Media, 2021</label>
@@ -196,13 +188,11 @@
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
     $(document).ready(function () {
-
-
         var arr = [];
-
         var serviceOptionDefault = " <option selected value='0'>Services Type</option>";
         var pakagingOptionDefault = "<option selected value='0'>Packaging Type</option>";
         var weightOptionDefault = "<option selected value='0'>Weight</option>";
+        // GetListCountry
         $.ajax({
             type: "GET",
             url: baseURL +"/Utility/GetListCountry",
@@ -217,6 +207,8 @@
                 $("#destinationSelect").html(s);
             }
         });
+
+        // GetListCarriers
         $.ajax({
             type: "GET",
             url: baseURL +"/Utility/GetListCarriers",
@@ -390,6 +382,7 @@
                     "Carrier": carrier,
                     "Weight": weightSelect,
                     "PageIndex": 1,
+                    "PageSize": 1000
                 }),
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
@@ -424,17 +417,6 @@
                     }
 
                     $('#tbResult').DataTable();
-                    //$('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
-                    //for (var n = 1; n <= index; n++) {
-                    //    if (n == 1) {
-                    //        $('.pagination')
-                    //            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                    //    }
-                    //    else {
-                    //        $('.pagination')
-                    //            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>')) 
-                    //    }                             
-                    //}
                 }
             });
         })    
@@ -527,271 +509,4 @@
             }
         }
     })
-    function GoPageSize(page_size) {
-        var source = $("#sourceSelect").val();
-        var desination = $("#destinationSelect").val();
-        var carrier = $("#carrierSelect").val();
-        var serviceValue = $("#servicesSelect").val();
-        var packagingSelect = $("#packagingSelect").val();
-        var weightSelect = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
-        var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
-        var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
-        var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();
-        $('.pagination').remove();
-        var contentToRemove = document.querySelectorAll("#tr-id");
-        $(contentToRemove).remove();
-        if (source == "" || desination == "") {
-            alert('Please select source and destination!');
-            return false;
-        }
-        if ($("#carrierSelect").val() !== "0") {
-            if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-                alert('Service, Packaging are not empty');
-                return false;
-            }
-        }
-        $.ajax({
-            type: "POST",
-            url: baseURL + "/Calculator/GetSearchAdvance",
-            data: JSON.stringify({
-                "Length": length,
-                "Height": height,
-                "Width": width,
-                "From": source,
-                "To": desination,
-                "ServiceType": serviceValue,
-                "PackageType": packagingSelect,
-                "Carrier": carrier,
-                "Weight": weightSelect,
-                "PageIndex": page_size,
-            }),
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-                console.log(response)
-                var count = 0;
-                for (var i = 0; i < response.data.Data.length; i++) {
-                    var item = response.data.Data[i];
-                    if (carrier == '' || carrier == item.CARRIER_NAME) {
-                        count++;
-                        $('<tr id="tr-id">')
-                            .append($('<td>').append(item.CARRIER_NAME))
-                            .append($('<td>').append(item.SERVICE_TYPE))
-                            .append($('<td>').append(item.PACKAGE_TYPE))
-                            .append($('<td>').append(item.WEIGHT_RANGE))
-                            .append($('<td>').append(item.SURCHARGE))
-                            .append($('<td>').append(item.WORKING_DAYS))
-                            .append($('<td>').append(item.COST))
-                            .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
-                            .appendTo('table tbody');
-                    }
-                }
-
-                if (count == 0) {
-                    $('<tr id="tr-id">')
-                        .append($('<td colspan="8">').append("No records found!"))
-                        .appendTo('table tbody');
-                }
-
-                var index = response.data.count / 20;
-                if (response.data.count % 20 != 0) {
-                    index = index + 1;
-                }
-
-                $('#tbResult').DataTable();
-                //$('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
-                //for (var n = 1; n <= index; n++) {
-                //    if (n == page_size) {
-                //        $('.pagination')
-                //            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                //    }
-                //    else {
-                //        $('.pagination')
-                //            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                //    }
-                //}
-            }
-        });
-    }
-    function sortByPriceDesc() {
-        
-        var source = $("#sourceSelect").val();
-        var desination = $("#destinationSelect").val();
-        var carrier = $("#carrierSelect").val();
-        var serviceValue = $("#servicesSelect").val();
-        var packagingSelect = $("#packagingSelect").val();
-        var weightSelect = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
-        var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
-        var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
-        var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();        
-        var page_index = $(".pagination .active").text();
-        $('.pagination').remove();
-        var contentToRemove = document.querySelectorAll("#tr-id");
-        $(contentToRemove).remove();
-        if (source == "" || desination == "") {
-            alert('Please select source and destination!');
-            return false;
-        }
-        if ($("#carrierSelect").val() !== "0") {
-            if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-                alert('Service, Packaging are not empty');
-                return false;
-            }
-        }
-        $.ajax({
-            type: "POST",
-            url: baseURL + "/Calculator/GetSearchAdvance",
-            data: JSON.stringify({
-                "Length": length,
-                "Height": height,
-                "Width": width,
-                "From": source,
-                "To": desination,
-                "ServiceType": serviceValue,
-                "PackageType": packagingSelect,
-                "Carrier": carrier,
-                "Weight": weightSelect,
-                "PageIndex": page_index,
-                "OrderBy": "price_desc"
-            }),
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-
-                var newHeader = '<tr id="table_header"> <th scope="col"> Carrier </th> <th scope="col"> Service Type </th> <th scope="col"> Packaging Type </th><th scope="col"> Weight Range(kg) </th><th scope="col"> Current FSC </th><th scope="col"> Working days(day) </th><th scope="col" onclick="sortByPrice()"> Rate Before Surcharge </th><th scope="col"> Rate After Surcharge (SGD) </th> </tr> '                      
-                $("#table_header").replaceWith(newHeader);
-                var count = 0;
-                for (var i = 0; i < response.data.Data.length; i++) {
-                    var item = response.data.Data[i];
-                    if (carrier == '' || carrier == item.CARRIER_NAME) {
-                        count++;
-                        $('<tr id="tr-id">')
-                            .append($('<td>').append(item.CARRIER_NAME))
-                            .append($('<td>').append(item.SERVICE_TYPE))
-                            .append($('<td>').append(item.PACKAGE_TYPE))
-                            .append($('<td>').append(item.WEIGHT_RANGE))
-                            .append($('<td>').append(item.SURCHARGE))
-                            .append($('<td>').append(item.WORKING_DAYS))
-                            .append($('<td>').append(item.COST))
-                            .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
-                            .appendTo('table tbody');
-                    }
-                }
-
-
-                if (count == 0) {
-                    $('<tr id="tr-id">')
-                        .append($('<td colspan="8">').append("No records found!"))
-                        .appendTo('table tbody');
-                }
-
-                var index = response.data.count / 20;
-                if (response.data.count % 20 != 0) {
-                    index = index + 1;
-                }
-                $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
-                for (var n = 1; n <= index; n++) {
-                    if (n == page_index) {
-                        $('.pagination')
-                            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                    }
-                    else {
-                        $('.pagination')
-                            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                    }
-                }
-            }
-        });
-    }
-    function sortByPrice() {
-        debugger
-        var source = $("#sourceSelect").val();
-        var desination = $("#destinationSelect").val();
-        var carrier = $("#carrierSelect").val();
-        var serviceValue = $("#servicesSelect").val();
-        var packagingSelect = $("#packagingSelect").val();
-        var weightSelect = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
-        var height = $("#txtHeight").val() === "" ? 0 : $("#txtHeight").val();
-        var length = $("#txtLength").val() === "" ? 0 : $("#txtLength").val();
-        var width = $("#txtWidth").val() === "" ? 0 : $("#txtWidth").val();
-        var page_index = $(".pagination .active").text();
-        $('.pagination').remove();
-        var contentToRemove = document.querySelectorAll("#tr-id");
-        $(contentToRemove).remove();
-        if (source == "" || desination == "") {
-            alert('Please select source and destination!');
-            return false;
-        }
-        if ($("#carrierSelect").val() !== "0") {
-            if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
-                alert('Service, Packaging are not empty');
-                return false;
-            }
-        }
-        $.ajax({
-            type: "POST",
-            url: baseURL + "/Calculator/GetSearchAdvance",
-            data: JSON.stringify({
-                "Length": length,
-                "Height": height,
-                "Width": width,
-                "From": source,
-                "To": desination,
-                "ServiceType": serviceValue,
-                "PackageType": packagingSelect,
-                "Carrier": carrier,
-                "Weight": weightSelect,
-                "PageIndex": page_index,
-                "OrderBy": "price"
-            }),
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success: function (response) {
-
-                var newHeader = '<tr id="table_header"> <th scope="col"> Carrier </th> <th scope="col"> Service Type </th> <th scope="col"> Packaging Type </th><th scope="col"> Weight Range(kg) </th><th scope="col"> Current FSC </th><th scope="col"> Working days(day) </th><th scope="col" onclick="sortByPriceDesc()"> Rate Before Surcharge </th><th scope="col"> Rate After Surcharge (SGD) </th> </tr> '
-                $("#table_header").replaceWith(newHeader);
-                var count = 0;
-                for (var i = 0; i < response.data.Data.length; i++) {
-                    var item = response.data.Data[i];
-                    if (carrier == '' || carrier == item.CARRIER_NAME) {
-                        count++;
-                        $('<tr id="tr-id">')
-                            .append($('<td>').append(item.CARRIER_NAME))
-                            .append($('<td>').append(item.SERVICE_TYPE))
-                            .append($('<td>').append(item.PACKAGE_TYPE))
-                            .append($('<td>').append(item.WEIGHT_RANGE))
-                            .append($('<td>').append(item.SURCHARGE))
-                            .append($('<td>').append(item.WORKING_DAYS))
-                            .append($('<td>').append(item.COST))
-                            .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
-                            .appendTo('table tbody');
-                    }
-                }
-
-
-                if (count == 0) {
-                    $('<tr id="tr-id">')
-                        .append($('<td colspan="8">').append("No records found!"))
-                        .appendTo('table tbody');
-                }
-
-                var index = response.data.count / 20;
-                if (response.data.count % 20 != 0) {
-                    index = index + 1;
-                }
-                $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
-                for (var n = 1; n <= index; n++) {
-                    if (n == page_index) {
-                        $('.pagination')
-                            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                    }
-                    else {
-                        $('.pagination')
-                            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                    }
-                }
-            }
-        });
-    }
-    
 </script>
