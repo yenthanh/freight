@@ -15,6 +15,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.css">
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -26,7 +27,7 @@
     <script type="text/javascript">
         var baseURL = '@MM_Freight_Rate_API_Backend.Hepler.URL';
         function showMsg(msg,type=''){
-            if(type=='' || type=='warn') 
+            if(type=='' || type=='warn')
                 $('#alertMsg').attr('class','alert alert-warning');
             else if(type=='error')
                 $('#alertMsg').attr('class','alert alert-danger');
@@ -38,7 +39,7 @@
                 $("#salertMsg").slideUp(500);
             });
         }
-        
+
     </script>
 
 </head>
@@ -60,5 +61,6 @@
     <script type="text/javascript" src="https://mentormediasd.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-lgwqy6/b/3/9edb822e6c4db3635f27806476c088cb/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=2f127817"></script>
     <script type="text/javascript" src="?collectorId=2f127817"></script>
     <div class="alert" id="alertMsg"></div>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.js"></script>
 </body>
 </html>

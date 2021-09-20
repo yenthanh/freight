@@ -155,19 +155,15 @@
                 <h3>
                     Corporate Rate
                 </h3>
-                <div class="col-md-6 mr-0 row">
-                    <label class="col-md-12 row">Search:</label>
-                    <input type="text" id="myInput" onkeyup="search()" style="max-width: 395px" class="form-control" placeholder="Search for carrier..">
-                </div>
-                <table class="table" id="tbResult">
+                <table class="table display" id="tbResult">
                     <thead>
                         <tr id="table_header">
-                            <th scope="col" >Carrier</th>
-                            <th scope="col" >Service Type</th>
-                            <th scope="col" >Packaging Type</th>
-                            <th scope="col" >Weight Range(kg)</th>
-                            <th scope="col" >Current FSC</th>
-                            <th scope="col" >Working days(day)</th>
+                            <th scope="col">Carrier</th>
+                            <th scope="col">Service Type</th>
+                            <th scope="col">Packaging Type</th>
+                            <th scope="col">Weight Range(kg)</th>
+                            <th scope="col">Current FSC</th>
+                            <th scope="col">Working days(day)</th>
                             <th scope="col" onclick='sortByPrice()'>Rate Before Surcharge (SGD)</th>
                             <th scope="col">Rate After Surcharge (SGD)</th>
                         </tr>
@@ -176,7 +172,7 @@
                     </tbody>
                 </table>
                 <div id="pagination_custom">
-                    <ul class="pagination justify-content-end">                       
+                    <ul class="pagination justify-content-end">
                     </ul>
                 </div>
             </div>
@@ -200,7 +196,6 @@
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
     $(document).ready(function () {
-
 
 
         var arr = [];
@@ -394,7 +389,7 @@
                     "PackageType": packagingSelect,
                     "Carrier": carrier,
                     "Weight": weightSelect,
-                    "Page_Index": 1,
+                    "PageIndex": 1,
                 }),
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
@@ -427,17 +422,19 @@
                     if (response.data.count % 20 != 0) {
                         index = index + 1;
                     }
-                    $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
-                    for (var n = 1; n <= index; n++) {
-                        if (n == 1) {
-                            $('.pagination')
-                                .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                        }
-                        else {
-                            $('.pagination')
-                                .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>')) 
-                        }                             
-                    }
+
+                    $('#tbResult').DataTable();
+                    //$('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
+                    //for (var n = 1; n <= index; n++) {
+                    //    if (n == 1) {
+                    //        $('.pagination')
+                    //            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                    //    }
+                    //    else {
+                    //        $('.pagination')
+                    //            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>')) 
+                    //    }                             
+                    //}
                 }
             });
         })    
@@ -566,7 +563,7 @@
                 "PackageType": packagingSelect,
                 "Carrier": carrier,
                 "Weight": weightSelect,
-                "Page_Index": page_size,
+                "PageIndex": page_size,
             }),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
@@ -600,17 +597,19 @@
                 if (response.data.count % 20 != 0) {
                     index = index + 1;
                 }
-                $('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
-                for (var n = 1; n <= index; n++) {
-                    if (n == page_size) {
-                        $('.pagination')
-                            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                    }
-                    else {
-                        $('.pagination')
-                            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
-                    }
-                }
+
+                $('#tbResult').DataTable();
+                //$('#pagination_custom').append($('<ul class="pagination justify-content-end">'));
+                //for (var n = 1; n <= index; n++) {
+                //    if (n == page_size) {
+                //        $('.pagination')
+                //            .append($('<li class="active cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                //    }
+                //    else {
+                //        $('.pagination')
+                //            .append($('<li class="cursor-pointer" onclick="GoPageSize(' + n + ')">').append('<a>' + n + '</a>'))
+                //    }
+                //}
             }
         });
     }
@@ -652,8 +651,8 @@
                 "PackageType": packagingSelect,
                 "Carrier": carrier,
                 "Weight": weightSelect,
-                "Page_Index": page_index,
-                "Sort_by": "price_desc"
+                "PageIndex": page_index,
+                "OrderBy": "price_desc"
             }),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
@@ -742,8 +741,8 @@
                 "PackageType": packagingSelect,
                 "Carrier": carrier,
                 "Weight": weightSelect,
-                "Page_Index": page_index,
-                "Sort_by": "price"
+                "PageIndex": page_index,
+                "OrderBy": "price"
             }),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
