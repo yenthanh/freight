@@ -393,6 +393,9 @@
                         var item = response.data.Data[i];
                         if (carrier == '' || carrier == item.CARRIER_NAME) {
                             count++;
+                            var cost = parseFloat(item.COST);
+                            var costRoundUp = Math.round(cost * 100) / 100;
+                            var costWithSurcharge = Math.round(cost * (1 + item.SURCHARGE / 100) * 100) / 100;
                             $('<tr id="tr-id">')
                                 .append($('<td>').append(item.CARRIER_NAME))
                                 .append($('<td>').append(item.SERVICE_TYPE))
@@ -400,8 +403,8 @@
                                 .append($('<td>').append(item.WEIGHT_RANGE))
                                 .append($('<td>').append(item.SURCHARGE))
                                 .append($('<td>').append(item.WORKING_DAYS))
-                                .append($('<td>').append(item.COST))
-                                .append($('<td>').append((item.COST * (1 + item.SURCHARGE / 100)).toFixed(2)))
+                                .append($('<td>').append(costRoundUp))
+                                .append($('<td>').append(costWithSurcharge))
                                 .appendTo('table tbody');
                         }
                     }

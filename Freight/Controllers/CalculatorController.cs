@@ -191,8 +191,8 @@ namespace Freught1.Controllers
                     worksheet.Cells[row, 4].LoadFromText(index.WEIGHT_RANGE);
                     worksheet.Cells[row, 5].LoadFromText(index.SURCHARGE.ToString());
                     worksheet.Cells[row, 6].LoadFromText(index.WORKING_DAYS);
-                    worksheet.Cells[row, 7].LoadFromText((float.Parse(index.COST)).ToString("0.00"));
-                    worksheet.Cells[row, 8].LoadFromText((float.Parse(index.COST) * (1 + index.SURCHARGE / 100)).ToString("0.00"));
+                    worksheet.Cells[row, 7].LoadFromText(Math.Round(float.Parse(index.COST), 2).ToString("0.00"));
+                    worksheet.Cells[row, 8].LoadFromText(Math.Round(float.Parse(index.COST) * (1 + index.SURCHARGE / 100), 2).ToString("0.00"));
                     row++;
                 }
                 worksheet.Cells[row++, 1].LoadFromText("Disclaimers:");
