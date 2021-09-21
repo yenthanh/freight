@@ -256,13 +256,13 @@
 
             $.ajax({
                 type: "GET",
-                url: baseURL +"/Calculator/GetListServices?carrier=" + valueOfCarrier,
+                url: baseURL +"/Utility/GetListServices?carrier=" + valueOfCarrier,
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 success: function (data) {
                     var s = '<option value="">Please Select Service Type</option>';
                     for (var i = 0; i < data.data.length; i++) {
-                        if (carrier == '' || carrier == data.data[i].extend) {
+                        if (valueOfCarrier == '' || valueOfCarrier == data.data[i].extend) {
                             s += '<option value="' + data.data[i].value + '">' + data.data[i].text + '</option>';
                         }
                     }
