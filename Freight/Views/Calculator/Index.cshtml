@@ -186,6 +186,22 @@
 </body>
 
 <script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    function checkLogin() {
+        $.ajax({
+            type: "GET",
+            url: baseURL + "/Account/CheckLogin",
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                //console.log(data);
+                if (data.error.code == 1)
+                    return true;
+                else return false;
+            }
+        });
+    }
+</script>
 <script>
     $(document).ready(function () {
         var arr = [];
@@ -346,6 +362,9 @@
         })
 
         $("#searchButton").click(function () {
+             let check = checkLogin();
+            if (check==false)
+                location.href = '@Url.Action("Index","Home")';
             var source = $("#sourceSelect").val();
             var desination = $("#destinationSelect").val();
             var carrier = $("#carrierSelect").val();
@@ -482,7 +501,9 @@
             window.location.href = baseURL + "/Calculator/Export?from=" + from + "&to=" + to + "&service=" + service + "&packageType=" + packageType + "&weight=" + weight + "&region=" + region + "&height=" + height + "&length=" + length + "&width=" + width + "&carrier=" + carrier ;
         });
         $("#btnExport").click(function () {
-
+             let check = checkLogin();
+            if (check==false)
+                location.href = '@Url.Action("Index","Home")';
             var contentToRemove = document.querySelectorAll("#tr-id");
             $(contentToRemove).remove();
             if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {

@@ -84,7 +84,7 @@ namespace ExcelProcess.RestApi
                         SURCHARGE = surcharge
                     };
                     resultItem.COST = GetEnvelopePriceFromDataTable(tbl, zoneName);
-                    if (string.IsNullOrEmpty(resultItem.COST))
+                    if (resultItem.COST<0)
                     {                        
                         this.MSG =  ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);                        
                     }                                        
@@ -96,16 +96,17 @@ namespace ExcelProcess.RestApi
             return result;
         }
 
-        private string GetEnvelopePriceFromDataTable(DataTable tbl, string zoneName)
-        {   
+        private float GetEnvelopePriceFromDataTable(DataTable tbl, string zoneName)
+        {
+            float cost = -1;
             //Step 1:get row which has min<=w<=max
             DataRow row = tbl.Rows[0];
             if (tbl.Columns.Contains(zoneName))
             {
                 if(row[zoneName] != null && !string.IsNullOrEmpty(row[zoneName].ToString()))
-                    return row[zoneName].ToString();
+                    float.TryParse( row[zoneName].ToString(),out cost);
             }            
-            return "";
+            return cost;
         }
 
         /// <summary>
@@ -277,7 +278,7 @@ namespace ExcelProcess.RestApi
                         SURCHARGE = surcharge
                     };
                     resultItem.COST = GetEnvelopePriceFromDataTable(tbl, zoneName);
-                    if (string.IsNullOrEmpty(resultItem.COST))
+                    if (resultItem.COST<=0)
                     {
                         this.MSG =  ReturnMessage.NoFoundPrice(this.Code, deliverType, packageType, serviceType, zoneName, s.SHEET_NAME, weight);
                     }

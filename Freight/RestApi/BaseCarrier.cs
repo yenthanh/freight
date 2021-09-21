@@ -49,7 +49,7 @@ namespace ExcelProcess.RestApi
         public string WEIGHT_RANGE { get; set; }
         public string PACKAGE_TYPE { get; set; }
         public string SERVICE_TYPE { get; set; }
-        public string COST { get; set; }
+        public float COST { get; set; }
         public string WORKING_DAYS { get; set; }
         public float SURCHARGE { get; set; }
         public string ZONE { get; set; }
@@ -115,7 +115,7 @@ namespace ExcelProcess.RestApi
                         rate = r[zoneName].ToString().Replace(" ","").Replace("+", "");
                     }
                     if (string.IsNullOrEmpty(rate)) continue;
-
+                    
                     string range = "";
                     float min = float.Parse(r["Min"].ToString());
                     float max = float.Parse(r["Max"].ToString());
@@ -130,12 +130,12 @@ namespace ExcelProcess.RestApi
                                 CARRIER_NAME = this.Name,
                                 PACKAGE_TYPE = PACKAGE_ID,
                                 SERVICE_TYPE = SERVICE_ID,
-                                NOTE=SERVICE_NAME,
-                                ZONE = zoneName,                                
+                                NOTE = SERVICE_NAME,
+                                ZONE = zoneName,
                                 SHEET_NAME = SHEET_NAME,
                                 SURCHARGE = surcharge,
                                 WEIGHT_RANGE = range,
-                                COST = rate
+                                COST = float.Parse(rate)
                             });
                             break;
                         }
@@ -153,7 +153,7 @@ namespace ExcelProcess.RestApi
                             SHEET_NAME = SHEET_NAME,
                             SURCHARGE = surcharge,
                             WEIGHT_RANGE = range,
-                            COST = rate
+                            COST = float.Parse(rate)
                         });
                     }
                 }

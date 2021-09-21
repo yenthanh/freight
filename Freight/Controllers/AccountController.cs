@@ -45,6 +45,21 @@ namespace Freught1.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult CheckLogin()
+        {
+            JsonObject result = new JsonObject();
+            LoggedModel logger = Hepler.GetLogged;
+
+            if (logger != null)
+            {   
+                result = new JsonObject(0, "SUCCESS", "OK");
+            }
+            else
+            {
+                result = new JsonObject(1, "FALSE", "Cannot login");
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         //Username and pass will store in body html
         //If user is logoned, db will store token and time for logon - 1 day      
