@@ -46,7 +46,7 @@ namespace Freught1.Controllers
             var query = lst.Skip((pageIndex - 1) * pageSize).Take(pageSize);
            
             if (string.IsNullOrEmpty(orderBy))
-                return query.ToList();
+                return query.OrderBy(c=>c.COST).ToList();
             orderBy = orderBy.ToUpper();
             if (orderBy.IndexOf("CARRIER_ID") >=0)
             {
