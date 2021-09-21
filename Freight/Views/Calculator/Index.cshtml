@@ -105,7 +105,7 @@
                         </select>
                     </div>
                     <div class="col-xs-6 col-md-4">
-                        <label for="exampleInputEmail1">Weight</label>
+                        <label for="exampleInputEmail1">Weight<i style="color:red" title="Required">*</i></label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex;">
                             <input type="number" id="weightSelect" placeholder="Weight" class="form-control" aria-label="Weight" style="max-width:395px">
                             <div class="input-group-append">
@@ -117,7 +117,7 @@
                 <div class="row">
 
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="lengthGroup">
-                        <label for="exampleInputEmail1">Length</label>
+                        <label for="exampleInputEmail1">Length<i style="color:red" title="Required">*</i></label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
                             <input type="number" id="txtLength" placeholder="Length" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
@@ -127,7 +127,7 @@
                     </div>
 
                     <div class="col-xs-6 col-md-4" style="margin-top:15px" id="widthGroup">
-                        <label for="exampleInputEmail1">Width</label>
+                        <label for="exampleInputEmail1">Width<i style="color:red" title="Required">*</i></label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
                             <input type="number" id="txtWidth" placeholder="Width" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4" style="margin-top:15px;" id="heightGroup">
-                        <label for="exampleInputEmail1">Height</label>
+                        <label for="exampleInputEmail1">Height<i style="color:red" title="Required">*</i></label>
                         <div class="input-group-lg mb-lg-5, col-xl-12" style="margin-left: -15px; display: flex">
                             <input type="number" id="txtHeight" placeholder="Height" class="form-control" aria-label="Weight" style="max-width: 395px">
                             <div class="input-group-append">
@@ -362,6 +362,23 @@
                 alert('Please select source and destination!');
                 return false;
             }
+
+            if ($("#weightSelect").val() == "") {
+                alert('Please enter weight!');
+                return false;
+            }
+            if ($("#txtHeight").val() == "") {
+                alert('Please enter height!');
+                return false;
+            }
+            if ($("#txtLength").val() == "") {
+                alert('Please enter length!');
+                return false;
+            }
+            if ($("#txtWidth").val() == "") {
+                alert('Please enter width!');
+                return false;
+            }
             if ($("#carrierSelect").val() !== "0") {
                 if (($("#servicesSelect").val() === "0") || ($("#packagingSelect").val() === "0")) {
                     alert('Service, Packaging are not empty');
@@ -427,6 +444,23 @@
         $('#handleExport').click(function () {
             if ($("#sourceSelect").val() == "" || $("#destinationSelect").val() == "") {
                 alert('Please select source and destination!');
+                return false;
+            }
+            if ($("#weightSelect").val() == "") {
+                alert('Please enter weight!');
+                return false;
+            }
+
+            if ($("#txtHeight").val() == "") {
+                alert('Please enter height!');
+                return false;
+            }
+            if ($("#txtLength").val() == "") {
+                alert('Please enter length!');
+                return false;
+            }
+            if ($("#txtWidth").val() == "") {
+                alert('Please enter width!');
                 return false;
             }
             if ($("#carrierSelect").val() !== "0") {
