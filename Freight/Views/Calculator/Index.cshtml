@@ -400,7 +400,7 @@
                                 .append($('<td>').append(item.SURCHARGE))
                                 .append($('<td>').append(item.WORKING_DAYS))
                                 .append($('<td>').append(item.COST))
-                                .append($('<td>').append(item.COST * (1 + item.SURCHARGE / 100)))
+                                .append($('<td>').append((item.COST * (1 + item.SURCHARGE / 100)).toFixed(2)))
                                 .appendTo('table tbody');
                         }
                     }
