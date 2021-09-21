@@ -443,7 +443,7 @@
             var to = $("#destinationSelect").val();
             var service = $("#servicesSelect").val();
             var packageType = $("#packagingSelect").val();
-            var weight = $("#weightSelect").val()=== "" ? 0 : $("#txtWidth").val();
+            var weight = $("#weightSelect").val() === "" ? 0 : $("#weightSelect").val();
             var region = null;
             window.location.href = baseURL + "/Calculator/Export?from=" + from + "&to=" + to + "&service=" + service + "&packageType=" + packageType + "&weight=" + weight + "&region=" + region + "&height=" + height + "&length=" + length + "&width=" + width + "&carrier=" + carrier ;
         });
